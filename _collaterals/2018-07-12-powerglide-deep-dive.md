@@ -1,5 +1,5 @@
 ---
-author: Cisco Web Team
+author: Cisco Cloud Scale Networking Team
 published: true
 date: '2018-07-12 11:55 -0800'
 title: PowerGlide Deep Dive
