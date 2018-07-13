@@ -150,8 +150,8 @@ kramdown:
 
 # Collections
 collections:
-  techdocs:
-    output: false
+  collaterals:
+    output: true
     permalink: /:collection/:path/
   blogs:
     output: true
