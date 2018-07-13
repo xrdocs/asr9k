@@ -163,16 +163,6 @@ collections:
 
 # Defaults
 defaults:
-# _techdocs
-  - scope:
-      path: ""
-      type: techdocs
-    values:
-      layout: single
-      read_time: false
-      author_profile: false
-      share: false
-      comments: false
 
 # _blogs
   - scope:
