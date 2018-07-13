@@ -1,0 +1,13 @@
+---
+layout: archive-full
+permalink: /github/
+title: "Github repos: external and enterprise"
+author_profile: true
+author: "Cisco App Hosting Team"
+---
+<div class="grid__wrapper">
+    {% assign sorted = (site.github | sort: 'date') %}
+    {% for post in sorted reversed %}
+    {% include archive-single.html type="grid" %}
+    {% endfor %}
+</div>

@@ -2,7 +2,7 @@
 layout: archive
 permalink: /
 author_profile: true
-author: "Cisco Cloud Scale Networking Team"
+author: "Cisco Web Team"
 
 feature_row1:
   - image_path: techdoc.jpg
@@ -28,11 +28,18 @@ feature_row3:
     url: "/tutorials"
     btn_label: "Check out the tutorials!"
     btn_class: "btn--inverse"
-
+feature_row4:
+  - image_path: collaterals.png
+    alt: "fully responsive"
+    title: "Collaterals"
+    excerpt: 'List of collaterals lovely crafted by out team!'
+    url: "/collaterals"
+    btn_label: "Check them out!"
+    btn_class: "btn--inverse"
 ---
 
 {% include base_path %}
 
-{% include feature_row id="feature_row3" type="left" %}
+{% include feature_row id="feature_row4" type="left" %}
 
 {% include feature_row id="feature_row2" type="left" %}
