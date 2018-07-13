@@ -1,9 +1,6 @@
 main:
-  - title: "Blogs"
-    url: /blogs/
-
-  - title: "Tutorials"
-    url: /tutorials/
+  - title: "Collaterals"
+    url: /collaterals/
 
   - title: "Search"
     url: /search
