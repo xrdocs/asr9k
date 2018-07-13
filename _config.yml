@@ -163,7 +163,16 @@ collections:
 
 # Defaults
 defaults:
-
+# _collaterals
+  - scope:
+      path: ""
+      type: collaterals
+    values:
+      layout: single-full
+      read_time: false
+      related: true
+      share: false
+      position: "top"
 # _blogs
   - scope:
       path: ""

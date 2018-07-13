@@ -28,11 +28,11 @@ feature_row3:
     url: "/tutorials"
     btn_label: "Check out the tutorials!"
     btn_class: "btn--inverse"
-collateral:
-  - image_path: tutorial-board.jpg
+feature_row4:
+  - image_path: collaterals.png
     alt: "fully responsive"
     title: "Collaterals"
-    excerpt: 'List of collaterals lovely crafted by out team!'
+    excerpt: 'List of collaterals lovely crafted by our team!'
     url: "/collaterals"
     btn_label: "Check them out!"
     btn_class: "btn--inverse"
@@ -40,5 +40,6 @@ collateral:
 
 {% include base_path %}
 
-{% include feature_row id="collateral" type="left" %}
+{% include feature_row id="feature_row4" type="left" %}
 
+{% include feature_row id="feature_row2" type="left" %}
