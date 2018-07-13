@@ -29,7 +29,7 @@ feature_row3:
     btn_label: "Check out the tutorials!"
     btn_class: "btn--inverse"
 collaterals:
-  - image_path: tutorial-board.png
+  - image_path: techdoc.jpg
     alt: "fully responsive"
     title: "Collaterals"
     excerpt: 'List of collaterals lovely crafted by our team!'
