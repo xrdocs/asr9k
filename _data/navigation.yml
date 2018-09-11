@@ -2,6 +2,9 @@ main:
   - title: "Collaterals"
     url: /collaterals/
 
+  - title: "Blogs"
+    url: /blogs/
+
   - title: "Search"
     url: /search
 
