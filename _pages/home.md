@@ -40,6 +40,5 @@ collaterals:
 
 {% include base_path %}
 
-{% include feature_row id="collaterals" type="left" %}
 {% include feature_row id="feature_row2" type="left" %}
 
