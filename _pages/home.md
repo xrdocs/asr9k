@@ -24,7 +24,7 @@ author: "Cisco Web Team"
                their green objective. In this blog you’ll learn about how the ASR 9000 4th Generation systems
                 take on power consumption.</p>
             </div>
-            <p><a href="{{base_url}}/blogs/2018-09-06-power/" 
+            <p><a href="{{base_url}}/asr9k/blogs/2018-09-06-power/" 
                   class="btn ">Read Article</a></p>
         </div>
       </div>
@@ -48,7 +48,7 @@ author: "Cisco Web Team"
              Generation Ethernet Linecards implement an intelligent packet buffering technique to provide high 
              performance deep buffering</p>
             </div>
-          <p><a href="{{base_url}}/blogs/2018-09-06-dynamic-packet-buffering/" class="btn btn--large">
+          <p><a href="{{base_url}}/asr9k/blogs/2018-09-06-dynamic-packet-buffering/" class="btn btn--large">
           Read Article
           </a></p>
         </div>
