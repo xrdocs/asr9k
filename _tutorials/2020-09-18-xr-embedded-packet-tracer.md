@@ -1,7 +1,12 @@
 ---
-published: false
+published: true
 date: '2020-09-18 17:52 +0200'
 title: XR Embedded Packet Tracer
+author: Aleksandar Vidakovic
+excerpt: XR Embedded Packet Tracer Tutorial.
+tags:
+  - iosxr
+  - cisco
 ---
 {% include toc %}
 {% include base_path %}
