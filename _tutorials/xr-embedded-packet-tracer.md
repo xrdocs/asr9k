@@ -13,7 +13,7 @@ tags:
 
 # Introduction
 
-IOS XR Embedded Packet Tracer is a framework that provides the user with a capability to trace custom flows through the router, for debugging or service validation purposes. 
+IOS XR Embedded Packet Tracer is a framework that provides the user with a capability to trace custom flows through the router, for service validation or troubleshooting purposes. 
 
 IOS XR Embedded Packet Tracer is protocol agnostic, it works on any type of unicast or multicast packets.
 
@@ -626,17 +626,3 @@ Packet tracer master process `pkt_trace_master` on active route processor (RP) c
 When packet tracing is enabled on an interface, the Network Processor (NP) checks whether received packets are matching the specified condition. If packet matches the condition, a flag is set in the internal packet header. This flag in the internal packet header allows for the tracing of this packet on all elements in the data-path and punt-path inside the router.
 
 On every line card (LC) and route processor card (RP) a pkt_trace_agent process maintas the array of counters registered by each process participating in the packet tracer framework. Processes participating in the packet tracer framework communicate counter updates to the pkt_trace_agent process. When you issue the `show packet-trace result` command, the `pkt_trace_master` process on active RP polls data from all cards and displays the non-zero counters.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
