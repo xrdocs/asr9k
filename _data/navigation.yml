@@ -1,6 +1,9 @@
 main:
   - title: "Blogs"
     url: /blogs/
+    
+  - title: "Tutorials"
+    url: /tutorials/
 
   - title: "Search"
     url: /search
