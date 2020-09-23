@@ -1,34 +1,76 @@
-# Teams
+#################################   Teams   #################################
 
 Cisco Software Management Team:
   name        : "Cisco SP Routing Team"
   github      : "ios-xr"
-  bio         : "A Team of coders and network engineers determined to build the best network operating system for Web-Scale Service Providers."
-  avatar      : "software-management-team.png"
+  bio         : "A Team of coders and network engineers determined to build the best architectures & technology for Service Providers."
+  avatar      : "cisco-web-team.jpg"
   twitter     : "xrdocs"
 
 Cisco Automation Team:
   name        : "Cisco SP Routing Team"
   github      : "ios-xr"
-  bio         : "A Team of coders and network engineers determined to build the best network operating system for Web-Scale Service Providers."
-  avatar      : "automation-xrdocs.jpg"
+  bio         : "A Team of coders and network engineers determined to build the best architectures & technology for Service Providers."
+  avatar      : "cisco-web-team.jpg"
   twitter     : "xrdocs"
 
 Cisco Cloud Scale Networking Team:
   name        : "Cisco SP Routing Team"
   github      : "ios-xr"
-  bio         : "A Team of coders and network engineers determined to build the best network operating system for Web-Scale Service Providers."
-  avatar      : "cloud-scale-networking-team.png"
+  bio         : "A Team of coders and network engineers determined to build the best architectures & technology for Service Providers."
+  avatar      : "cisco-web-team.jpg"
   twitter     : "xrdocs"
 
 Cisco Service Layer Team:
   name        : "Cisco SP Routing Team"
   github      : "ios-xr"
-  bio         : "A Team of coders and network engineers determined to build the best network operating system for Web-Scale Service Providers."
-  avatar      : "cisco-service-layer-team.png"
+  bio         : "A Team of coders and network engineers determined to build the best architectures & technology for Service Providers."
+  avatar      : "cisco-web-team.jpg"
   twitter     : "xrdocs"
 
-# Authors
+Cisco Telemetry Team:
+  name        : "Cisco SP Routing Team"
+  github      : "ios-xr"
+  bio         : "A Team of coders and network engineers determined to build the best architectures & technology for Service Providers."
+  avatar      : "cisco-web-team.jpg"
+  twitter     : "xrdocs"
+
+Cisco Web Team:
+  name        : "Cisco SP Routing Team"
+  github      : "ios-xr"
+  bio         : "A Team of coders and network engineers determined to build the best architectures & technology for Service Providers."
+  avatar      : "cisco-web-team.jpg"
+  twitter     : "xrdocs"
+
+Cisco Design Team:
+  name        : "Cisco SP Routing Team"
+  github      : "ios-xr"
+  bio         : "A Team of coders and network engineers determined to build the best architectures & technology for Service Providers."
+  avatar      : "cisco-web-team.jpg"
+  twitter     : "xrdocs"
+
+Cisco SP BU:
+  name        : "Cisco SP BU"
+  github      : "ios-xr"
+  bio         : "A Team of dedicated network engineers determined to build the best network operating system for Web-Scale Service Providers."
+  avatar      : "cisco-design-team.png"
+  twitter     : "xrdocs"
+
+Cisco Application Hosting Team:
+  name        : "Cisco SP Routing Team"
+  github      : "ios-xr"
+  bio         : "A Team of coders and network engineers determined to build the best architectures & technology for Service Providers."
+  avatar      : "cisco-web-team.jpg"
+  twitter     : "xrdocs"
+
+Cisco Programmability Team:
+  name        : "Cisco SP Routing Team"
+  github      : "ios-xr"
+  bio         : "A Team of coders and network engineers determined to build the best architectures & technology for Service Providers."
+  avatar      : "cisco-web-team.jpg"
+  twitter     : "xrdocs"
+
+#################################   Authors   #################################
 
 Shelly Cadora:
   name        : "Shelly Cadora"
@@ -52,9 +94,7 @@ Mike Korshunov:
   email       : "mkorshun@cisco.com"
   bio         : "Technical Marketing Engineer, Cisco"
   avatar      : "Mike_pic.jpg"
-  twitter     : "mike_korshunov" 
-  linkedin    : "mkorshunov"
-  
+  twitter     : "mike_korshunov"   
 
 Bruce McDougall:
   name        : "Bruce McDougall"
@@ -84,13 +124,6 @@ Marco Umer:
   avatar      : "marumer_bio.png"
   bio         : "Technology, martial arts and nature are my passions"
 
-Cisco Telemetry Team:
-  name        : "Cisco Web Team"
-  github      : "ios-xr"
-  bio         : "A Team of coders and network engineers determined to build the best network operating system for Web-Scale Service Providers."
-  avatar      : "telemetry-team.png"
-  twitter     : "CiscoDevNet"
-
 Lisa Roach:
   name        : "Lisa Roach"
   github      : "lisroach"
@@ -98,7 +131,6 @@ Lisa Roach:
   bio         : "Programmer dedicated to making good code and drinking good beer."
   avatar      : "lisa_bio.png"
  
-
 Jose Palafox:
   name        : "Jose Palafox"
   github      : "josepalafox"
@@ -128,27 +160,6 @@ Sushrut Shirole:
   email       : "sushirol@cisco.com"
   avatar      : "sushirol_bio.jpg"
   bio         : "Software Engineer, Cisco."
-  
-Cisco Web Team:
-  name        : "Cisco Web Team"
-  github      : "ios-xr"
-  bio         : "A Team of coders and network engineers determined to build the best network operating system for Web-Scale Service Providers."
-  avatar      : "cisco-web-team.jpg"
-  twitter     : "xrdocs"
-
-Cisco Design Team:
-  name        : "Cisco Web Team"
-  github      : "ios-xr"
-  bio         : "A Team of coders and network engineers determined to build the best network operating system for Web-Scale Service Providers."
-  avatar      : "cisco-design-team.png"
-  twitter     : "xrdocs"
-
-Cisco Application Hosting Team:
-  name        : "Cisco Web Team"
-  github      : "ios-xr"
-  bio         : "A Team of coders and network engineers determined to build the best network operating system for Web-Scale Service Providers."
-  avatar      : "app-hosting-team.jpg"
-  twitter     : "CiscoDevNet"
 
 Santiago Alvarez:
   name        : "Santiago Alvarez"
@@ -158,7 +169,6 @@ Santiago Alvarez:
   twitter     : "111pontes"
   github      : "111pontes"
 
-
 Nicolas Leiva:
   name        : "Nicolas Leiva"
   github      : "nleiva"
@@ -166,7 +176,6 @@ Nicolas Leiva:
   bio         : "Solutions Architect, Cisco"
   avatar      : "nleiva.png"
   twitter     : "nleiv4"
-
 
 Jose Liste:
   name        : "Jose Liste"
@@ -181,13 +190,6 @@ Patrick Warichet:
   email       : "pwariche@cisco.com"
   avatar      : "pwariche_bio.jpg"
   bio         : "Technical Marketing Engineer, Cisco."
-
-Cisco Programmability Team:
-  name        : "Cisco Web Team"
-  github      : "ios-xr"
-  bio         : "A Team of coders and network engineers determined to build the best network operating system for Web-Scale Service Providers."
-  avatar      : "programmability-team.png"
-  twitter     : "CiscoDevNet"
   
 Karthik Kumaravel:
   name        : "Karthik Kumaravel"
@@ -195,7 +197,6 @@ Karthik Kumaravel:
   email       : "kkumara3@cisco.com"
   bio         : "System Engineer Sales, Cisco"
   avatar      : "kkumara3.jpg"
-
 
 Phil Bedard:
   name        : "Phil Bedard"
@@ -218,13 +219,12 @@ Josh Peters:
   bio         : "Technical Marketing Engineer, Cisco"
   avatar      : "jpeters.png"
 
-
 Nicolas Fevrier:
   name        : "Nicolas Fevrier"
   github      : "nfevrier"
   email       : "nifevrie@cisco.com"
   avatar      : "nfevrier_bio.jpeg"
-  bio         : "Technical Leader, Cloud Scale Networking, Cisco"
+  bio         : "Principal TME, Cisco"
   twitter     : "CiscoIOSXR"
 
 Viktor Osipchuk:
@@ -259,4 +259,90 @@ Thomas Wang:
   name        : "Thomas Wang"
   email       : "pewang@cisco.com"
   bio         : "Technical Marketing Engineer, Cisco."
-  avatar      : "pewang.png"
+  avatar      : "pewang.png"    
+
+Cristina Precup:
+  name        : "Cristina Precup"
+  email       : "cprecup@cisco.com"
+  bio         : "Was in search for 42 - the answer to life, the universe and everything; found it in Informatics. Systems Engineer at Cisco."
+  avatar      : "cprecup.jpg"
+
+Ahmad Bilal Siddiqui:
+  name        : "Ahmad Bilal Siddiqui"
+  email       : "ahsiddiq@cisco.com"
+  bio         : "Technical Marketing Engineer, Cisco."
+  avatar      : "ahsiddiq.jpg"
+  
+Dan Backman:
+  name        : "Dan Backman"
+  twitter     : "jonahsfo"
+  github      : "dbackmancsco"
+  email       : "dbackman@cisco.com"
+  bio         : "Technical Marketing Engineer, Cisco."
+  avatar      : "dbackman.jpg"
+   
+Jag Tangirala:
+  name        : "Jag Tangirala"
+  email       : "tangiral@cisco.com"
+  bio         : "Distinguished Engineer, Cisco."
+  avatar      : "jag.jpeg"
+
+Ianik Semco:
+  name        : "Ianik Semco"
+  email       : "isemco@cisco.com"
+  bio         : "Product Manager, Cisco."
+  avatar      : "isemco_latest.jpg"
+
+Tejas Lad:
+  name        : "Tejas Lad"
+  email       : "telad@cisco.com"
+  bio         : "Technical Marketing Engineer, Cisco."
+  avatar      : "telad.jpg"   
+
+
+Vincent Ng:
+  name        : "Vincent Ng"
+  email       : "vinng@cisco.com"
+  bio         : "Technical Marketing Engineer, Cisco."
+  avatar      : "vinng.jpg"
+
+Sonia Ben Ayed:
+  name        : "Sonia Ben Ayed"
+  email       : "sbenayed@cisco.com"
+  bio         : "Collge Intern, Cisco."
+  avatar      : "sbenayed.jpg"
+  
+  
+Frederic Cuiller:
+  name        : "Frederic Cuiller"
+  email       : "fcuiller@cisco.com"
+  bio         : "Architect, Cisco."
+  avatar      : "fcuiller.jpg"
+ 
+Aleksandar Vidakovic:
+  name        : "Aleksandar Vidakovic"
+  email       : "avidakov@cisco.com"
+  bio         : "Tech Lead, Cisco."
+  avatar      : "avidakov.jpg"
+  
+  
+Nikolay Karpyshev:
+  name        : "Nikolay Karpyshev"
+  email       : "nkarpysh@cisco.com"
+  bio         : "Software Engineer, Cisco."
+  avatar      : "nkarpysh.jpg"
+  
+
+Paban Sarma:
+  name        : "Paban Sarma"
+  email       : "pasarma@cisco.com"
+  bio         : "Technical Marketing Engineer, Cisco."
+  avatar      : "pasarma.jpg"
+
+
+Jasmine Joyce Kalaiselvan:
+  name        : "Jasmine Joyce Kalaiselvan"
+  email       : "jkalaise@cisco.com"
+  bio         : "Technical Leader, Cisco."
+  avatar      : "jkalaise.jpg"
+  twitter     : "jkalaise"
