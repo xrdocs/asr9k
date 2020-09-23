@@ -22,6 +22,12 @@ This document is a user guide, with additional insight into the architecture of 
 IOS XR Embedded Packet Tracer support starts with IOS XR release 7.1.2 and ASR 9000. Other XR product families will be supported in future. XR release 7.1.2 provides the very basic functionality that the packet tracer can deliver. Further development directions will depend much on your feedback.
 {: .notice--info}
 
+# Packet Tracer YouTube Demo Video
+
+For a quick overview of what you can expect from the XR Embedded Packet Tracer, watch this short video:
+
+<iframe type="text/html" width="560" height="315" src="https://www.youtube.com/embed/5aCAwdQF8SE" frameborder="0" allow="autoplay" ></iframe>{: .align-center}
+
 # XR Embedded Packet Tracer Framework Architecture
 
 When packet tracing is enabled on an interface, the Network Processor (NP) checks whether received packets are matching the specified condition. If packet matches the condition, a flag is set in the internal packet header. This flag in the internal packet header allows for the tracing of this packet on all elements in the data-path and punt-path inside the router.
