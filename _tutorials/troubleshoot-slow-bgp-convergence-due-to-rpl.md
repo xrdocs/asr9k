@@ -1,5 +1,5 @@
 ---
-published: false
+published: true
 date: '2022-01-21 10:45 +0100'
 title: ' Troubleshoot Slow BGP Convergence Due to Suboptimal Route Policies on IOS-XR'
 position: hidden
