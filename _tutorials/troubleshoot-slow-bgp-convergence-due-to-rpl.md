@@ -12,7 +12,7 @@ excerpt: >-
   This document describes how to diagnose slow BGP convergence issue on Cisco
   IOS® XR routers which happens because of non optimal route policies.
 ---
-{% include toc %}
+{% include toc icon="table" title="Troubleshoot Slow BGP Convergence Due to Suboptimal Route Policies on IOS-XR" %}
 
 # Introduction
 
