@@ -7,7 +7,7 @@ tags:
   - iosxr
   - BGP
   - Troubleshooting
-author: Vladimir Deviatkin
+author: Frederic Cuiller
 excerpt: >-
   This document describes how to diagnose slow BGP convergence issue on Cisco
   IOS® XR routers which happens because of non optimal route policies.
