@@ -281,6 +281,12 @@ This table lists AS path match criteria offered by Route Policy Language (RPL). 
 |-|-|
 | **is-local** | Determines if the router (or another router within this autonomous system or confederation) originated the route |
 | **length** | Performs a conditional check based on the length of the AS path |
+| **neighbor-is** | Tests the autonomous system number or numbers at the head of the AS path against a sequence of one or more integral values or parameters. |
+| **originates-from** | Tests an AS path against the AS sequence from the start with the AS number that originated a route. |
+| **passes-through** | Tests to learn if the specified integer or parameter appears anywhere in the AS path or if the sequence of integers and parameters appears. |
+| **unique-length** | Performs specific checks based on the length of the AS path ignoring duplicates |
+
+
 
 # Verification
 
