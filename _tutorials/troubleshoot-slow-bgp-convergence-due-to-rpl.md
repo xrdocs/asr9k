@@ -147,9 +147,9 @@ RP/0/RSP1/CPU0:XR1#clear pcl protocol bgp speaker-0 neighbor-out-dflt default-IP
 
 If you enable debug pcl profile detail, then you get detailed stats per route policy entry.
 
+<div class="highlighter-rouge">
+<pre class="highlight">
 <code>
-<pre>
-<div>
 RP/0/RSP1/CPU0:XR1#debug pcl profile detail
 </code>
 </pre>
@@ -157,9 +157,9 @@ RP/0/RSP1/CPU0:XR1#debug pcl profile detail
 
 These outputs were collected after the full Internet BGP table was receved and propagated further.
 
+<div class="highlighter-rouge">
+<pre class="highlight">
 <code>
-<pre>
-<div>
 RP/0/RSP1/CPU0:XR1#show pcl protocol bgp speaker-0 neighbor-in-dflt default-IPv4-Uni-10.0.54.6 policy profile
 Policy profiling data
 Policy : INGRESS-ROUTE-POLICY
@@ -216,9 +216,9 @@ RP/0/RSP1/CPU0:XR1#
 As you can see, line PXL_0_1 for INGRESS-ROUTE-POLICY and PXL_0_2 for EGRESS-ROUTE-POLICY are especially time consuming and slow the convergence down.  
 If you correlate them with the route policies, then you can see that AS-PATH-SET-11 in INGRESS-ROUTE-POLICY and AS-PATH-SET-22 in EGRESS-ROUTE-POLICY cause the problem. Each AS path set is made of 100 lines which is a pretty inefficient way to write a policy since it does not leverage any possible optimization or the power of regex.
 
+<div class="highlighter-rouge">
+<pre class="highlight">
 <code>
-<pre>
-<div>
 route-policy INGRESS-ROUTE-POLICY
   if as-path in AS-PATH-SET-11 then
     set local-preference 150
@@ -286,9 +286,9 @@ This table lists AS path match criteria offered by Route Policy Language (RPL). 
 
 These are rearranged route policies written with the help of native match criteria. This leads to substantially reduced processing time.
 
+<div class="highlighter-rouge">
+<pre class="highlight">
 <code>
-<pre>
-<div>
 route-policy INGRESS-ROUTE-POLICY
   if as-path in AS-PATH-SET-11 then
     set local-preference 150
@@ -341,9 +341,9 @@ end-set
 
 These outputs are collected after the full Internet BGP table is received and propagated further.
 
+<div class="highlighter-rouge">
+<pre class="highlight">
 <code>
-<pre>
-<div>
 RP/0/RSP1/CPU0:XR1#show pcl protocol bgp speaker-0 neighbor-in-dflt default-IPv4-Uni-10.0.54.6 policy profile
 Policy profiling data
 Policy : INGRESS-ROUTE-POLICY
@@ -408,9 +408,9 @@ RP/0/RSP1/CPU0:XR1#
 
 Alternatively, ios-regex lines could be collapsed. This also helps to improve the performance.
 
+<div class="highlighter-rouge">
+<pre class="highlight">
 <code>
-<pre>
-<div>
 route-policy INGRESS-ROUTE-POLICY
   if as-path in (ios-regex '^(65101_65201|65102_65202|65103_65203|65104_65204|65105_65205|65106_65206|65107_65207|65108_65208|65109_65209|65110_65210)') then
     set local-preference 150
@@ -516,9 +516,9 @@ end-policy
 
 These outputs were collected after the full Internet BGP table is received and propagated further.
 
+<div class="highlighter-rouge">
+<pre class="highlight">
 <code>
-<pre>
-<div>
 RP/0/RSP1/CPU0:XR1#show pcl protocol bgp speaker-0 neighbor-in-dflt default-IPv4-Uni-10.0.54.6 policy profile
 Policy profiling data
 Policy : INGRESS-ROUTE-POLICY
