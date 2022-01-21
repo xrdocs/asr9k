@@ -556,21 +556,30 @@ Drop : 0
 
 Node Id   Num visited      Exec time  Policy engine operation
 --------------------------------------------------------------------------------
-PXL_0_1        720110       2958msec  if as-path aspath-match ... then
-                                       &lt;truePath>
-PXL_0_2             0          0msec    set med 70
-PXL_0_3        720110       5222msec    if as-path aspath-match ... then
-                                         &lt;truePath>
-PXL_0_4             3          0msec      set med 80
-PXL_0_5        720110       4979msec      if as-path aspath-match ... then
-                                           &lt;truePath>
-PXL_0_6                                     set med 80
---- removed lines ---
-GOTO :                                   PXL_0_3
-                                        &lt;/reference&gt;
-                                       &lt;/falsePath&gt;
-
-
+PXL_0_1        720126        190msec  if as-path is-local then
+                                       <truePath>
+PXL_0_7             0          0msec    set med 70
+                    0          0msec    <end-policy/>
+                                       </truePath>
+                                       <falsePath>
+PXL_0_2        720126      11190msec    if as-path aspath-match ... then
+                                         <truePath>
+PXL_0_4        262734         65msec      if as-path unique-length is 1 then
+                                           <truePath>
+PXL_0_5            25          0msec        set med 80
+                   25          0msec        <end-policy/>
+                                           </truePath>
+                                           <falsePath>
+PXL_0_6        720101        164msec        set med 90
+               720101         57msec        <end-policy/>
+                                           </falsePath>
+                                         </truePath>
+                                         <falsePath>
+                                          <reference>
+GOTO :                                     PXL_0_6
+                                          </reference>
+                                         </falsePath>
+                                       </falsePath>
 RP/0/RSP1/CPU0:XR1#
 </code>
 </pre>
