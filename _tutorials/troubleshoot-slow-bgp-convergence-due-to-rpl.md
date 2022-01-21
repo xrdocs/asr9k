@@ -135,9 +135,10 @@ RP/0/RSP1/CPU0:XR1#
 </div>
 
 You can clear stats as needed:
+
+<div class="highlighter-rouge">
+<pre class="highlight">
 <code>
-<pre>
-<div>
 RP/0/RSP1/CPU0:XR1#clear pcl protocol bgp speaker-0 neighbor-in-dflt default-IPv4-Uni-10.0.54.6 policy profile
 RP/0/RSP1/CPU0:XR1#clear pcl protocol bgp speaker-0 neighbor-out-dflt default-IPv4-Uni-UpdGrp-0.3-Out policy profile
 </code>
