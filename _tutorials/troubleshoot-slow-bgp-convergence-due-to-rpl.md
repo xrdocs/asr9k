@@ -580,3 +580,7 @@ RP/0/RSP1/CPU0:XR1#
 
 The performance of a route policy can significantly improve with native as-path match operation or collapsed regular expression patterns.
 
+# Acknowledgements
+
+I would like to thank Serge Krier for the initial creation of this article.
+
