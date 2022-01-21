@@ -536,10 +536,10 @@ Drop : 0
 Node Id   Num visited      Exec time  Policy engine operation
 --------------------------------------------------------------------------------
 PXL_0_1        720100       4434msec  if as-path aspath-match ... then
-                                       &lt;truePath>
+                                       &lt;truePath&gt;
 PXL_0_2           361          0msec    set local-preference 150
 PXL_0_3        720100       3039msec    if as-path aspath-match ... then
-                                         &lt;truePath>
+                                         &lt;truePath&gt;
 --- removed lines ---
 GOTO :                                   PXL_0_3
                                         &lt;/reference&gt;
