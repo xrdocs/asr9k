@@ -557,29 +557,29 @@ Drop : 0
 Node Id   Num visited      Exec time  Policy engine operation
 --------------------------------------------------------------------------------
 PXL_0_1        720126        190msec  if as-path is-local then
-                                       <truePath>
+                                       &lt;truePath&gt;
 PXL_0_7             0          0msec    set med 70
-                    0          0msec    <end-policy/>
-                                       </truePath>
-                                       <falsePath>
+                    0          0msec    &lt;end-policy/&gt;
+                                       &lt;/truePath&gt;
+                                       &lt;falsePath&gt;
 PXL_0_2        720126      11190msec    if as-path aspath-match ... then
-                                         <truePath>
+                                         &lt;truePath&gt;
 PXL_0_4        262734         65msec      if as-path unique-length is 1 then
-                                           <truePath>
+                                           &lt;truePath&gt;
 PXL_0_5            25          0msec        set med 80
-                   25          0msec        <end-policy/>
-                                           </truePath>
-                                           <falsePath>
+                   25          0msec        &lt;end-policy/&gt;
+                                           &lt;/truePath&gt;
+                                           &lt;falsePath&gt;
 PXL_0_6        720101        164msec        set med 90
-               720101         57msec        <end-policy/>
-                                           </falsePath>
-                                         </truePath>
-                                         <falsePath>
-                                          <reference>
+               720101         57msec        &lt;end-policy/&gt;
+                                           &lt;/falsePath&gt;
+                                         &lt;/truePath&gt;
+                                         &lt;falsePath&gt;
+                                          &lt;reference&gt;
 GOTO :                                     PXL_0_6
-                                          </reference>
-                                         </falsePath>
-                                       </falsePath>
+                                          &lt;/reference&gt;
+                                         &lt;/falsePath&gt;
+                                       &lt;/falsePath&gt;
 RP/0/RSP1/CPU0:XR1#
 </code>
 </pre>
