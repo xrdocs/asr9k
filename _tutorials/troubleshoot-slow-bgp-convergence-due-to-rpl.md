@@ -170,7 +170,7 @@ Drop : 0
 
 Node Id   Num visited      Exec time  Policy engine operation
 --------------------------------------------------------------------------------
-<mark>PXL_0_1        720100     221796msec  if as-path aspath-match ... then  !!!!  </mark>
+PXL_0_1        720100     <mark>221796msec</mark>  if as-path aspath-match ... then
                                        <truePath>
 PXL_0_3          3525          3msec    set local-preference 150
                  3525          0msec    <end-policy/>
@@ -197,7 +197,7 @@ PXL_0_5             0          0msec    set med 70
                     0          0msec    <end-policy/>
                                        </truePath>
                                        <falsePath>
-<mark>PXL_0_2        720105     218008msec    if as-path aspath-match ... then !!!!   </mark>
+PXL_0_2        720105     <mark>218008msec</mark>    if as-path aspath-match ... then
                                          <truePath>
 PXL_0_3            25          0msec      set med 80
                    25          0msec      <end-policy/>
