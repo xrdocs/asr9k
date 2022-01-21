@@ -72,26 +72,6 @@ Pass : 726751
 Drop : 0
 # of executions : 726751
 Total execution time : 108099msec
-RP/0/RSP1/CPU0:XR1#RP/0/RSP1/CPU0:XR1#show pcl protocol bgp speaker-0 neighbor-in-dflt default-IPv4-Uni-10.0.54.6 policy profile
-Policy profiling data
-Policy : INGRESS-ROUTE-POLICY
-Pass : 1440233
-Drop : 0
-# of executions : 1440233
-<mark>Total execution time : 57095msec</mark>
-
-RP/0/RSP1/CPU0:XR1#show bgp ipv4 unicast neighbors 10.0.54.11 | i Update group
-Update group: 0.3 Filter-group: 0.5 No Refresh request being processed
-RP/0/RSP1/CPU0:XR1#
-
-RP/0/RSP1/CPU0:XR1#show pcl protocol bgp speaker-0 neighbor-out-dflt default-IPv4-Uni-UpdGrp-0.3-Out policy profile
-Policy profiling data
-Policy : EGRESS-ROUTE-POLICY
-Pass : 726751
-Drop : 0
-# of executions : 726751
-<mark>Total execution time : 108099msec</mark>
-RP/0/RSP1/CPU0:XR1#
 </code>
 </pre>
 </div>
