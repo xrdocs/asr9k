@@ -22,7 +22,8 @@ This document describes how to diagnose slow BGP convergence issue on Cisco IOSÂ
 
 BGP Convergence time consists of a number of factors. One of them is the time to process ingress or egress BGP updates by configured route policies. There are multiple ways to write a route policy to do a specific task. An optimal way helps to improve BGP convergence, minimize potential traffic drops, and avoid temporary routing loops. Cisco IOSÂ® XR includes a profiling tool which measures time spent by specific route policy in order to estimate its processing time.
 
-Tests were realized in October 2021 using IOS-XR 6.7.3. Hardware used was ASR 9000. Actual performance depends on multiple factors (size of route policy, regular expression pattern, amount of prefixes which go through route policy).
+Tests were realized in October 2021 using IOS-XR 6.7.3. Hardware used was ASR 9000. 
+Actual performance depends on multiple factors (size and way of writing of a route policy, regular expression patterns, amount of prefixes which go through the route policy, etc.)
 {: .notice--warning}
 
 # Problem
