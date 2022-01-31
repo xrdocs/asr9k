@@ -155,7 +155,7 @@ RP/0/RSP1/CPU0:XR1#debug pcl profile detail
 </pre>
 </div>
 
-These outputs were collected after the full Internet BGP table was receved and propagated further.
+These outputs were collected after the full Internet BGP table scale was received and propagated further.
 
 <div class="highlighter-rouge">
 <pre class="highlight">
@@ -345,7 +345,7 @@ end-set
 </pre>
 </div>
 
-These outputs are collected after the full Internet BGP table is received and propagated further.
+These outputs are collected after the full Internet BGP table scale is received and propagated further.
 
 <div class="highlighter-rouge">
 <pre class="highlight">
@@ -520,7 +520,7 @@ end-policy
 </pre>
 </div>
 
-These outputs were collected after the full Internet BGP table is received and propagated further.
+These outputs were collected after the full Internet BGP table scale is received and propagated further.
 
 <div class="highlighter-rouge">
 <pre class="highlight">
