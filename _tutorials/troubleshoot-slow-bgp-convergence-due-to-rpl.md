@@ -171,14 +171,14 @@ Drop : 0
 Node Id   Num visited      Exec time  Policy engine operation
 --------------------------------------------------------------------------------
 PXL_0_1        720100     <mark>221796msec</mark>  if as-path aspath-match ... then
-                                       <truePath>
+                                       &lt;truePath&gt;
 PXL_0_3          3525          3msec    set local-preference 150
-                 3525          0msec    <end-policy/>
-                                       </truePath>
-                                       <falsePath>
+                 3525          0msec    &lt;end-policy/&gt;
+                                       &lt;/truePath&gt;
+                                       &lt;falsePath&gt;
 PXL_0_2        716575        225msec    set local-preference 50
-               716575         82msec    <end-policy/>
-                                       </falsePath>
+               716575         82msec    &lt;end-policy/&gt;
+                                       &lt;/falsePath&gt;
 
 
 RP/0/RSP1/CPU0:XR1#show pcl protocol bgp speaker-0 neighbor-out-dflt default-IPv4-Uni-UpdGrp-0.3-Out policy profile
@@ -192,21 +192,21 @@ Drop : 0
 Node Id   Num visited      Exec time  Policy engine operation
 --------------------------------------------------------------------------------
 PXL_0_1        720105       3005msec  if as-path aspath-match ... then
-                                       <truePath>
+                                       &lt;truePath&gt;
 PXL_0_5             0          0msec    set med 70
-                    0          0msec    <end-policy/>
-                                       </truePath>
-                                       <falsePath>
+                    0          0msec    &lt;end-policy/&gt;
+                                       &lt;/truePath&gt;
+                                       &lt;falsePath&gt;
 PXL_0_2        720105     <mark>218008msec</mark>    if as-path aspath-match ... then
-                                         <truePath>
+                                         &lt;truePath&gt;
 PXL_0_3            25          0msec      set med 80
-                   25          0msec      <end-policy/>
-                                         </truePath>
-                                         <falsePath>
+                   25          0msec      &lt;end-policy/&gt;
+                                         &lt;/truePath&gt;
+                                         &lt;falsePath&gt;
 PXL_0_4        720080        145msec      set med 90
-               720080         76msec      <end-policy/>
-                                         </falsePath>
-                                       </falsePath>
+               720080         76msec      &lt;end-policy/&gt;
+                                         &lt;/falsePath&gt;
+                                       &lt;/falsePath&gt;
 
 RP/0/RSP1/CPU0:XR1# 
 </code>
@@ -214,7 +214,7 @@ RP/0/RSP1/CPU0:XR1#
 </div>
 
 As you can see, line PXL_0_1 for INGRESS-ROUTE-POLICY and PXL_0_2 for EGRESS-ROUTE-POLICY are especially time consuming and slow the convergence down.  
-If you correlate them with the route policies, then you can see that AS-PATH-SET-11 in INGRESS-ROUTE-POLICY and AS-PATH-SET-22 in EGRESS-ROUTE-POLICY cause the problem. Each AS path set is made of 100 lines which is a pretty inefficient way to write a policy since it does not leverage any possible optimization or the power of regex.
+If you correlate them with the route policies, then you can see that AS-PATH-SET-11 in INGRESS-ROUTE-POLICY and AS-PATH-SET-22 in EGRESS-ROUTE-POLICY cause the problem. Each AS path set is made of 100 regular expression lines which is a pretty inefficient way to write a policy since it does not leverage any possible optimization or the power of regex.
 
 <div class="highlighter-rouge">
 <pre class="highlight">
@@ -274,7 +274,7 @@ end-set
 </pre>
 </div>
 
-In order to improve policy performance, you can evaluate configuration of AS Path sets with native as-path match operation instead of regular expression. Alternatively, you can use regular expressions inside route policies in a collapsed manner and hence reduce the number of regular expressions used.  
+In order to improve policy performance, you can evaluate configuration of AS Path sets with native as-path match operation instead of regular expression. Alternatively, you can use regular expressions inside route policies in a collapsed manner hence reduce the number of regular expression lines used.  
 This table lists AS path match criteria offered by Route Policy Language (RPL). The native matching functions use a binary matching algorithm which offers better performance compared to the regular expression match engine. Most of the common ios-regex match scenarios could be written with them (or their combinations).
 
 | Command Syntax | Description |
@@ -361,14 +361,14 @@ Drop : 0
 Node Id   Num visited      Exec time  Policy engine operation
 --------------------------------------------------------------------------------
 PXL_0_1        720100       8540msec  if as-path aspath-match ... then
-                                       <truePath>
+                                       &lt;truePath&gt;
 PXL_0_3          7128          2msec    set local-preference 150
-                 7128          1msec    <end-policy/>
-                                       </truePath>
-                                       <falsePath>
+                 7128          1msec    &lt;end-policy/&gt;
+                                       &lt;/truePath&gt;
+                                       &lt;falsePath&gt;
 PXL_0_2        712972        276msec    set local-preference 50
-               712972         80msec    <end-policy/>
-                                       </falsePath>
+               712972         80msec    &lt;end-policy/&gt;
+                                       &lt;/falsePath&gt;
 
 
 RP/0/RSP1/CPU0:XR1#show pcl protocol bgp speaker-0 neighbor-out-dflt default-IPv4-Uni-UpdGrp-0.3-Out policy profile
@@ -382,29 +382,29 @@ Drop : 0
 Node Id   Num visited      Exec time  Policy engine operation
 --------------------------------------------------------------------------------
 PXL_0_1        720126        190msec  if as-path is-local then
-                                       <truePath>
+                                       &lt;truePath&gt;
 PXL_0_7             0          0msec    set med 70
-                    0          0msec    <end-policy/>
-                                       </truePath>
-                                       <falsePath>
+                    0          0msec    &lt;end-policy/&gt;
+                                       &lt;/truePath&gt;
+                                       &lt;falsePath&gt;
 PXL_0_2        720126      11190msec    if as-path aspath-match ... then
-                                         <truePath>
+                                         &lt;truePath&gt;
 PXL_0_4        262734         65msec      if as-path unique-length is 1 then
-                                           <truePath>
+                                           &lt;truePath&gt;
 PXL_0_5            25          0msec        set med 80
-                   25          0msec        <end-policy/>
-                                           </truePath>
-                                           <falsePath>
+                   25          0msec        &lt;end-policy/&gt;
+                                           &lt;/truePath&gt;
+                                           &lt;falsePath&gt;
 PXL_0_6        720101        164msec        set med 90
-               720101         57msec        <end-policy/>
-                                           </falsePath>
-                                         </truePath>
-                                         <falsePath>
-                                          <reference>
+               720101         57msec        &lt;end-policy/&gt;
+                                           &lt;/falsePath&gt;
+                                         &lt;/truePath&gt;
+                                         &lt;falsePath&gt;
+                                          &lt;reference&gt;
 GOTO :                                     PXL_0_6
-                                          </reference>
-                                         </falsePath>
-                                       </falsePath>
+                                          &lt;/reference&gt;
+                                         &lt;/falsePath&gt;
+                                       &lt;/falsePath&gt;
 
 
 RP/0/RSP1/CPU0:XR1# 
@@ -556,29 +556,18 @@ Drop : 0
 
 Node Id   Num visited      Exec time  Policy engine operation
 --------------------------------------------------------------------------------
-PXL_0_1        720126        190msec  if as-path is-local then
+PXL_0_1        720110       2958msec  if as-path aspath-match ... then
                                        &lt;truePath&gt;
-PXL_0_7             0          0msec    set med 70
-                    0          0msec    &lt;end-policy/&gt;
-                                       &lt;/truePath&gt;
-                                       &lt;falsePath&gt;
-PXL_0_2        720126      11190msec    if as-path aspath-match ... then
+PXL_0_2             0          0msec    set med 70
+PXL_0_3        720110       5222msec    if as-path aspath-match ... then
                                          &lt;truePath&gt;
-PXL_0_4        262734         65msec      if as-path unique-length is 1 then
+PXL_0_4             3          0msec      set med 80
+PXL_0_5        720110       4979msec      if as-path aspath-match ... then
                                            &lt;truePath&gt;
-PXL_0_5            25          0msec        set med 80
-                   25          0msec        &lt;end-policy/&gt;
-                                           &lt;/truePath&gt;
-                                           &lt;falsePath&gt;
-PXL_0_6        720101        164msec        set med 90
-               720101         57msec        &lt;end-policy/&gt;
-                                           &lt;/falsePath&gt;
-                                         &lt;/truePath&gt;
-                                         &lt;falsePath&gt;
-                                          &lt;reference&gt;
-GOTO :                                     PXL_0_6
-                                          &lt;/reference&gt;
-                                         &lt;/falsePath&gt;
+PXL_0_6                                     set med 80
+--- removed lines ---
+GOTO :                                   PXL_0_3
+                                        &lt;/reference&gt;
                                        &lt;/falsePath&gt;
 RP/0/RSP1/CPU0:XR1#
 </code>
@@ -587,9 +576,8 @@ RP/0/RSP1/CPU0:XR1#
 
 # Conclusion
 
-The performance of a route policy can significantly improve with native as-path match operation or collapsed regular expression patterns.
+The performance of a route policy can be improved with native as-path match or collapsed regular expression patterns.
 
 # Acknowledgements
 
-I would like to thank Serge Krier for the initial creation of this article.
-
+I would like to thank Serge Krier for the original creation of this article.
