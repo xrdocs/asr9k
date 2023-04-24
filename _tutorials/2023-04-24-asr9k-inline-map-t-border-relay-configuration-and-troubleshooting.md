@@ -17,6 +17,17 @@ ASR9k supports Border Relay MAP-T function (explained in RFC 7599) without the n
 Each MAP-T instance creates a Policy Based Routing rule which steers the traffic from ingress service-inline interface to the CGv6 application which removes the need for ISM/VSM service module. 
 This Tutorial will provide step by step configuration and Trobleshooting approach to enable this feature and verify it is working correctly.
 
+
+
+
+##  Scenario
+
+In the current Example we will consider the following scenario:
+
+BLA-BLA-BLA
+
+
+
 ## Configuration
 In general to configure a MAP-T without service cards, one needs to perform the steps below.
 
@@ -46,7 +57,7 @@ Within this tutorial we will focus on the following configuration and explain it
          sharing-ratio 256
          contiguous-ports 8
          cpe-domain-name cpe1 ipv4-prefix 166.1.32.0 ipv6-prefix 2701:d01:3344::
-         ext-domain-name ext1 ipv6-prefix 3601:d01:3344:5566::/64 ipv4-vrf default
+         ext-domain-name ext1 ipv6-prefix 3601:d01:3344:5566::/64 ipv4-vrf VRF1
 
 
 Lets verify this configuration in more details:
@@ -80,7 +91,20 @@ on CGN config. In our example 4th generation Tomahawk Line Card is used:
 **contiguous-ports 8**
 
 5. Finally we configure the translation rules:
-- IPv4 to IPv6 rules are defined by the cpe-domain config and will be using the IPv6 VRF defined above:
+- IPv4 to IPv6 rules are defined by the cpe-domain config and after translation traffic will go out of the IPv6 VRF defined above. In particular example, traffic destined from 166.1.32.0/24 subnet will be translated to 2701:d01:3344::/64 subnet and send out VRF default (as configured in our example) based on the routing rule (see step 6 below):
+
+**cpe-domain-name cpe1 ipv4-prefix 166.1.32.0 ipv6-prefix 2701:d01:3344::**
+
+- IPv6 to IPv4 rules are defined based on ext-domain config. CGN will automatically derive corresponding IPv4 address from the Source and Destination addresses based on the calculation. In below example traffic towards 3601:d01:3344:5566::/64 will find the portion of IP represnting the IPv4 host and route traffic to it based on the routing rule in VRF1:
+
+**ext-domain-name ext1 ipv6-prefix 3601:d01:3344:5566::/64 ipv4-vrf VRF1**
+
+
+6. Make sure you have Routing Entry and Adjacency for the translated addresses:
+
+
+BLA-BLA-BLA
+
 
 
 
