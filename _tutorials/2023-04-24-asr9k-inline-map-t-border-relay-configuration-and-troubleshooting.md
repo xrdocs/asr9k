@@ -106,12 +106,48 @@ on CGN config. In our example 4th generation Tomahawk Line Card is used:
 BLA-BLA-BLA
 
 
+## Troubleshooting
+
+- NP counters "show controller np counter <NPid> loc <LC>":
+  
+1. PBR intercept packets based on destination IP address, however we are also going to translate source. Thus if your source is not matching the configured entry you may see the following drops
+  
+  541  MDF_OPEN_NETWORK_SERVICE_PICK UNKNOWN ACTION             874220815       34715
+  
+One example can be in IPv6 to IPv4 translation Source address being 2701:D01:3344:4517:0:A601:2045:17 and cpe-domain rule:
+cpe-domain-name cpe1 ipv4-prefix 166.1.32.0 ipv6-prefix **2701:d01:3344:4517::**
+  
+As we have configured IPv6 prefix length as /64 than cpe-domain address not matching the packet source: 
+  2701:d01:3344:4517:: = 2701:d01:3344:4517:**0**::/64  VS 2701:D01:3344:**4517**::/64
+  
+
+- We can capture the packet on egress to verofy the translation:
+  
+  RP/0/RSP0/CPU0:ASR-9010-C#monitor np counter MDF_TX_WIRE.1 np0 loc 0/6/CPU0
+Tue Apr 25 20:43:17.518 UTC
+
+Usage of NP monitor is recommended for cisco internal use only.
+Please use instead 'show controllers np capture' for troubleshooting packet drops in NP
+and 'monitor np interface' for per (sub)interface counter monitoring
+
+Warning: Every packet captured will be dropped! If you use the 'count'
+         option to capture multiple protocol packets, this could disrupt
+         protocol sessions (eg, OSPF session flap). So if capturing protocol
+         packets, capture only 1 at a time.
 
 
+Warning: A mandatory NP reset will be done after monitor to clean up.
+         This will cause ~150ms traffic outage. Links will stay Up.
+ Proceed y/n [y] > y
+ Monitor MDF_TX_WIRE.1 on NP0 ... (Ctrl-C to quit)
 
+Tue Apr 25 20:43:20 2023 -- NP0 packet
 
-
-
-
-
-
+ From Fabric: 88 byte packet
+0000: ac bc d9 3e 22 22 ac bc d9 3e 71 30 86 dd 60 00   ,<Y>"",<Y>q0.]`.
+0010: 00 00 00 22 2c 3f 36 01 0d 01 33 44 55 66 00 08   ...",?6...3DUf..
+0020: 08 08 08 00 00 00 27 01 0d 01 33 44 45 17 00 00   ......'...3DE...
+0030: a6 01 20 01 00 00 11 00 00 00 00 00 00 00 08 4b   &. ............K
+0040: 09 11 00 1a 57 f0 00 01 02 03 04 05 06 07 08 09   ....Wp..........
+0050: 0a 0b 0c 0d 0e 0f 10 11                           ........
+  
