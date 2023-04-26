@@ -103,7 +103,7 @@ on CGN config. In our example 4th generation Tomahawk Line Card is used:
 6. Make sure you have Routing Entry and Adjacency for the translated addresses:
 
 
-BLA-BLA-BLA
+In our Scenario IPv6 to IPv4 flow Destination address will translate from 
 
 
 ## Troubleshooting
