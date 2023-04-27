@@ -236,7 +236,6 @@ We can see three classes created (1 for each domain rule plus default class for 
 
 
 3. Information from the policy-map is used further to program corresponding rules in the Hardware:
-
 **Summary:**
 
 
@@ -249,8 +248,7 @@ We can see three classes created (1 for each domain rule plus default class for 
 	 vmr id for NP0     : 3
 	 interface count    : 2
 	 interface list     : Te0/6/0/0/0 Te0/6/0/0/1
-     
-     
+        
 **Details:**
 
 
@@ -304,7 +302,7 @@ We can see three classes created (1 for each domain rule plus default class for 
 	  result                 : 11000050 8dc60000 00000000 00000000 00000000 00000000 00000000 00000000
 
 
-Make sure, that both IPv4 and IPv6 addresses are listed in corresponding VMRs. If not then verify if step (1) info above is correct and all interfaces are programmed for the Line Card (see Summary CLI above). Removing and re-applying service instance configuration can be helpful as well once all errors are fixed.
+Make sure, that both IPv4 and IPv6 addresses are listed in corresponding VMRs. If not then verify if step (1) info above is correct and all interfaces are programmed for the Line Card (verify the "interface list" above). Removing and re-applying service instance configuration can be helpful as well once all errors are fixed.
 
 {:start="4"}
 4. Once traffic has started we can see counters in the corresponding classes (you can match the iclass id with the corresponding policy-map class to find the translation direction):
