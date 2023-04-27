@@ -158,17 +158,39 @@ the subject for applying the MAP-T rules. In our example 4th generation Tomahawk
 **ext-domain-name ext1 ipv6-prefix 3601:d01:3344::/48 ipv4-vrf default**
 
 
-6. Make sure you have Routing Entry and Adjacency for the translated addresses:
+6. Make sure you have Routing Entry and Adjacency for the translated addresses (otherwise traffic will be lost after translation):
 
 
-In our Scenario IPv6 to IPv4 flow Destination address will translate from 
+		"show cef 8.8.8.8"
+        
+		8.8.8.0/24, version 134, internal 0x1000001 0x0 (ptr 0x721fc418) [1], 0x0 (0x721bd668), 0xa20 (0x726cd688)
+		 Updated Apr 27 15:08:18.684
+		 remote adjacency to TenGigE0/6/0/0/1
+		 Prefix Len 24, traffic index 0, precedence n/a, priority 3
+		   via 192.168.1.2/32, TenGigE0/6/0/0/1, 4 dependencies, weight 0, class 0 [flags 0x0]
+		    path-idx 0 NHID 0x0 [0x72a6bb08 0x0]
+		    next hop 192.168.1.2/32
+ 		   remote adjacency
+		     local label 24028      labels imposed {None}
+
+
+		"show cef ipv6 2701:d01:3344::"
+
+		2701:d01:3344::/64, version 10, internal 0x1000001 0x0 (ptr 0x724f27ac) [1], 0x0 (0x724bd9f0), 0x0 (0x0)
+		 Updated Apr 27 14:47:31.296
+		 remote adjacency to TenGigE0/6/0/0/0
+		 Prefix Len 64, traffic index 0, precedence n/a, priority 3
+		   via a::2/128, TenGigE0/6/0/0/0, 4 dependencies, weight 0, class 0 [flags 0x0]
+		    path-idx 0 NHID 0x0 [0x7344d0c8 0x0]
+		    next hop a::2/128
+		    remote adjacency
 
 
 ## Troubleshooting
 
 ### PBR
 
-1. Verifying MAP-T we first need to make sure that corresponding PBR policies have been applied correctly. First we will check policy-map created for it:
+1. Verifying MAP-T we first need to make sure that corresponding PBR policies have been applied correctly. First we will check the policy-map created for it automatically:
 
 	   "show policy-map transient type pbr"
        
@@ -190,7 +212,7 @@ In our Scenario IPv6 to IPv4 flow Destination address will translate from
 We can see three classes created (1 for each domain rule plus default class for non-matching traffic): 0x78000003 for IPv4 to IPv6 translation, 0x78000004 for for IPv6 to IPv4 translation and default class 0xf8000002. Missing any of the classes or not seeing proper IP addresses associated with those would mean that configuration did no apply correctly. One recomendation would be to try removing configuration for the whole instance and applying it back. 
 
 
-2. Before we check the PBR programming we need to make sure that corresponding Null0 routes have been created for traffic Destination Addresses to be translated. That is done for PBR to be able to intercept this traffic to send further for translation. As we see from policy-map output above we need to have Null0 for prefixes 166.1.32.0/24 and 3601:d01:3344::/48:
+2. Before we check the PBR programming we need to make sure that corresponding Null0 routes have been created for traffic Destination Addresses to be translated. That is done for PBR to be able to intercept this traffic to send further for translation. As we see from policy-map output above we need to have Null0 for prefixes 166.1.32.0/24 and 3601:d01:3344::/48. This routing entrees will be created automatically by the system:
 
 		"show route 166.1.32.0/24"
 
@@ -201,6 +223,7 @@ We can see three classes created (1 for each domain rule plus default class for 
 		    directly connected, via Null0
 		      Route metric is 0
 		  No advertising protos.
+          
           
 		"show route ipv6 3601:d01:3344::/48"
 
@@ -213,9 +236,9 @@ We can see three classes created (1 for each domain rule plus default class for 
 		  No advertising protos.
 
 
-3. Information from the policy-map is used further to program corresponding rules in Hardware:
+3. Information from the policy-map is used further to program corresponding rules in the Hardware:
 
-Summary:
+**Summary:**
 
 
 	"show pbr-pal ipolicy CGN_0 detail location 0/6/CPU0"
@@ -229,7 +252,7 @@ Summary:
 	 interface list     : Te0/6/0/0/0 Te0/6/0/0/1
      
      
-Details:
+**Details:**
 
 
 	"show pbr-pal ipolicy CGN_0 iclass all vmr location 0/6/CPU0"
@@ -282,9 +305,9 @@ Details:
 	  result                 : 11000050 8dc60000 00000000 00000000 00000000 00000000 00000000 00000000
 
 
-Make sure, that both IPv4 and IPv6 addresses are listed in corresponding VMR. If not then verify if step (1) info above is correct and all interfaces are programmed for the Line Card (see Summary section above). Removing and re-applying service instance configuration can be helpful as well once all errors are fixed.
+Make sure, that both IPv4 and IPv6 addresses are listed in corresponding VMRs. If not then verify if step (1) info above is correct and all interfaces are programmed for the Line Card (see Summary CLI above). Removing and re-applying service instance configuration can be helpful as well once all errors are fixed.
 
-Once traffic has started we can see counters in the corresponding classes (you can match the iclass with the corresponding policy-map class to find the translation direction):
+4. Once traffic has started we can see counters in the corresponding classes (you can match the iclass id with the corresponding policy-map class to find the translation direction):
 
 	"show pbr-pal ipolicy CGN_0 iclass all stats loc 0/6/CPU0"
 
@@ -300,7 +323,7 @@ Seeing the counters in the corresponding classes means that PBR properly interce
 
 ### Translation
 
-Once traffic hit the correct PBR class it is being sent for translation where system will do its magic to transform the Source/Destination IP addresses and ports into the new address. See the "Border Router Address Translation" section above for the details. We can verify the translation counters using the counters below:
+Once traffic hit the correct PBR class it is being sent for translation where system will do its magic to transform the Source/Destination IP addresses and ports into the new addresses. See the "Border Router Address Translation" section above for the details. We can verify the translation counters using the counters below:
 
 
     	"show cgv6 map-t-cisco MAPT-1 statistics"
@@ -425,8 +448,8 @@ Once traffic hit the correct PBR class it is being sent for translation where sy
     	IPv4 ICMP Messages generated count: 0
     	IPv6 ICMP Messages generated count: 0
 
-Normally "Translated <> Count" is incrementing when everything is good. Other specific counters will increment during the problem. 
-E.G. if the traffic port is not matching the programmed port in IPv6 to IPv4 translation (recall we programming PSID into the IPv6 address):
+Normally "Translated <> Count" is incrementing when everything is good. Other specific counters will increment in case of a problem. 
+E.G. if the traffic port is not matching the programmed port in IPv6 to IPv4 translation (as PSID is programmed into the IPv6 address):
 
 	Map-t-cisco exception IPv6 to IPv4 counters:
 	======================================
@@ -475,49 +498,50 @@ Following counters will increment during the normal work of the MAP-T translatio
 Counters 17, 21, 33, 45 and 53 are general platform counters for traffic passing through Wire, Fabric, etc.
 Other counters are specific to PBR and Translation operations so you can match those against the rate of traffic sent in each direction.
 
-E.G. I send 200k pps IPv6 to IPv4 and 100k pps for IPv4 to IPv6 which match the corresponding counters rate:
+E.G. I send 200k pps of IPv6 to IPv4 flow and 100k pps of IPv4 to IPv6f flow which match the corresponding counters rate:
 
     	 678  VIRTUAL_IF_PROTO_IPV4_UCST_INPUT_CNT                     227572818      205272
     	 679  VIRTUAL_IF_PROTO_IPV6_UCST_INPUT_CNT                      50264145       21080
          
-Some counters may cumulative rate as they cover both translations together. E.G.
+Some counters may show cumulative rate as they cover both translations together. E.G.
 
     	 544  MDF_PIPE_LPBK                                            558238357      620439
     	 552  MDF_OPEN_NETWORK_SERVICE_MODULE_ENTER                    558238405      620439
     	 556  MDF_OPEN_NETWORK_SERVICE_TRGR_FWD_LKUP                   279119214      310220
 
   
--**NP counters during the problem/drop**
+-**NP counters in case of a problem/drop**
 
 1. In the Translation section above I made an example of incorrect port used in the packets not matching the IPv6 address (embeded PSID):
 
 		 560  MDF_OPEN_NETWORK_SERVICE_PSID_IPV6_FAIL                     931002       12354
          
-Seeing this counter verify that the port used on your packets versus the PSID pgrammed in the IPv6 address (see "Border Router Address Translation" above for PSID programming details). E.G. the port on the packet is "12345" and PSID is programmed based on port "2321".
+Seeing this counter identifies that the port used on the packets does not match the PSID programmed in the IPv6 address (see "Border Router Address Translation" above for PSID programming details). E.G. the port on the packet is "12345" and PSID is programmed based on port "2321".
 
-2. In case some problem with PBR programming you can see that traffic is punted to CPU hitting the Null0 route but not intercepted by PBR (missing SERVICE related counters above):
+2. In case of a PBR programming issue the traffic will be punted to CPU hitting the Null0 route but not intercepted by PBR (missing SERVICE related counters above):
 	
 		 946  PUNT_IPV6_ADJ_NULL_RTE                                        3420           2
 		 947  PUNT_IPV6_ADJ_NULL_RTE_EXCD                                2680386        1405
 
-3. In case Translation engine wont be able to define how to translate the prefix following counter will increment:  
+3. If Translation engine wont be able to define how to translate the prefix following counter will increment:  
   
   		 541  MDF_OPEN_NETWORK_SERVICE_PICK_UNKNOWN_ACTION             874220815       34715
 
-E.G. PBR intercept packets based on destination IP address, however we are also going to translate the source. Thus if your that is not matching the configured entry you may see these drops In particular packet destination is 2701:D01:3344:4517:0:A601:2045:17 and cpe-domain rule:
+-One possible scenario for it: 
+PBR intercept packets based on destination IP address. It also going to translate the source address. Thus if that is not matching the configured entry you may see these drops. if packet source is 2701:D01:3344:4517:0:A601:2045:17 and cpe-domain rule:
 cpe-domain-name cpe1 ipv4-prefix 166.1.32.0 ipv6-prefix **2701:d01:3344::**
   
-If we have configured IPv6 prefix length as /64 than cpe-domain address not matching the packet source: 
+As configured IPv6 prefix length is /64 than cpe-domain address not matching the packet source: 
   2701:d01:3344:4517:: = 2701:d01:3344:4517:**0**::/64  VS 2701:D01:3344:**0**::/64
   
-However this is an Umbrella counter which will show up for other reasons as well. Our TAC will be eager to take a look at this, please make sure you collect the following TECHs as well:
+-However this is an Umbrella counter which will show up for other reasons as well. In case of unidentified problem folloiwng TECHs will be required for analysis:
 
 		show tech services cgn
 		show tech pbr
 
-4. It is helpful to verify the packet matching corresponding counter to examine if that is matching the defined rules. In the LAB environment we can capture the packet on egress to verify the translation using the "monitor np counter" tool.
+4. Additionaly it is helpful to capture and examine the packet hitting the corresponding counter. In the LAB environment it can be collected using the "monitor np counter" tool:
 
-**NOTE**: This tool will have to reset the NPU upon the traffic collection completion which can cause ~150msec of traffic loss on this NPU thus its recoomended to use it only in LAB environemnt or during the Maintenance Window.
+**NOTE**: This tool will have to reset the NPU upon the traffic collection completion which can cause ~150msec of traffic loss on this NPU thus its recommended to use it only in the LAB environemnt or during the Maintenance Window.
   
 		"monitor np counter MDF_TX_WIRE.1 np0 loc 0/6/CPU0"
 
@@ -547,8 +571,8 @@ However this is an Umbrella counter which will show up for other reasons as well
 
 
 ## Conclusion
-I hope this tutorial will help in building the Proof of Concept LAB or troubleshooting the real life scenario. It can navigate through the components used and isolate the missing/broken part. 
-Let us know if there any questions.
+I hope this tutorial will be helpful in building the Proof of Concept LAB or troubleshooting the real life scenario. It can navigate through the components used and isolate the missing/broken part. 
+Let us know if there are any questions.
 
 ### Additional Resources:
 MAP-T Configuration guide for ASR9000: https://www.cisco.com/c/en/us/td/docs/routers/asr9000/software/asr9k-r7-7/cgnat/configuration/guide/b-cgnat-cg-asr9k-77x/cgipv6-without-service-modules.html
