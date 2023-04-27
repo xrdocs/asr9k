@@ -1,5 +1,5 @@
 ---
-published: true
+published: false
 date: '2023-04-24 13:32 -0400'
 title: ASR9k Inline MAP-T Border Relay Configuration and Troubleshooting
 tags:
@@ -121,7 +121,9 @@ Within this tutorial we will focus on the following configuration and explain it
 Lets verify this configuration in more details:
 
 1.Anounce the cgv6 service and select the proper name:
+
 **service cgv6 CGV6-MAP-T**
+
 
 2.Traffic coming from the interfaces configured under the service will be
 the subject for applying the MAP-T rules. In our example 4th generation Tomahawk Line Card is used:
@@ -129,15 +131,18 @@ the subject for applying the MAP-T rules. In our example 4th generation Tomahawk
 **service-inline interface TenGigE0/6/0/0/0**
 **service-inline interface TenGigE0/6/0/0/1**
 
+
 3.Next configure the CPE domain to specify corresponding parameters. Please mind the domain name as it will be used in troubleshooting commands:
 
 **service-type map-t-cisco MAPT-1**
+
 
 4.Specify the CPE domain parameters:
 - We can use either default or single non-default VRF for IPv6 traffic. After IPv4 to IPv6 translation, packet will be forwarded to that VRF:
 
 **cpe-domain ipv6 vrf default**
    
+
 - Select the the prefix length both for IPv4 and IPv6. This is needed to define if additional information required for sharing-ratio and contigious-ports which are used in port/IP translation verification (based on RFC 7599 and 7597). If IPv6 prefix length is /64 or /128 and IPv4 length is /32 then sharing-ratio and contiguous-ports will not be considered in the translation and may not to be configured. Sharing-ratio and contiguous port will define k and m values explained above.
 
 **cpe-domain ipv6 prefix length 64**
@@ -148,10 +153,12 @@ the subject for applying the MAP-T rules. In our example 4th generation Tomahawk
 
 **contiguous-ports 8**
 
+
 5.Finally we configure the translation rules:
 - IPv4 to IPv6 rules are defined by the cpe-domain config and after translation traffic will go out of the IPv6 VRF defined above. In particular example, traffic destined to 166.1.32.0/24 subnet will be translated to 2701:d01:3344::/48 subnet and send out VRF default (as configured in our example) based on the routing rule (see step 6 below):
 
 **cpe-domain-name cpe1 ipv4-prefix 166.1.32.0 ipv6-prefix 2701:d01:3344::**
+
 
 - IPv6 to IPv4 rules are defined based on ext-domain config. CGN will automatically derive corresponding IPv4 address from the Source and Destination addresses based on the translation algorythm. In the example below traffic towards 3601:d01:3344::/48 will find the portion of IP represnting the IPv4 host and port and then route it accordingly based on the routing rule in corresponding VRF:
 
