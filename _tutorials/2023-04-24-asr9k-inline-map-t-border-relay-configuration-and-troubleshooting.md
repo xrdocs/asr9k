@@ -1,5 +1,5 @@
 ---
-published: false
+published: true
 date: '2023-04-24 13:32 -0400'
 title: ASR9k Inline MAP-T Border Relay Configuration and Troubleshooting
 tags:
