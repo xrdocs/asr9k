@@ -484,7 +484,7 @@ Following counters will increment during the normal work of the MAP-T translatio
     	  33  PARSE_FAB_RECEIVE_CNT                                    132257832      310079
     	  45  PARSE_ENET_RECEIVE_CNT                                   312065555      310081
     	  53  PARSE_TOP_LOOP_RECEIVE_CNT                               558144612      620162
-          70  RSV_OPEN_NETWORK_SERVICE_TRIGGER_SVC                     279072350      310081
+    	  70  RSV_OPEN_NETWORK_SERVICE_TRIGGER_SVC                     279072350      310081
     	  99  RSV_OPEN_NETWORK_SERVICE_PHASE                           279072439      310081
     	 544  MDF_PIPE_LPBK                                            558238357      620439
     	 552  MDF_OPEN_NETWORK_SERVICE_MODULE_ENTER                    558238405      620439
@@ -493,15 +493,14 @@ Following counters will increment during the normal work of the MAP-T translatio
     	 679  VIRTUAL_IF_PROTO_IPV6_UCST_INPUT_CNT                      50264145       21080
     	2010  PARSE_OPEN_NETWORK_SERVICE_SVC_LKUP                      279123639      312507
         
-Counters 17, 21, 33, 45 and 53 are general platform counters for traffic passing through Wire, Fabric, etc.
-Other counters are specific to PBR and Translation operations so you can match those against the rate of traffic sent in each direction.
-
+* Counters 17, 21, 33, 45 and 53 are general platform counters for traffic passing through Wire, Fabric, etc.
+* Other counters are specific to PBR and Translation operations so you can match those against the rate of traffic sent in each direction.
 E.G. I send 200k pps of IPv6 to IPv4 flow and 100k pps of IPv4 to IPv6f flow which match the corresponding counters rate:
 
     678  VIRTUAL_IF_PROTO_IPV4_UCST_INPUT_CNT                     227572818      205272
     679  VIRTUAL_IF_PROTO_IPV6_UCST_INPUT_CNT                      50264145       21080
          
-Some counters may show cumulative rate as they cover both translations together. E.G.
+* Some counters may show cumulative rate as they cover both translations together. E.G.
 
     544  MDF_PIPE_LPBK                                            558238357      620439
     552  MDF_OPEN_NETWORK_SERVICE_MODULE_ENTER                    558238405      620439
