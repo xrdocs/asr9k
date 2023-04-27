@@ -181,7 +181,7 @@ In our Scenario IPv6 to IPv4 flow Destination address will translate from
 		    class handle:0xf8000002  sequence 4294967295 (class-default)
  		   !
 	    end-policy-map
-```
+
 We can see three classes created (1 for each domain rule plus default class for non-matching traffic): 0x78000003 for IPv4 to IPv6 translation, 0x78000004 for for IPv6 to IPv4 translation and default class 0xf8000002. Missing any of the classes or not seeing proper IP addresses associated with those would mean that configuration did no apply correctly. One recomendation would be to try removing configuration for the whole instance and applying it back. 
 
 
@@ -295,12 +295,53 @@ Seeing the counters in the corresponding classes means that PBR properly interce
 
 ### Translation
 
+Once traffic hit the correct PBR class it is being sent for translation where system will do its magic to transform the Source/Destination IP addresses and ports into the new address. See the "Border Router Address Translation" section above for the details.  
 
 
+### NPU counters
 
-- NP counters "show controller np counter <NPid> loc <LC>":
+1.Normal counters
+Following counters will increment during the normal work of the MAP-T translation:
+
+    	"show controllers np counters np0 loc 0/6/CPU0  | ex "           0""
+    	
+    	Read 53 non-zero NP counters:
+    	Offset  Counter                                               FrameValue   Rate (pps)
+    	-------------------------------------------------------------------------------------
+    	  17  MDF_TX_WIRE                                              132257833      310077
+    	  21  MDF_TX_FABRIC                                            132257175      310077
+    	  33  PARSE_FAB_RECEIVE_CNT                                    132257832      310079
+    	  45  PARSE_ENET_RECEIVE_CNT                                   312065555      310081
+    	  53  PARSE_TOP_LOOP_RECEIVE_CNT                               558144612      620162
+
+          70  RSV_OPEN_NETWORK_SERVICE_TRIGGER_SVC                     279072350      310081
+    	  99  RSV_OPEN_NETWORK_SERVICE_PHASE                           279072439      310081
+    	 544  MDF_PIPE_LPBK                                            558238357      620439
+    	 552  MDF_OPEN_NETWORK_SERVICE_MODULE_ENTER                    558238405      620439
+    	 556  MDF_OPEN_NETWORK_SERVICE_TRGR_FWD_LKUP                   279119214      310220
+    	 678  VIRTUAL_IF_PROTO_IPV4_UCST_INPUT_CNT                     227572818      205272
+    	 679  VIRTUAL_IF_PROTO_IPV6_UCST_INPUT_CNT                      50264145       21080
+
+    	2010  PARSE_OPEN_NETWORK_SERVICE_SVC_LKUP                      279123639      312507
+        
+Counters 17, 21, 33, 45 and 53 are general platform counters for traffic passing through Wire, Fabric, etc.
+Other counters are specific to PBR and Translation operations so you can match those against the rate of traffic sent in each direction.
+
+E.G. I send 200k pps IPv6 to IPv4 and 100k pps for IPv4 to IPv6 which match the corresponding counters rate:
+
+    	 678  VIRTUAL_IF_PROTO_IPV4_UCST_INPUT_CNT                     227572818      205272
+    	 679  VIRTUAL_IF_PROTO_IPV6_UCST_INPUT_CNT                      50264145       21080
+         
+Some counters may cumulative rate as they cover both translations together. E.G.
+
+    	 544  MDF_PIPE_LPBK                                            558238357      620439
+    	 552  MDF_OPEN_NETWORK_SERVICE_MODULE_ENTER                    558238405      620439
+    	 556  MDF_OPEN_NETWORK_SERVICE_TRGR_FWD_LKUP                   279119214      310220
+
   
-1. PBR intercept packets based on destination IP address, however we are also going to translate source. Thus if your source is not matching the configured entry you may see the following drops
+2. NP counters during the problem/drop
+
+PBR intercept packets based on destination IP address, however we are also going to translate source. Thus if your source is not matching the configured entry you may see the following drops
   
   541  MDF_OPEN_NETWORK_SERVICE_PICK UNKNOWN ACTION             874220815       34715
   
