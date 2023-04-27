@@ -61,7 +61,7 @@ We need to define key numbers for Port-Mapping Algorythm (rfc7597). Based on our
 
 
 
-
+{:start="2"}
 2. **Source Address Translation** (8.8.8.8 → 3601:d01:3344):
 This translation is more straightforward and defined by RFC 6052:
 
