@@ -10,6 +10,7 @@ excerpt: >-
   tutorial covers basic configuration and advanced torubleshooting required for
   implementing this feature in CLassic (32-bit) and Evolved (64-bit) XR SW
   versions.
+position: hidden
 ---
 ## Introduction
 
