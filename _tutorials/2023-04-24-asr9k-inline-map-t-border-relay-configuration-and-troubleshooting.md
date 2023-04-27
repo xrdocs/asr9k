@@ -192,7 +192,6 @@ the subject for applying the MAP-T rules. In our example 4th generation Tomahawk
 ### PBR
 
 1. Verifying MAP-T we first need to make sure that corresponding PBR policies have been applied correctly. First we will check the policy-map created for it automatically:
-
 	   "show policy-map transient type pbr"
        
 		policy-map type pbr CGN_0
@@ -209,7 +208,6 @@ the subject for applying the MAP-T rules. In our example 4th generation Tomahawk
 		    class handle:0xf8000002  sequence 4294967295 (class-default)
  		   !
 	    end-policy-map
-
 We can see three classes created (1 for each domain rule plus default class for non-matching traffic): 0x78000003 for IPv4 to IPv6 translation, 0x78000004 for for IPv6 to IPv4 translation and default class 0xf8000002. Missing any of the classes or not seeing proper IP addresses associated with those would mean that configuration did no apply correctly. One recomendation would be to try removing configuration for the whole instance and applying it back. 
 
 
@@ -308,6 +306,7 @@ We can see three classes created (1 for each domain rule plus default class for 
 
 Make sure, that both IPv4 and IPv6 addresses are listed in corresponding VMRs. If not then verify if step (1) info above is correct and all interfaces are programmed for the Line Card (see Summary CLI above). Removing and re-applying service instance configuration can be helpful as well once all errors are fixed.
 
+{:start="4"}
 4. Once traffic has started we can see counters in the corresponding classes (you can match the iclass id with the corresponding policy-map class to find the translation direction):
 
 	"show pbr-pal ipolicy CGN_0 iclass all stats loc 0/6/CPU0"
@@ -511,18 +510,18 @@ Some counters may show cumulative rate as they cover both translations together.
   
 -**NP counters in case of a problem/drop**
 
-1.In the Translation section above I made an example of incorrect port used in the packets not matching the IPv6 address (embeded PSID):
+1. In the Translation section above I made an example of incorrect port used in the packets not matching the IPv6 address (embeded PSID):
 
 		560  MDF_OPEN_NETWORK_SERVICE_PSID_IPV6_FAIL                     931002       12354
          
 Counter identifies that the port used on the packets does not match the PSID programmed in the IPv6 address (see "Border Router Address Translation" above for PSID programming details). E.G. the port on the packet is "12345" and PSID is programmed based on port "2321".
 
-2.In case of a PBR programming issue the traffic will be punted to CPU hitting the Null0 route but not intercepted by PBR (missing SERVICE related counters above):
+2. In case of a PBR programming issue the traffic will be punted to CPU hitting the Null0 route but not intercepted by PBR (missing SERVICE related counters above):
 	
 		 946  PUNT_IPV6_ADJ_NULL_RTE                                        3420           2
 		 947  PUNT_IPV6_ADJ_NULL_RTE_EXCD                                2680386        1405
 
-3.If Translation engine wont be able to define how to translate the prefix following counter will increment:  
+3. If Translation engine wont be able to define how to translate the prefix following counter will increment:  
   
   		 541  MDF_OPEN_NETWORK_SERVICE_PICK_UNKNOWN_ACTION             874220815       34715
 
@@ -542,7 +541,8 @@ As configured IPv6 prefix length is /64 than cpe-domain address not matching the
 		show tech services cgn
 		show tech pbr
 
-4.Additionaly it is helpful to capture and examine the packet hitting the corresponding counter. In the LAB environment it can be collected using the "monitor np counter" tool:
+{:start="4"}
+4. Additionaly it is helpful to capture and examine the packet hitting the corresponding counter. In the LAB environment it can be collected using the "monitor np counter" tool:
 
 _**NOTE**: This tool will have to reset the NPU upon the traffic collection completion which can cause ~150msec of traffic loss on this NPU thus its recommended to use it only in the LAB environemnt or during the Maintenance Window._
   
