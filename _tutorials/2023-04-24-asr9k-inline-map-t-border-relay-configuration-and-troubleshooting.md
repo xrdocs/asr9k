@@ -1,5 +1,5 @@
 ---
-published: false
+published: true
 date: '2023-04-24 13:32 -0400'
 title: ASR9k Inline MAP-T Border Relay Configuration and Troubleshooting
 tags:
@@ -38,7 +38,7 @@ In IPv4→IPv6, destination address and port are translated based on RFC 7599 an
 
 In IPv6→IPv4 translation, Source address and port are translated based on RFC 7597 and RFC 7599 and destination address by RFC 6052. 
 
-Lets examin this based on IPv4 to IPv6 translation (IPv6 to IPv4 similar in reverse direction):
+Lets examine this based on IPv4 to IPv6 translation (IPv6 to IPv4 similar in reverse direction):
 
 1. Destination Address Translation (166.1.32.1 -> 2701:d01:3344::):
 
@@ -158,6 +158,29 @@ In our Scenario IPv6 to IPv4 flow Destination address will translate from
 
 
 ## Troubleshooting
+
+### PBR
+
+Verifying MAP-T we first need to make sure that corresponding PBR policies have been applied correctly. First we will check policy-map created for it:
+
+```
+		policy-map type pbr CGN_0
+			handle:0x38000002
+ 			table description: L3 IPv4 and IPv6
+ 			class handle:0x78000003  sequence 1
+   			  match destination-address ipv4 166.1.32.0 255.255.255.0
+  			 punt service-node type cgn index 1001 app-id 0 local-id 0x1389
+		   !
+			class handle:0x78000004  sequence 1
+			  match destination-address ipv6 3601:d01:3344::/48
+ 			 punt service-node type cgn index 3001 app-id 0 local-id 0x1b59
+		   !
+		    class handle:0xf8000002  sequence 4294967295 (class-default)
+ 		   !
+	    end-policy-map
+        `` / ``
+```
+
 
 - NP counters "show controller np counter <NPid> loc <LC>":
   
