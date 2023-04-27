@@ -147,6 +147,7 @@ the subject for applying the MAP-T rules. In our example 4th generation Tomahawk
 		sharing-ratio 256
 		contiguous-ports 8	
 
+{:start="5"}
 5. Finally we configure the translation rules:
 
 - IPv4 to IPv6 rules are defined by the cpe-domain config and after translation traffic will go out of the IPv6 VRF defined above. In particular example, traffic destined to 166.1.32.0/24 subnet will be translated to 2701:d01:3344::/48 subnet and send out VRF default (as configured in our example) based on the routing rule (see step 6 below):
@@ -157,7 +158,7 @@ the subject for applying the MAP-T rules. In our example 4th generation Tomahawk
 
 		ext-domain-name ext1 ipv6-prefix 3601:d01:3344::/48 ipv4-vrf default
 
-
+{:start="6"}
 6. Make sure you have Routing Entry and Adjacency for the translated addresses (otherwise traffic will be lost after translation):
 
 
