@@ -1,5 +1,5 @@
 ---
-published: true
+published: false
 date: '2023-04-24 13:32 -0400'
 title: ASR9k Inline MAP-T Border Relay Configuration and Troubleshooting
 tags:
@@ -46,6 +46,7 @@ Lets examine this based on IPv4 to IPv6 translation (IPv6 to IPv4 will be simila
 
 We need to define key numbers for Port-Mapping Algorythm (rfc7597). Based on our scenario configuration (see Configuration Section) those will be:
 
+
 | Parameter         | Value     | Calculation |
 |-------------------|-----------|-------------|
 | k                 | 6         | 2^k = 64 (sharing ratio)        |
@@ -57,8 +58,6 @@ We need to define key numbers for Port-Mapping Algorythm (rfc7597). Based on our
 |EA bit|00000001100010|IPv4 Suffix + PSID = 8 + 6 = 14 =>  00000001100010|
 |Subnet|2| 64 - 48 (IPv6 prefix length) - 14 (EA bits) = 2|
 |**IPv6 Address**| **2701:d01:3344:188:0:a601:2001:22**| IPv6 CPE suffix + EA BITS + Subnet  + 16 bit 0's + 32 bit ipv4 address + 16 bit PSID => 2701:d01:3344:**00000001100010** 00:0:a601:2001:**22**|
-
-
 
 
 
@@ -135,7 +134,9 @@ the subject for applying the MAP-T rules. In our example 4th generation Tomahawk
 		service-type map-t-cisco MAPT-1
 
 4. Specify the CPE domain parameters:
+
 - We can use either default or single non-default VRF for IPv6 traffic. After IPv4 to IPv6 translation, packet will be forwarded to that VRF:
+
 
 		cpe-domain ipv6 vrf default
    
@@ -147,6 +148,7 @@ the subject for applying the MAP-T rules. In our example 4th generation Tomahawk
 		contiguous-ports 8	
 
 5. Finally we configure the translation rules:
+
 - IPv4 to IPv6 rules are defined by the cpe-domain config and after translation traffic will go out of the IPv6 VRF defined above. In particular example, traffic destined to 166.1.32.0/24 subnet will be translated to 2701:d01:3344::/48 subnet and send out VRF default (as configured in our example) based on the routing rule (see step 6 below):
 
 		cpe-domain-name cpe1 ipv4-prefix 166.1.32.0 ipv6-prefix 2701:d01:3344::
