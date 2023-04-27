@@ -15,7 +15,7 @@ excerpt: >-
 
 ASR9k can act as a Border Relay MAP-T function (explained in RFC 7599) without the need of a Service Module Line Card. It is supported with 4th and 5th generation of Ethernet Line Cards. Please see the [Cisco documentation](https://www.cisco.com/c/en/us/td/docs/routers/asr9000/software/asr9k-r7-4/cgnat/configuration/guide/b-cgnat-cg-asr9k-74x/b-cgnat-cg-asr9k-71x_chapter_0100.html#concept_7CB80766F8944515A1A2F557810AFC28) for the Details and Restrictions to configure it. 
 Each MAP-T instance creates a Policy Based Routing rule which steers the traffic from ingress service-inline interface to the CGv6 application which removes the need for ISM/VSM service module. 
-This Tutorial will provide the step by step configuration and Trobleshooting approach to enable this feature and verify it is working correctly.
+This Tutorial will provide the step-by-step configuration and Troubleshooting approach to enable this feature and verify it is working correctly.
 
 
 
@@ -26,7 +26,7 @@ In the current Example we will consider the following scenario:
 
 ![MAP-T Scenarios with ASR9k acting as Inline Border Router](https://raw.githubusercontent.com/xrdocs/xrdocs-images/gh-pages/assets/tutorial-images/mapt_scenario.png)
 
-Host with IPv4 address 166.1.32.1 (port 2321) in the Private IPv4 domain needs to connect to Internet server with IPv4 address 8.8.8.8 (port 2123) through the pure IPv6 Backbone. From the connectivity perspektive IP flow 166.1.32.1 <-> 8.8.8.8 will be translated twice prior (MAPT-CE) and after (MAPT-BR) IPv6 Backbone.
+Host with IPv4 address 166.1.32.1 (port 2321) in the Private IPv4 domain needs to connect to Internet server with IPv4 address 8.8.8.8 (port 2123) through the pure IPv6 Backbone. From the connectivity perspective IP flow 166.1.32.1 <-> 8.8.8.8 will be translated twice prior (MAPT-CE) and after (MAPT-BR) IPv6 Backbone.
 
 We will explore the ASR9k role as MAP-T Inline (no Service Modules) Border Router. MAP-T CE functionality is not considered in this Tutorial (not supported by ASR9000).
 
@@ -44,7 +44,7 @@ Lets examine this based on IPv4 to IPv6 translation (IPv6 to IPv4 will be simila
 
 1. **Destination Address Translation** (166.1.32.1 → 2701:d01:3344::):
 
-We need to define key numbers for Port-Mapping Algorythm (rfc7597). Based on our scenario configuration (see Configuration Section) those will be:
+We need to define key numbers for Port-Mapping Algorithm (rfc7597). Based on our scenario configuration (see Configuration Section) those will be:
 
 
 | Parameter         | Value     | Calculation |
@@ -119,7 +119,7 @@ Within this tutorial we will focus on the following configuration and explain it
 
 Lets verify this configuration in more details:
 
-1. Anounce the cgv6 service and select the proper name:
+1. Announce the cgv6 service and select the proper name:
 
 		service cgv6 CGV6-MAP-T
 
@@ -140,7 +140,7 @@ the subject for applying the MAP-T rules. In our example 4th generation Tomahawk
 
 		cpe-domain ipv6 vrf default
    
-- Select the the prefix length both for IPv4 and IPv6. This is needed to define if additional information required for sharing-ratio and contigious-ports which are used in port/IP translation verification (based on RFC 7599 and 7597). If IPv6 prefix length is /64 or /128 and IPv4 length is /32 then sharing-ratio and contiguous-ports will not be considered in the translation and may not to be configured. Sharing-ratio and contiguous port will define k and m values explained above.
+- Select the prefix length both for IPv4 and IPv6. This is needed to define if additional information required for sharing-ratio and contiguous-ports which are used in port/IP translation verification (based on RFC 7599 and 7597). If IPv6 prefix length is /64 or /128 and IPv4 length is /32 then sharing-ratio and contiguous-ports will not be considered in the translation and may not to be configured. Sharing-ratio and contiguous port will define k and m values explained above.
 
 		cpe-domain ipv6 prefix length 64
 		cpe-domain ipv4 prefix length 24
@@ -154,7 +154,7 @@ the subject for applying the MAP-T rules. In our example 4th generation Tomahawk
 
 		cpe-domain-name cpe1 ipv4-prefix 166.1.32.0 ipv6-prefix 2701:d01:3344::
 
-- IPv6 to IPv4 rules are defined based on ext-domain config. CGN will automatically derive corresponding IPv4 address from the Source and Destination addresses based on the translation algorythm. In the example below traffic towards 3601:d01:3344::/48 will find the portion of IP represnting the IPv4 host and port and then route it accordingly based on the routing rule in corresponding VRF:
+- IPv6 to IPv4 rules are defined based on ext-domain config. CGN will automatically derive corresponding IPv4 address from the Source and Destination addresses based on the translation algorithm. In the example below traffic towards 3601:d01:3344::/48 will find the portion of IP representing the IPv4 host and port and then route it accordingly based on the routing rule in corresponding VRF:
 
 		ext-domain-name ext1 ipv6-prefix 3601:d01:3344::/48 ipv4-vrf default
 
@@ -208,7 +208,7 @@ the subject for applying the MAP-T rules. In our example 4th generation Tomahawk
 		    class handle:0xf8000002  sequence 4294967295 (class-default)
  		   !
 	    end-policy-map
-We can see three classes created (1 for each domain rule plus default class for non-matching traffic): 0x78000003 for IPv4 to IPv6 translation, 0x78000004 for for IPv6 to IPv4 translation and default class 0xf8000002. Missing any of the classes or not seeing proper IP addresses associated with those would mean that configuration did no apply correctly. One recomendation would be to try removing configuration for the whole instance and applying it back. 
+We can see three classes created (1 for each domain rule plus default class for non-matching traffic): 0x78000003 for IPv4 to IPv6 translation, 0x78000004 for for IPv6 to IPv4 translation and default class 0xf8000002. Missing any of the classes or not seeing proper IP addresses associated with those would mean that configuration did no apply correctly. One recommendation would be to try removing configuration for the whole instance and applying it back. 
 
 
 2. Before we check the PBR programming we need to make sure that corresponding Null0 routes have been created for traffic Destination Addresses to be translated. That is done for PBR to be able to intercept this traffic to send further for translation. As we see from policy-map output above we need to have Null0 for prefixes 166.1.32.0/24 and 3601:d01:3344::/48. This routing entrees will be created automatically by the system:
@@ -505,7 +505,7 @@ E.G. I send 200k pps of IPv6 to IPv4 flow and 100k pps of IPv4 to IPv6f flow whi
 {:start="2"}  
 2.**NP counters in case of a problem/drop**
 
-* In the Translation section above I made an example of incorrect port used in the packets not matching the IPv6 address (embeded PSID):
+* In the Translation section above I made an example of incorrect port used in the packets not matching the IPv6 address (embedded PSID):
 
 		560  MDF_OPEN_NETWORK_SERVICE_PSID_IPV6_FAIL                     931002       12354        
 Counter identifies that the port used on the packets does not match the PSID programmed in the IPv6 address (see "Border Router Address Translation" above for PSID programming details). E.G. the port on the packet is "12345" and PSID is programmed based on port "2321".
@@ -526,14 +526,14 @@ As configured IPv6 prefix length is /64 than cpe-domain address not matching the
 
   	2701:d01:3344:4517:: = 2701:d01:3344:4517:**0**::/64  VS 2701:D01:3344:**0**::/64
   
-    * However this is an Umbrella counter which will show up for other reasons as well. In case of unidentified problem folloiwng TECHs will be required for analysis:
+    * However this is an Umbrella counter which will show up for other reasons as well. In case of unidentified problem following TECHs will be required for analysis:
 
 		show tech services cgn
 		show tech pbr
 
-* Additionaly it is helpful to capture and examine the packet hitting the corresponding counter. In the LAB environment it can be collected using the "monitor np counter" tool:
+* Additionally it is helpful to capture and examine the packet hitting the corresponding counter. In the LAB environment it can be collected using the "monitor np counter" tool:
 
-_**NOTE**: This tool will have to reset the NPU upon the traffic collection completion which can cause ~150msec of traffic loss on this NPU thus its recommended to use it only in the LAB environemnt or during the Maintenance Window._
+_**NOTE**: This tool will have to reset the NPU upon the traffic collection completion which can cause ~150msec of traffic loss on this NPU thus its recommended to use it only in the LAB environment or during the Maintenance Window._
   
 		"monitor np counter MDF_TX_WIRE.1 np0 loc 0/6/CPU0"
 
@@ -563,7 +563,7 @@ _**NOTE**: This tool will have to reset the NPU upon the traffic collection comp
 
 
 ## Conclusion
-I hope this tutorial will be helpful in building the Proof of Concept LAB or troubleshooting the real life scenario. It can navigate through the components used and isolate the missing/broken part. 
+I hope this tutorial will be helpful in building the Proof-of-Concept LAB or troubleshooting the real life scenario. It can navigate through the components used and isolate the missing/broken part. 
 Let us know if there are any questions.
 
 ### Additional Resources:
