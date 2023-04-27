@@ -295,7 +295,150 @@ Seeing the counters in the corresponding classes means that PBR properly interce
 
 ### Translation
 
-Once traffic hit the correct PBR class it is being sent for translation where system will do its magic to transform the Source/Destination IP addresses and ports into the new address. See the "Border Router Address Translation" section above for the details.  
+Once traffic hit the correct PBR class it is being sent for translation where system will do its magic to transform the Source/Destination IP addresses and ports into the new address. See the "Border Router Address Translation" section above for the details. We can verify the translation counters using the counters below:
+
+
+    	"show cgv6 map-t-cisco MAPT-1 statistics"
+    	    	
+    	Map-t-cisco IPv6 to IPv4 counters:
+    	======================================
+    	
+    	Translated Udp Count: 76200085
+    	
+    	Translated Tcp Count: 0
+    	
+    	Translated Icmp Count: 0
+    	
+    	PSID Drop Udp Count: 0
+    	
+    	PSID Drop Tcp Count: 0
+    	
+    	PSID Drop Icmp Count: 0
+    	
+    	
+    	Map-t-cisco IPv4 to IPv6 counters:
+    	======================================
+    	
+    	Translated Udp Count: 5209786
+    	
+    	Translated Tcp Count: 0
+    	
+    	Translated Icmp Count: 0
+    	
+    	PSID Drop Udp Count: 0
+    	
+    	PSID Drop Tcp Count: 0
+    	
+    	PSID Drop Icmp Count: 0
+    	
+    	
+    	Map-t-cisco exception IPv6 to IPv4 counters:
+    	======================================
+    	
+    	TCP Incoming Count: 0
+    	TCP NonTranslatable Drop Count: 0
+    	TCP Invalid NextHdr Drop Count: 0
+    	TCP NoDb Drop Count: 0
+    	TCP Translated Count: 0
+    	TCP Psid Drop Count: 0
+    	
+    	UDP Incoming Count: 0
+    	UDP NonTranslatable Drop Count: 0
+    	UDP Invalid Next Hdr Drop Count: 0
+    	UDP No Db Drop Count: 0
+    	UDP Translated Count: 0
+    	UDP Psid Drop Count: 0
+    	
+    	ICMP Total Incoming Count: 0
+    	ICMP No DB Drop Count: 0
+    	ICMP Fragment drop count: 0
+    	ICMP Invalid NxtHdr Drop Count: 0
+    	ICMP Nontanslatable Drop Count: 0
+    	ICMP Nontanslatable Fwd Count: 0
+    	ICMP UnsupportedType Drop Count: 0
+    	ICMP Err Translated Count: 0
+    	ICMP Query Translated Count: 0
+    	ICMP Psid Drop Count: 0
+    	
+    	Subsequent Fragment Incoming Count: 0
+    	Subsequent Fragment NonTranslateable Drop Count: 0
+    	Invalid NextHdr Drop Count: 0
+    	Subsequent Fragment No Db Drop Count: 0
+    	Subsequent Fragment Translated Count: 0
+    	
+    	Extensions/Options Incoming Count: 0
+    	Extensions/Options Drop Count: 0
+    	Extensions/Options Forward Count: 0
+    	
+    	Extensions/Options No DB drop Count: 0
+    	Unsupported Protocol Count: 0
+    	
+    	Map-t-cisco exception packets IPv4 to IPv6 counters:
+    	======================================
+    	
+    	TCP Incoming Count: 0
+    	TCP No Db Drop Count: 0
+    	TCP Translated Count: 0
+    	TCP Psid Drop Count: 0
+    	
+    	UDP Incoming Count: 0
+    	UDP No Db Drop Count: 0
+    	UDP Translated Count: 0
+    	UDP FragmentCrc Zero Drop Count: 0
+    	UDP CrcZeroRecy Sent Count: 0
+    	UDP CrcZeroRecy Drop Count: 0
+    	UDP Psid Drop Count: 0
+    	
+    	ICMP Total Incoming Count: 0
+    	ICMP No Db Drop Count: 0
+    	ICMP Fragment drop count: 0
+    	ICMP UnsupportedType Drop Count: 0
+    	ICMP Err Translated Count: 0
+    	ICMP Query Translated Count: 0
+    	ICMP Psid Drop Count: 0
+    	
+    	Subsequent Fragment Incoming Count: 0
+    	Subsequent Fragment No Db Drop  Count: 0
+    	Subsequent Fragment Translated Count: 0
+    	
+    	Subsequent Fragment Drop Count: 0
+    	Subsequent Fragment Throttled Count: 0
+    	Subsequent Fragment Timeout Drop Count: 0
+    	Subsequent Fragment TCP Input Count: 0
+    	Subsequent Fragment UDP Input Count: 0
+    	Subsequent Fragment ICMP Input Count: 0
+    	
+    	Options Incoming Count: 0
+    	Options Drop Count: 0
+    	Options Forward Count: 0
+    	Options No DB drop Count: 0
+    	Unsupported Protocol Count: 0
+    	
+    	ICMP generated counters :
+    	=======================
+    	
+    	IPv4 ICMP Messages generated count: 0
+    	IPv6 ICMP Messages generated count: 0
+
+Normally "Translated <> Count" is incrementing when everything is good. Other specific counters will increment during the problem. 
+E.G. if the traffic port is not matching the programmed port in IPv6 to IPv4 translation (recall we programming PSID into the IPv6 address):
+
+	Map-t-cisco exception IPv6 to IPv4 counters:
+	======================================
+
+	TCP Incoming Count: 0
+	TCP NonTranslatable Drop Count: 0
+	TCP Invalid NextHdr Drop Count: 0
+	TCP NoDb Drop Count: 0
+	TCP Translated Count: 0
+	TCP Psid Drop Count: 0
+
+	UDP Incoming Count: 0
+	UDP NonTranslatable Drop Count: 0
+	UDP Invalid Next Hdr Drop Count: 0
+	UDP No Db Drop Count: 0
+	UDP Translated Count: 0
+	UDP Psid Drop Count: 634576<<<<<<
 
 
 ### NPU counters
@@ -341,43 +484,49 @@ Some counters may cumulative rate as they cover both translations together. E.G.
   
 2. NP counters during the problem/drop
 
-PBR intercept packets based on destination IP address, however we are also going to translate source. Thus if your source is not matching the configured entry you may see the following drops
+- In the Translation section above I made an example of incorrect port used in the packets not matching the IPv6 address (embeded PSID):
+
+		 560  MDF_OPEN_NETWORK_SERVICE_PSID_IPV6_FAIL                     931002       12354
+         
+Seeing this counter verify that the port used on your packets versus the PSID pgrammed in the IPv6 address (see "Border Router Address Translation" above for PSID programming details). E.G. the port on the packet is "12345" and PSID is programmed based on port "2321".
+
+- In case Translation engine wont be able to define how to translate the prefix following counter will increment:  
   
-  541  MDF_OPEN_NETWORK_SERVICE_PICK UNKNOWN ACTION             874220815       34715
-  
-One example can be in IPv6 to IPv4 translation Source address being 2701:D01:3344:4517:0:A601:2045:17 and cpe-domain rule:
-cpe-domain-name cpe1 ipv4-prefix 166.1.32.0 ipv6-prefix **2701:d01:3344:4517::**
+  		 541  MDF_OPEN_NETWORK_SERVICE_PICK_UNKNOWN_ACTION             874220815       34715
+
+E.G. PBR intercept packets based on destination IP address, however we are also going to translate the source. Thus if your that is not matching the configured entry you may see these drops In particular packet destination is 2701:D01:3344:4517:0:A601:2045:17 and cpe-domain rule:
+cpe-domain-name cpe1 ipv4-prefix 166.1.32.0 ipv6-prefix **2701:d01:3344::**
   
 If we have configured IPv6 prefix length as /64 than cpe-domain address not matching the packet source: 
-  2701:d01:3344:4517:: = 2701:d01:3344:4517:**0**::/64  VS 2701:D01:3344:**4517**::/64
+  2701:d01:3344:4517:: = 2701:d01:3344:4517:**0**::/64  VS 2701:D01:3344:**0**::/64
   
 
-- We can capture the packet on egress to verofy the translation:
+- In LAB environment we can capture the packet on egress to verify the translation using the "monitor np counter" tool.
+
+**NOTE**: This tool will have to reset the NPU upon the traffic collection completion which can cause ~150msec of traffic loss on this NPU thus its recoomended to use it only in LAB environemnt or during the Maintenance Window.
   
-  RP/0/RSP0/CPU0:ASR-9010-C#monitor np counter MDF_TX_WIRE.1 np0 loc 0/6/CPU0
-Tue Apr 25 20:43:17.518 UTC
+		"monitor np counter MDF_TX_WIRE.1 np0 loc 0/6/CPU0"
 
-Usage of NP monitor is recommended for cisco internal use only.
-Please use instead 'show controllers np capture' for troubleshooting packet drops in NP
-and 'monitor np interface' for per (sub)interface counter monitoring
+	Usage of NP monitor is recommended for cisco internal use only.
+	Please use instead 'show controllers np capture' for troubleshooting packet drops in NP
+	and 'monitor np interface' for per (sub)interface counter monitoring
 
-Warning: Every packet captured will be dropped! If you use the 'count'
-         option to capture multiple protocol packets, this could disrupt
-         protocol sessions (eg, OSPF session flap). So if capturing protocol
-         packets, capture only 1 at a time.
+	Warning: Every packet captured will be dropped! If you use the 'count'
+	         option to capture multiple protocol packets, this could disrupt
+	         protocol sessions (eg, OSPF session flap). So if capturing protocol
+	         packets, capture only 1 at a time.
 
-
-Warning: A mandatory NP reset will be done after monitor to clean up.
+	Warning: A mandatory NP reset will be done after monitor to clean up.
          This will cause ~150ms traffic outage. Links will stay Up.
- Proceed y/n [y] > y
- Monitor MDF_TX_WIRE.1 on NP0 ... (Ctrl-C to quit)
+	 Proceed y/n [y] > y
+	 Monitor MDF_TX_WIRE.1 on NP0 ... (Ctrl-C to quit)
 
-Tue Apr 25 20:43:20 2023 -- NP0 packet
+	Tue Apr 25 20:43:20 2023 -- NP0 packet
 
- From Fabric: 88 byte packet
-0000: ac bc d9 3e 22 22 ac bc d9 3e 71 30 86 dd 60 00   ,<Y>"",<Y>q0.]`.
-0010: 00 00 00 22 2c 3f 36 01 0d 01 33 44 55 66 00 08   ...",?6...3DUf..
-0020: 08 08 08 00 00 00 27 01 0d 01 33 44 45 17 00 00   ......'...3DE...
-0030: a6 01 20 01 00 00 11 00 00 00 00 00 00 00 08 4b   &. ............K
-0040: 09 11 00 1a 57 f0 00 01 02 03 04 05 06 07 08 09   ....Wp..........
-0050: 0a 0b 0c 0d 0e 0f 10 11                           ........
+	 From Fabric: 88 byte packet
+	0000: ac bc d9 3e 22 22 ac bc d9 3e 71 30 86 dd 60 00   ,<Y>"",<Y>q0.]`.
+	0010: 00 00 00 22 2c 3f 36 01 0d 01 33 44 55 66 00 08   ...",?6...3DUf..
+	0020: 08 08 08 00 00 00 27 01 0d 01 33 44 45 17 00 00   ......'...3DE...
+	0030: a6 01 20 01 00 00 11 00 00 00 00 00 00 00 08 4b   &. ............K
+	0040: 09 11 00 1a 57 f0 00 01 02 03 04 05 06 07 08 09   ....Wp..........
+	0050: 0a 0b 0c 0d 0e 0f 10 11                           ........
