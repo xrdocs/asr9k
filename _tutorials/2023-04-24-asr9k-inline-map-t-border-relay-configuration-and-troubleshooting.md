@@ -165,7 +165,8 @@ In our Scenario IPv6 to IPv4 flow Destination address will translate from
 
 1. Verifying MAP-T we first need to make sure that corresponding PBR policies have been applied correctly. First we will check policy-map created for it:
 
-```
+	   "show policy-map transient type pbr"
+       
 		policy-map type pbr CGN_0
 			handle:0x38000002
  			table description: L3 IPv4 and IPv6
@@ -181,15 +182,39 @@ In our Scenario IPv6 to IPv4 flow Destination address will translate from
  		   !
 	    end-policy-map
 ```
-We can see three classes created (1 for each domain rule plus default class for non-matching traffic): 0x78000003 for IPv4 to IPv6 translation, 0x78000004 for for IPv6 to IPv4 translation and default class 0xf8000002. Missing any of the classes or not seeing proper IP addresses associated with those would mean that configuration did no apply correctly. One recomendation would be to try removing configuration for the whole instance and applying it back.
+We can see three classes created (1 for each domain rule plus default class for non-matching traffic): 0x78000003 for IPv4 to IPv6 translation, 0x78000004 for for IPv6 to IPv4 translation and default class 0xf8000002. Missing any of the classes or not seeing proper IP addresses associated with those would mean that configuration did no apply correctly. One recomendation would be to try removing configuration for the whole instance and applying it back. 
 
-2. Information from the policy-map is used further to program corresponding rules in Hardware:
+
+2. Before we check the PBR programming we need to make sure that corresponding Null0 routes have been created for traffic Destination Addresses to be translated. That is done for PBR to be able to intercept this traffic to send further for translation. As we see from policy-map output above we need to have Null0 for prefixes 166.1.32.0/24 and 3601:d01:3344::/48:
+
+		"show route 166.1.32.0/24"
+
+		Routing entry for 166.1.32.0/24
+		  Known via "connected", distance 1, metric 0
+		  Installed Apr 27 13:49:38.809 for 00:18:05
+		  Routing Descriptor Blocks
+		    directly connected, via Null0
+		      Route metric is 0
+		  No advertising protos.
+          
+		"show route ipv6 3601:d01:3344::/48"
+
+		Routing entry for 3601:d01:3344::/48
+		  Known via "connected", distance 0, metric 0 (connected)
+		  Installed Apr 27 13:49:38.904 for 00:18:21
+		  Routing Descriptor Blocks
+		    directly connected, via Null0
+		      Route metric is 0
+		  No advertising protos.
+
+
+3. Information from the policy-map is used further to program corresponding rules in Hardware:
 
 Summary:
 
 
-	RP/0/RSP0/CPU0:ASR-9010-C#show pbr-pal ipolicy CGN_0 detail location 0/6/CPU0
-	Thu Apr 27 13:47:05.703 UTC
+	"show pbr-pal ipolicy CGN_0 detail location 0/6/CPU0"
+    
 	 policy name        : CGN_0
 	 number of iclasses : 3
 	 number of VMRs     : 3
@@ -202,8 +227,8 @@ Summary:
 Details:
 
 
-	RP/0/RSP0/CPU0:ASR-9010-C#show pbr-pal ipolicy CGN_0 iclass all vmr location 0/6/CPU0
-	Thu Apr 27 13:39:05.569 UTC
+	"show pbr-pal ipolicy CGN_0 iclass all vmr location 0/6/CPU0"
+
 	Policy name: CGN_0
 	iclass handle            : 0x78000003
 	  ifh                    : x
@@ -254,7 +279,21 @@ Details:
 
 Make sure, that both IPv4 and IPv6 addresses are listed in corresponding VMR. If not then verify if step (1) info above is correct and all interfaces are programmed for the Line Card (see Summary section above). Removing and re-applying service instance configuration can be helpful as well once all errors are fixed.
 
+Once traffic has started we can see counters in the corresponding classes (you can match the iclass with the corresponding policy-map class to find the translation direction):
 
+	"show pbr-pal ipolicy CGN_0 iclass all stats loc 0/6/CPU0"
+
+	Policy name: CGN_0
+	 iclass      packets/bytes                             drop packets/drop bytes
+	 78000006    1494879/149487900                           0/0
+	 78000007    18391078/1839107800                         0/0
+	 f8000005    0/0                                         0/0
+
+
+Seeing the counters in the corresponding classes means that PBR properly intercepted the traffic and sent it to Service Engine for Translation
+
+
+### Translation
 
 
 
