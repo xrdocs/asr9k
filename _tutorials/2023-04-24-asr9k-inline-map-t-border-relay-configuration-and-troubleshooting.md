@@ -512,10 +512,10 @@ Some counters may show cumulative rate as they cover both translations together.
 
 1. In the Translation section above I made an example of incorrect port used in the packets not matching the IPv6 address (embeded PSID):
 
-		560  MDF_OPEN_NETWORK_SERVICE_PSID_IPV6_FAIL                     931002       12354
-         
+		560  MDF_OPEN_NETWORK_SERVICE_PSID_IPV6_FAIL                     931002       12354        
 Counter identifies that the port used on the packets does not match the PSID programmed in the IPv6 address (see "Border Router Address Translation" above for PSID programming details). E.G. the port on the packet is "12345" and PSID is programmed based on port "2321".
 
+{:start="2"}
 2. In case of a PBR programming issue the traffic will be punted to CPU hitting the Null0 route but not intercepted by PBR (missing SERVICE related counters above):
 	
 		 946  PUNT_IPV6_ADJ_NULL_RTE                                        3420           2
