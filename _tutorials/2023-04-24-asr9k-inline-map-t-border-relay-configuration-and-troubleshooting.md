@@ -443,7 +443,7 @@ E.G. if the traffic port is not matching the programmed port in IPv6 to IPv4 tra
 
 ### NPU counters
 
-1.Normal counters
+-**Normal counters**
 Following counters will increment during the normal work of the MAP-T translation:
 
     	"show controllers np counters np0 loc 0/6/CPU0  | ex "           0""
@@ -482,15 +482,20 @@ Some counters may cumulative rate as they cover both translations together. E.G.
     	 556  MDF_OPEN_NETWORK_SERVICE_TRGR_FWD_LKUP                   279119214      310220
 
   
-2. NP counters during the problem/drop
+-**NP counters during the problem/drop**
 
-- In the Translation section above I made an example of incorrect port used in the packets not matching the IPv6 address (embeded PSID):
+1. In the Translation section above I made an example of incorrect port used in the packets not matching the IPv6 address (embeded PSID):
 
 		 560  MDF_OPEN_NETWORK_SERVICE_PSID_IPV6_FAIL                     931002       12354
          
 Seeing this counter verify that the port used on your packets versus the PSID pgrammed in the IPv6 address (see "Border Router Address Translation" above for PSID programming details). E.G. the port on the packet is "12345" and PSID is programmed based on port "2321".
 
-- In case Translation engine wont be able to define how to translate the prefix following counter will increment:  
+2. In case some problem with PBR programming you can see that traffic is punted to CPU hitting the Null0 route but not intercepted by PBR (missing SERVICE related counters above):
+	
+		 946  PUNT_IPV6_ADJ_NULL_RTE                                        3420           2
+		 947  PUNT_IPV6_ADJ_NULL_RTE_EXCD                                2680386        1405
+
+3. In case Translation engine wont be able to define how to translate the prefix following counter will increment:  
   
   		 541  MDF_OPEN_NETWORK_SERVICE_PICK_UNKNOWN_ACTION             874220815       34715
 
@@ -501,7 +506,7 @@ If we have configured IPv6 prefix length as /64 than cpe-domain address not matc
   2701:d01:3344:4517:: = 2701:d01:3344:4517:**0**::/64  VS 2701:D01:3344:**0**::/64
   
 
-- In LAB environment we can capture the packet on egress to verify the translation using the "monitor np counter" tool.
+4. It is helpful to verify the packet matching corresponding counter to examine if that is matching the defined rules. In the LAB environment we can capture the packet on egress to verify the translation using the "monitor np counter" tool.
 
 **NOTE**: This tool will have to reset the NPU upon the traffic collection completion which can cause ~150msec of traffic loss on this NPU thus its recoomended to use it only in LAB environemnt or during the Maintenance Window.
   
@@ -530,3 +535,13 @@ If we have configured IPv6 prefix length as /64 than cpe-domain address not matc
 	0030: a6 01 20 01 00 00 11 00 00 00 00 00 00 00 08 4b   &. ............K
 	0040: 09 11 00 1a 57 f0 00 01 02 03 04 05 06 07 08 09   ....Wp..........
 	0050: 0a 0b 0c 0d 0e 0f 10 11                           ........
+
+
+## Conclusion
+I hope this tutorial will help in building the Proof of Concept LAB or troubleshooting the real life scenario. It can navigate through the components used and isolate the missing/broken part. 
+Let us know if there any questions.
+
+### Additional Resources:
+MAP-T Configuration guide for ASR9000: https://www.cisco.com/c/en/us/td/docs/routers/asr9000/software/asr9k-r7-7/cgnat/configuration/guide/b-cgnat-cg-asr9k-77x/cgipv6-without-service-modules.html
+
+
