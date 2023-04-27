@@ -42,7 +42,7 @@ In IPv6→IPv4 translation, source address and port are translated based on RFC 
 
 Lets examine this based on IPv4 to IPv6 translation (IPv6 to IPv4 will be similar):
 
-1.**Destination Address Translation** (166.1.32.1 → 2701:d01:3344::):
+1. **Destination Address Translation** (166.1.32.1 → 2701:d01:3344::):
 
 We need to define key numbers for Port-Mapping Algorythm (rfc7597). Based on our scenario configuration (see Configuration Section) those will be:
 
@@ -63,11 +63,11 @@ We need to define key numbers for Port-Mapping Algorythm (rfc7597). Based on our
 
 
 
-2.**Source Address Translation** (8.8.8.8 → 3601:d01:3344):
+2. **Source Address Translation** (8.8.8.8 → 3601:d01:3344):
 This translation is more straightforward and defined by RFC 6052:
 
-	| /48 IPv6 prefix | v4(16)| U | (16)| suffix |
 
+		/48 IPv6 prefix | v4(16) | U | (16) | suffix |
 
 Thus final prefix will look like: 3601:d01:3344:**808:8:800::**
 
@@ -120,52 +120,43 @@ Within this tutorial we will focus on the following configuration and explain it
 
 Lets verify this configuration in more details:
 
-1.Anounce the cgv6 service and select the proper name:
+1. Anounce the cgv6 service and select the proper name:
 
-**service cgv6 CGV6-MAP-T**
+		service cgv6 CGV6-MAP-T
 
-
-2.Traffic coming from the interfaces configured under the service will be
+2. Traffic coming from the interfaces configured under the service will be
 the subject for applying the MAP-T rules. In our example 4th generation Tomahawk Line Card is used:
 
-**service-inline interface TenGigE0/6/0/0/0**
-**service-inline interface TenGigE0/6/0/0/1**
+		service-inline interface TenGigE0/6/0/0/0
+		service-inline interface TenGigE0/6/0/0/1
 
+3. Next configure the CPE domain to specify corresponding parameters. Please mind the domain name as it will be used in troubleshooting commands:
 
-3.Next configure the CPE domain to specify corresponding parameters. Please mind the domain name as it will be used in troubleshooting commands:
+		service-type map-t-cisco MAPT-1
 
-**service-type map-t-cisco MAPT-1**
-
-
-4.Specify the CPE domain parameters:
+4. Specify the CPE domain parameters:
 - We can use either default or single non-default VRF for IPv6 traffic. After IPv4 to IPv6 translation, packet will be forwarded to that VRF:
 
-**cpe-domain ipv6 vrf default**
+		cpe-domain ipv6 vrf default
    
-
 - Select the the prefix length both for IPv4 and IPv6. This is needed to define if additional information required for sharing-ratio and contigious-ports which are used in port/IP translation verification (based on RFC 7599 and 7597). If IPv6 prefix length is /64 or /128 and IPv4 length is /32 then sharing-ratio and contiguous-ports will not be considered in the translation and may not to be configured. Sharing-ratio and contiguous port will define k and m values explained above.
 
-**cpe-domain ipv6 prefix length 64**
+		cpe-domain ipv6 prefix length 64
+		cpe-domain ipv4 prefix length 24
+		sharing-ratio 256
+		contiguous-ports 8	
 
-**cpe-domain ipv4 prefix length 24**
-
-**sharing-ratio 256**
-
-**contiguous-ports 8**
-
-
-5.Finally we configure the translation rules:
+5. Finally we configure the translation rules:
 - IPv4 to IPv6 rules are defined by the cpe-domain config and after translation traffic will go out of the IPv6 VRF defined above. In particular example, traffic destined to 166.1.32.0/24 subnet will be translated to 2701:d01:3344::/48 subnet and send out VRF default (as configured in our example) based on the routing rule (see step 6 below):
 
-**cpe-domain-name cpe1 ipv4-prefix 166.1.32.0 ipv6-prefix 2701:d01:3344::**
-
+		cpe-domain-name cpe1 ipv4-prefix 166.1.32.0 ipv6-prefix 2701:d01:3344::
 
 - IPv6 to IPv4 rules are defined based on ext-domain config. CGN will automatically derive corresponding IPv4 address from the Source and Destination addresses based on the translation algorythm. In the example below traffic towards 3601:d01:3344::/48 will find the portion of IP represnting the IPv4 host and port and then route it accordingly based on the routing rule in corresponding VRF:
 
-**ext-domain-name ext1 ipv6-prefix 3601:d01:3344::/48 ipv4-vrf default**
+		ext-domain-name ext1 ipv6-prefix 3601:d01:3344::/48 ipv4-vrf default
 
 
-6.Make sure you have Routing Entry and Adjacency for the translated addresses (otherwise traffic will be lost after translation):
+6. Make sure you have Routing Entry and Adjacency for the translated addresses (otherwise traffic will be lost after translation):
 
 
 		"show cef 8.8.8.8"
@@ -197,7 +188,7 @@ the subject for applying the MAP-T rules. In our example 4th generation Tomahawk
 
 ### PBR
 
-1.Verifying MAP-T we first need to make sure that corresponding PBR policies have been applied correctly. First we will check the policy-map created for it automatically:
+1. Verifying MAP-T we first need to make sure that corresponding PBR policies have been applied correctly. First we will check the policy-map created for it automatically:
 
 	   "show policy-map transient type pbr"
        
@@ -219,7 +210,7 @@ the subject for applying the MAP-T rules. In our example 4th generation Tomahawk
 We can see three classes created (1 for each domain rule plus default class for non-matching traffic): 0x78000003 for IPv4 to IPv6 translation, 0x78000004 for for IPv6 to IPv4 translation and default class 0xf8000002. Missing any of the classes or not seeing proper IP addresses associated with those would mean that configuration did no apply correctly. One recomendation would be to try removing configuration for the whole instance and applying it back. 
 
 
-2.Before we check the PBR programming we need to make sure that corresponding Null0 routes have been created for traffic Destination Addresses to be translated. That is done for PBR to be able to intercept this traffic to send further for translation. As we see from policy-map output above we need to have Null0 for prefixes 166.1.32.0/24 and 3601:d01:3344::/48. This routing entrees will be created automatically by the system:
+2. Before we check the PBR programming we need to make sure that corresponding Null0 routes have been created for traffic Destination Addresses to be translated. That is done for PBR to be able to intercept this traffic to send further for translation. As we see from policy-map output above we need to have Null0 for prefixes 166.1.32.0/24 and 3601:d01:3344::/48. This routing entrees will be created automatically by the system:
 
 		"show route 166.1.32.0/24"
 
@@ -243,7 +234,7 @@ We can see three classes created (1 for each domain rule plus default class for 
 		  No advertising protos.
 
 
-3.Information from the policy-map is used further to program corresponding rules in the Hardware:
+3. Information from the policy-map is used further to program corresponding rules in the Hardware:
 
 **Summary:**
 
@@ -314,7 +305,7 @@ We can see three classes created (1 for each domain rule plus default class for 
 
 Make sure, that both IPv4 and IPv6 addresses are listed in corresponding VMRs. If not then verify if step (1) info above is correct and all interfaces are programmed for the Line Card (see Summary CLI above). Removing and re-applying service instance configuration can be helpful as well once all errors are fixed.
 
-4.Once traffic has started we can see counters in the corresponding classes (you can match the iclass id with the corresponding policy-map class to find the translation direction):
+4. Once traffic has started we can see counters in the corresponding classes (you can match the iclass id with the corresponding policy-map class to find the translation direction):
 
 	"show pbr-pal ipolicy CGN_0 iclass all stats loc 0/6/CPU0"
 
@@ -505,23 +496,23 @@ Other counters are specific to PBR and Translation operations so you can match t
 
 E.G. I send 200k pps of IPv6 to IPv4 flow and 100k pps of IPv4 to IPv6f flow which match the corresponding counters rate:
 
-    	678  VIRTUAL_IF_PROTO_IPV4_UCST_INPUT_CNT                     227572818      205272
-    	679  VIRTUAL_IF_PROTO_IPV6_UCST_INPUT_CNT                      50264145       21080
+    678  VIRTUAL_IF_PROTO_IPV4_UCST_INPUT_CNT                     227572818      205272
+    679  VIRTUAL_IF_PROTO_IPV6_UCST_INPUT_CNT                      50264145       21080
          
 Some counters may show cumulative rate as they cover both translations together. E.G.
 
-    	544  MDF_PIPE_LPBK                                            558238357      620439
-    	552  MDF_OPEN_NETWORK_SERVICE_MODULE_ENTER                    558238405      620439
-    	556  MDF_OPEN_NETWORK_SERVICE_TRGR_FWD_LKUP                   279119214      310220
+    544  MDF_PIPE_LPBK                                            558238357      620439
+    552  MDF_OPEN_NETWORK_SERVICE_MODULE_ENTER                    558238405      620439
+    556  MDF_OPEN_NETWORK_SERVICE_TRGR_FWD_LKUP                   279119214      310220
 
   
 -**NP counters in case of a problem/drop**
 
 1.In the Translation section above I made an example of incorrect port used in the packets not matching the IPv6 address (embeded PSID):
 
-		 560  MDF_OPEN_NETWORK_SERVICE_PSID_IPV6_FAIL                     931002       12354
+		560  MDF_OPEN_NETWORK_SERVICE_PSID_IPV6_FAIL                     931002       12354
          
-Seeing this counter identifies that the port used on the packets does not match the PSID programmed in the IPv6 address (see "Border Router Address Translation" above for PSID programming details). E.G. the port on the packet is "12345" and PSID is programmed based on port "2321".
+Counter identifies that the port used on the packets does not match the PSID programmed in the IPv6 address (see "Border Router Address Translation" above for PSID programming details). E.G. the port on the packet is "12345" and PSID is programmed based on port "2321".
 
 2.In case of a PBR programming issue the traffic will be punted to CPU hitting the Null0 route but not intercepted by PBR (missing SERVICE related counters above):
 	
@@ -532,11 +523,15 @@ Seeing this counter identifies that the port used on the packets does not match 
   
   		 541  MDF_OPEN_NETWORK_SERVICE_PICK_UNKNOWN_ACTION             874220815       34715
 
--One possible scenario for it: 
+
+-One possible scenario for it:
+
 PBR intercept packets based on destination IP address. It also going to translate the source address. Thus if that is not matching the configured entry you may see these drops. if packet source is 2701:D01:3344:4517:0:A601:2045:17 and cpe-domain rule:
+
 cpe-domain-name cpe1 ipv4-prefix 166.1.32.0 ipv6-prefix **2701:d01:3344::**
   
 As configured IPv6 prefix length is /64 than cpe-domain address not matching the packet source: 
+
   2701:d01:3344:4517:: = 2701:d01:3344:4517:**0**::/64  VS 2701:D01:3344:**0**::/64
   
 -However this is an Umbrella counter which will show up for other reasons as well. In case of unidentified problem folloiwng TECHs will be required for analysis:
