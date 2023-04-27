@@ -66,8 +66,8 @@ We need to define key numbers for Port-Mapping Algorythm (rfc7597). Based on our
 2. **Source Address Translation** (8.8.8.8 → 3601:d01:3344):
 This translation is more straightforward and defined by RFC 6052:
 
-| /48 IPv6 prefix     | v4(16) |U|(16)| suffix|
-|-------------------|-----------|-------------|-------------------|-----------|
+
+		/48 IPv6 prefix | v4(16) | U | (16) | suffix |
 
 Thus final prefix will look like: 3601:d01:3344:**808:8:800::**
 
@@ -484,7 +484,6 @@ Following counters will increment during the normal work of the MAP-T translatio
     	  33  PARSE_FAB_RECEIVE_CNT                                    132257832      310079
     	  45  PARSE_ENET_RECEIVE_CNT                                   312065555      310081
     	  53  PARSE_TOP_LOOP_RECEIVE_CNT                               558144612      620162
-
           70  RSV_OPEN_NETWORK_SERVICE_TRIGGER_SVC                     279072350      310081
     	  99  RSV_OPEN_NETWORK_SERVICE_PHASE                           279072439      310081
     	 544  MDF_PIPE_LPBK                                            558238357      620439
@@ -492,7 +491,6 @@ Following counters will increment during the normal work of the MAP-T translatio
     	 556  MDF_OPEN_NETWORK_SERVICE_TRGR_FWD_LKUP                   279119214      310220
     	 678  VIRTUAL_IF_PROTO_IPV4_UCST_INPUT_CNT                     227572818      205272
     	 679  VIRTUAL_IF_PROTO_IPV6_UCST_INPUT_CNT                      50264145       21080
-
     	2010  PARSE_OPEN_NETWORK_SERVICE_SVC_LKUP                      279123639      312507
         
 Counters 17, 21, 33, 45 and 53 are general platform counters for traffic passing through Wire, Fabric, etc.
@@ -500,38 +498,42 @@ Other counters are specific to PBR and Translation operations so you can match t
 
 E.G. I send 200k pps of IPv6 to IPv4 flow and 100k pps of IPv4 to IPv6f flow which match the corresponding counters rate:
 
-    	 678  VIRTUAL_IF_PROTO_IPV4_UCST_INPUT_CNT                     227572818      205272
-    	 679  VIRTUAL_IF_PROTO_IPV6_UCST_INPUT_CNT                      50264145       21080
+    678  VIRTUAL_IF_PROTO_IPV4_UCST_INPUT_CNT                     227572818      205272
+    679  VIRTUAL_IF_PROTO_IPV6_UCST_INPUT_CNT                      50264145       21080
          
 Some counters may show cumulative rate as they cover both translations together. E.G.
 
-    	 544  MDF_PIPE_LPBK                                            558238357      620439
-    	 552  MDF_OPEN_NETWORK_SERVICE_MODULE_ENTER                    558238405      620439
-    	 556  MDF_OPEN_NETWORK_SERVICE_TRGR_FWD_LKUP                   279119214      310220
+    544  MDF_PIPE_LPBK                                            558238357      620439
+    552  MDF_OPEN_NETWORK_SERVICE_MODULE_ENTER                    558238405      620439
+    556  MDF_OPEN_NETWORK_SERVICE_TRGR_FWD_LKUP                   279119214      310220
 
   
 -**NP counters in case of a problem/drop**
 
-1. In the Translation section above I made an example of incorrect port used in the packets not matching the IPv6 address (embeded PSID):
+1.In the Translation section above I made an example of incorrect port used in the packets not matching the IPv6 address (embeded PSID):
 
-		 560  MDF_OPEN_NETWORK_SERVICE_PSID_IPV6_FAIL                     931002       12354
+		560  MDF_OPEN_NETWORK_SERVICE_PSID_IPV6_FAIL                     931002       12354
          
-Seeing this counter identifies that the port used on the packets does not match the PSID programmed in the IPv6 address (see "Border Router Address Translation" above for PSID programming details). E.G. the port on the packet is "12345" and PSID is programmed based on port "2321".
+Counter identifies that the port used on the packets does not match the PSID programmed in the IPv6 address (see "Border Router Address Translation" above for PSID programming details). E.G. the port on the packet is "12345" and PSID is programmed based on port "2321".
 
-2. In case of a PBR programming issue the traffic will be punted to CPU hitting the Null0 route but not intercepted by PBR (missing SERVICE related counters above):
+2.In case of a PBR programming issue the traffic will be punted to CPU hitting the Null0 route but not intercepted by PBR (missing SERVICE related counters above):
 	
 		 946  PUNT_IPV6_ADJ_NULL_RTE                                        3420           2
 		 947  PUNT_IPV6_ADJ_NULL_RTE_EXCD                                2680386        1405
 
-3. If Translation engine wont be able to define how to translate the prefix following counter will increment:  
+3.If Translation engine wont be able to define how to translate the prefix following counter will increment:  
   
   		 541  MDF_OPEN_NETWORK_SERVICE_PICK_UNKNOWN_ACTION             874220815       34715
 
--One possible scenario for it: 
+
+-One possible scenario for it:
+
 PBR intercept packets based on destination IP address. It also going to translate the source address. Thus if that is not matching the configured entry you may see these drops. if packet source is 2701:D01:3344:4517:0:A601:2045:17 and cpe-domain rule:
+
 cpe-domain-name cpe1 ipv4-prefix 166.1.32.0 ipv6-prefix **2701:d01:3344::**
   
 As configured IPv6 prefix length is /64 than cpe-domain address not matching the packet source: 
+
   2701:d01:3344:4517:: = 2701:d01:3344:4517:**0**::/64  VS 2701:D01:3344:**0**::/64
   
 -However this is an Umbrella counter which will show up for other reasons as well. In case of unidentified problem folloiwng TECHs will be required for analysis:
@@ -539,9 +541,9 @@ As configured IPv6 prefix length is /64 than cpe-domain address not matching the
 		show tech services cgn
 		show tech pbr
 
-4. Additionaly it is helpful to capture and examine the packet hitting the corresponding counter. In the LAB environment it can be collected using the "monitor np counter" tool:
+4.Additionaly it is helpful to capture and examine the packet hitting the corresponding counter. In the LAB environment it can be collected using the "monitor np counter" tool:
 
-**NOTE**: This tool will have to reset the NPU upon the traffic collection completion which can cause ~150msec of traffic loss on this NPU thus its recommended to use it only in the LAB environemnt or during the Maintenance Window.
+_**NOTE**: This tool will have to reset the NPU upon the traffic collection completion which can cause ~150msec of traffic loss on this NPU thus its recommended to use it only in the LAB environemnt or during the Maintenance Window._
   
 		"monitor np counter MDF_TX_WIRE.1 np0 loc 0/6/CPU0"
 
@@ -575,6 +577,4 @@ I hope this tutorial will be helpful in building the Proof of Concept LAB or tro
 Let us know if there are any questions.
 
 ### Additional Resources:
-MAP-T Configuration guide for ASR9000: https://www.cisco.com/c/en/us/td/docs/routers/asr9000/software/asr9k-r7-7/cgnat/configuration/guide/b-cgnat-cg-asr9k-77x/cgipv6-without-service-modules.html
-
-
+MAP-T Configuration guide for ASR9000: [https://www.cisco.com/c/en/us/td/docs/routers/asr9000/software/asr9k-r7-7/cgnat/configuration/guide/b-cgnat-cg-asr9k-77x/cgipv6-without-service-modules.html](https://www.cisco.com/c/en/us/td/docs/routers/asr9000/software/asr9k-r7-7/cgnat/configuration/guide/b-cgnat-cg-asr9k-77x/cgipv6-without-service-modules.html)
