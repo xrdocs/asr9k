@@ -13,7 +13,7 @@ excerpt: >-
 ---
 ## Introduction
 
-ASR9k supports Border Relay MAP-T function (explained in RFC 7599) without the need of a Service Module Line Card (with 4th and 5th generation of Line Cards). Please see the [Cisco documentation](https://www.cisco.com/c/en/us/td/docs/routers/asr9000/software/asr9k-r7-4/cgnat/configuration/guide/b-cgnat-cg-asr9k-74x/b-cgnat-cg-asr9k-71x_chapter_0100.html#concept_7CB80766F8944515A1A2F557810AFC28) for the Details and Restrictions to configure it. 
+ASR9k supports Border Relay MAP-T function (explained in RFC 7599) without the need of a Service Module Line Card. It is supported with 4th and 5th generation of Ethernet Line Cards. Please see the [Cisco documentation](https://www.cisco.com/c/en/us/td/docs/routers/asr9000/software/asr9k-r7-4/cgnat/configuration/guide/b-cgnat-cg-asr9k-74x/b-cgnat-cg-asr9k-71x_chapter_0100.html#concept_7CB80766F8944515A1A2F557810AFC28) for the Details and Restrictions to configure it. 
 Each MAP-T instance creates a Policy Based Routing rule which steers the traffic from ingress service-inline interface to the CGv6 application which removes the need for ISM/VSM service module. 
 This Tutorial will provide step by step configuration and Trobleshooting approach to enable this feature and verify it is working correctly.
 
@@ -26,23 +26,25 @@ In the current Example we will consider the following scenario:
 
 ![MAP-T Scenarios with ASR9k acting as Inline Border Router](https://raw.githubusercontent.com/xrdocs/xrdocs-images/gh-pages/assets/tutorial-images/mapt_scenario.png)
 
-Host 166.1.32.1 port 2321 in the Private IPv4 domain needs to connect to Internet IPv4 server 8.8.8.8 port 2123 through the pure IPv6 Backbone. From the connectivity perspektive IP flow 166.1.32.1 <-> 8.8.8.8 will be translated twice prior (MAPT-CE) and after (MAPT-BR) IPv6 Backbone.
+Host with IPv4 address 166.1.32.1 (port 2321) in the Private IPv4 domain needs to connect to Internet server with IPv4 address 8.8.8.8 (port 2123) through the pure IPv6 Backbone. From the connectivity perspektive IP flow 166.1.32.1 <-> 8.8.8.8 will be translated twice prior (MAPT-CE) and after (MAPT-BR) IPv6 Backbone.
 
-We will use 3601:d01:3344::/48 subnet to translate the Internet Host address (external domain) and 2701:d01:3344::/48 for Private host translation (CPE domain). Based on the translation rules 8.8.8.8 will be transated as 
+We will explore the ASR9k role as MAP-T Inline (no Service Modules) Border Router. MAP-T CE functionality is not considered in this Tutorial (not supported by ASR9000).
 
-We will explore into ASR9k role as MAP-T Inline (no Service Modules) Border Router. MAP-T CE functionality is not considered in this Tutorial.
+We will use 3601:d01:3344::/48 subnet to translate the Internet Host address (external domain) and 2701:d01:3344::/48 for Private host translation (CPE domain). Next section is going to explain the magic behind the translation.
+
+
 
 ## Border Router Address Translation
 
-In IPv4→IPv6, destination address and port are translated based on RFC 7599 and RFC 7597 and source address by RFC 6052.
+In IPv4→IPv6 translation, destination address and port are translated based on RFC 7599 and RFC 7597 and source address by RFC 6052.
 
-In IPv6→IPv4 translation, Source address and port are translated based on RFC 7597 and RFC 7599 and destination address by RFC 6052. 
+In IPv6→IPv4 translation, source address and port are translated based on RFC 7597 and RFC 7599 and destination address by RFC 6052. 
 
-Lets examine this based on IPv4 to IPv6 translation (IPv6 to IPv4 similar in reverse direction):
+Lets examine this based on IPv4 to IPv6 translation (IPv6 to IPv4 will be similar):
 
-1. Destination Address Translation (166.1.32.1 -> 2701:d01:3344::):
+1. **Destination Address Translation** (166.1.32.1 → 2701:d01:3344::):
 
-We need to define key numbers for Port-Mapping Algorythm (rfc7597). Based on our scenario config (see Configuration Section) those will be:
+We need to define key numbers for Port-Mapping Algorythm (rfc7597). Based on our scenario configuration (see Configuration Section) those will be:
 
 | Parameter         | Value     | Calculation |
 |-------------------|-----------|-------------|
@@ -57,32 +59,34 @@ We need to define key numbers for Port-Mapping Algorythm (rfc7597). Based on our
 |**IPv6 Address**| **2701:d01:3344:188:0:a601:2001:22**| IPv6 CPE suffix + EA BITS + Subnet  + 16 bit 0's + 32 bit ipv4 address + 16 bit PSID => 2701:d01:3344:**00000001100010** 00:0:a601:2001:**22**|
 
 
-2. Source Address (8.8.8.8 -> 3601:d01:3344):
-This translation is easier and defined by RFC 6052 as:
 
-| IPv6 prefix     | v4(16) |U|(16)| suffix|
+
+
+
+2. **Source Address Translation** (8.8.8.8 → 3601:d01:3344):
+This translation is more straightforward and defined by RFC 6052:
+
+| /48 IPv6 prefix     | v4(16) |U|(16)| suffix|
 |-------------------|-----------|-------------|-------------------|-----------|
 
-Thus
-3601:d01:3344:**808:8:800::**
+Thus final prefix will look like: 3601:d01:3344:**808:8:800::**
 
-I'm using the traffic generator for this scenario so these are my packets:
+I'm using the traffic generator for this scenario:
 
 -**IPv4 to IPv6:**
 
-![IPv6 to IPv4](https://raw.githubusercontent.com/xrdocs/xrdocs-images/gh-pages/assets/tutorial-images/mapt_v6.png)
+![IPv6 to IPv4](https://raw.githubusercontent.com/xrdocs/xrdocs-images/gh-pages/assets/tutorial-images/mapt_v6v2.png)
 
 
 -**IPv6 to IPv4:**
 
-![IPv4 to IPv6](https://raw.githubusercontent.com/xrdocs/xrdocs-images/gh-pages/assets/tutorial-images/mapt_v4.png)
+![IPv4 to IPv6](https://raw.githubusercontent.com/xrdocs/xrdocs-images/gh-pages/assets/tutorial-images/mapt_v4v2.png)
+
 
 
 
 ## Configuration
-In general to configure a MAP-T without service cards, one needs to perform the steps below.
-
-SUMMARY STEPS
+This is the configuration template for Inline MAP-T:
 
     configure
      service cgv6 instance-name
@@ -96,13 +100,14 @@ SUMMARY STEPS
          cpe-domain-name cpe-domain-name ipv4 prefix address/prefix ipv6 prefix address/prefix
          ext-domain-name ext-domain-name ipv6 prefix address/prefix ipv4-vrf vrf-name 
 
-_**Note:** CPE V6 Prefix /64 and with V4 Prefix /24 are the best for quick tesrting as there is no port-sharing for those and finding correct IP syntax is much easier._
+_**Note:** CPE V6 Prefix /64 and with V4 Prefix /24 are the best for quick testing as there are no port-sharing in that case and finding correct IP syntax is much easier (see details in the config section)._
 
 Within this tutorial we will focus on the following configuration and explain it in more details:
 
     configure
      service cgv6 CGV6-MAP-T
        service-inline interface TenGigE0/6/0/0/0
+       service-inline interface TenGigE0/6/0/0/1
        service-type map-t-cisco MAPT-1
          cpe-domain ipv6 vrf default
          cpe-domain ipv6 prefix length 48
@@ -118,22 +123,22 @@ Lets verify this configuration in more details:
 1.Anounce the cgv6 service and select the proper name:
 **service cgv6 CGV6-MAP-T**
 
-2.Traffic which come via the interfaces which are configured under service inline will be
-subjected to MAPT rules if it matches the class map that PBR will create internally based
-on CGN config. In our example 4th generation Tomahawk Line Card is used:
+2.Traffic coming from the interfaces configured under the service will be
+the subject for applying the MAP-T rules. In our example 4th generation Tomahawk Line Card is used:
 
 **service-inline interface TenGigE0/6/0/0/0**
+**service-inline interface TenGigE0/6/0/0/1**
 
-3. Further we are entering the CPE domain to specify corresponding parameters. Please mind the domain name as it will be used in troubleshooting commands:
+3. Next configure the CPE domain to specify corresponding parameters. Please mind the domain name as it will be used in troubleshooting commands:
 
 **service-type map-t-cisco MAPT-1**
 
-4. Next we specify the CPE domain parameters:
+4. Specify the CPE domain parameters:
 - We can use either default or single non-default VRF for IPv6 traffic. After IPv4 to IPv6 translation, packet will be forwarded to that VRF:
 
 **cpe-domain ipv6 vrf default**
    
-- Next we select the the prefix length both for IPv4 and IPv6. This is needed to define if additional information required for sharing-ratio and contigious-ports which are used in port/IP translation verification (based on RFC 7599 and 7597). If IPv6 prefix length is /64 or /128 and IPv4 length is /32 then sharing-ratio and contiguous-ports will not be considered in the translation and may not to be configured.
+- Select the the prefix length both for IPv4 and IPv6. This is needed to define if additional information required for sharing-ratio and contigious-ports which are used in port/IP translation verification (based on RFC 7599 and 7597). If IPv6 prefix length is /64 or /128 and IPv4 length is /32 then sharing-ratio and contiguous-ports will not be considered in the translation and may not to be configured. Sharing-ratio and contiguous port will define k and m values explained above.
 
 **cpe-domain ipv6 prefix length 64**
 
@@ -144,13 +149,13 @@ on CGN config. In our example 4th generation Tomahawk Line Card is used:
 **contiguous-ports 8**
 
 5. Finally we configure the translation rules:
-- IPv4 to IPv6 rules are defined by the cpe-domain config and after translation traffic will go out of the IPv6 VRF defined above. In particular example, traffic destined from 166.1.32.0/24 subnet will be translated to 2701:d01:3344::/48 subnet and send out VRF default (as configured in our example) based on the routing rule (see step 6 below):
+- IPv4 to IPv6 rules are defined by the cpe-domain config and after translation traffic will go out of the IPv6 VRF defined above. In particular example, traffic destined to 166.1.32.0/24 subnet will be translated to 2701:d01:3344::/48 subnet and send out VRF default (as configured in our example) based on the routing rule (see step 6 below):
 
 **cpe-domain-name cpe1 ipv4-prefix 166.1.32.0 ipv6-prefix 2701:d01:3344::**
 
-- IPv6 to IPv4 rules are defined based on ext-domain config. CGN will automatically derive corresponding IPv4 address from the Source and Destination addresses based on the calculation. In below example traffic towards 3601:d01:3344:5566::/48 will find the portion of IP represnting the IPv4 host and route traffic to it based on the routing rule in VRF1:
+- IPv6 to IPv4 rules are defined based on ext-domain config. CGN will automatically derive corresponding IPv4 address from the Source and Destination addresses based on the translation algorythm. In the example below traffic towards 3601:d01:3344::/48 will find the portion of IP represnting the IPv4 host and port and then route it accordingly based on the routing rule in corresponding VRF:
 
-**ext-domain-name ext1 ipv6-prefix 3601:d01:3344:5566::/48 ipv4-vrf VRF1**
+**ext-domain-name ext1 ipv6-prefix 3601:d01:3344::/48 ipv4-vrf default**
 
 
 6. Make sure you have Routing Entry and Adjacency for the translated addresses:
@@ -505,6 +510,10 @@ cpe-domain-name cpe1 ipv4-prefix 166.1.32.0 ipv6-prefix **2701:d01:3344::**
 If we have configured IPv6 prefix length as /64 than cpe-domain address not matching the packet source: 
   2701:d01:3344:4517:: = 2701:d01:3344:4517:**0**::/64  VS 2701:D01:3344:**0**::/64
   
+However this is an Umbrella counter which will show up for other reasons as well. Our TAC will be eager to take a look at this, please make sure you collect the following TECHs as well:
+
+		show tech services cgn
+		show tech pbr
 
 4. It is helpful to verify the packet matching corresponding counter to examine if that is matching the defined rules. In the LAB environment we can capture the packet on egress to verify the translation using the "monitor np counter" tool.
 
