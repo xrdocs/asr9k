@@ -87,7 +87,7 @@ SUMMARY STEPS
     configure
      service cgv6 instance-name
        service-inline interface type interface-path-id
-       service-type map-t-ciscoinstance-name
+       service-type map-t-cisco instance-name
          cpe-domain ipv4 prefix length value
          cpe-domain ipv6 vrf vrf-name
          cpe-domain ipv6 prefix length value
@@ -95,6 +95,8 @@ SUMMARY STEPS
          contiguous-ports <number>
          cpe-domain-name cpe-domain-name ipv4 prefix address/prefix ipv6 prefix address/prefix
          ext-domain-name ext-domain-name ipv6 prefix address/prefix ipv4-vrf vrf-name 
+
+_**Note:** CPE V6 Prefix /64 and with V4 Prefix /24 are the best for quick tesrting as there is no port-sharing for those and finding correct IP syntax is much easier._
 
 Within this tutorial we will focus on the following configuration and explain it in more details:
 
@@ -161,7 +163,7 @@ In our Scenario IPv6 to IPv4 flow Destination address will translate from
 
 ### PBR
 
-Verifying MAP-T we first need to make sure that corresponding PBR policies have been applied correctly. First we will check policy-map created for it:
+1. Verifying MAP-T we first need to make sure that corresponding PBR policies have been applied correctly. First we will check policy-map created for it:
 
 ```
 		policy-map type pbr CGN_0
@@ -178,8 +180,83 @@ Verifying MAP-T we first need to make sure that corresponding PBR policies have 
 		    class handle:0xf8000002  sequence 4294967295 (class-default)
  		   !
 	    end-policy-map
-        `` / ``
 ```
+We can see three classes created (1 for each domain rule plus default class for non-matching traffic): 0x78000003 for IPv4 to IPv6 translation, 0x78000004 for for IPv6 to IPv4 translation and default class 0xf8000002. Missing any of the classes or not seeing proper IP addresses associated with those would mean that configuration did no apply correctly. One recomendation would be to try removing configuration for the whole instance and applying it back.
+
+2. Information from the policy-map is used further to program corresponding rules in Hardware:
+
+Summary:
+
+
+	RP/0/RSP0/CPU0:ASR-9010-C#show pbr-pal ipolicy CGN_0 detail location 0/6/CPU0
+	Thu Apr 27 13:47:05.703 UTC
+	 policy name        : CGN_0
+	 number of iclasses : 3
+	 number of VMRs     : 3
+	 ucode format       : 13
+	 vmr id for NP0     : 3
+	 interface count    : 2
+	 interface list     : Te0/6/0/0/0 Te0/6/0/0/1
+     
+     
+Details:
+
+
+	RP/0/RSP0/CPU0:ASR-9010-C#show pbr-pal ipolicy CGN_0 iclass all vmr location 0/6/CPU0
+	Thu Apr 27 13:39:05.569 UTC
+	Policy name: CGN_0
+	iclass handle            : 0x78000003
+	  ifh                    : x
+	  protocol               : x
+	  source ip addr         : x
+	  dest ip addr           : 166.1.32.0/255.255.255.0
+	  source port            : x
+	  dest port              : x
+	  DSCP                   : x
+	  ethertype              : x
+	  vlan id                : x
+	  vlan cos               : x
+	  source mac             : x
+	  dest  mac              : x
+	  packet length          : x
+	  result                 : 110000ac 8cc60001 65030003 e9030013 89000000 00000000 00000000 00000000
+	iclass handle            : 0x78000004
+	  ifh                    : x
+	  protocol               : x
+	  source ipv6 addr       : x
+	  dest ipv6 addr         : 3601:d01:3344::/48
+	  source port            : x
+	  dest port              : x
+	  DSCP                   : x
+	  ethertype              : x
+	  vlan id                : x
+	  vlan cos               : x
+	  source mac             : x
+	  dest  mac              : x
+	  packet length          : x
+	  result                 : 110000ae 8cc60001 6503000b b903001b 59000000 00000000 00000000 00000000
+	iclass handle            : 0xf8000002
+	  ifh                    : x
+	  protocol               : x
+	  source ip addr         : x
+	  dest ip addr           : x
+	  source port            : x
+	  dest port              : x
+	  DSCP                   : x
+	  ethertype              : x
+	  vlan id                : x
+	  vlan cos               : x
+	  source mac             : x
+	  dest  mac              : x
+	  packet length          : x
+	  result                 : 11000050 8dc60000 00000000 00000000 00000000 00000000 00000000 00000000
+
+
+Make sure, that both IPv4 and IPv6 addresses are listed in corresponding VMR. If not then verify if step (1) info above is correct and all interfaces are programmed for the Line Card (see Summary section above). Removing and re-applying service instance configuration can be helpful as well once all errors are fixed.
+
+
+
+
 
 
 - NP counters "show controller np counter <NPid> loc <LC>":
