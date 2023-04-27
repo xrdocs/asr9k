@@ -471,7 +471,7 @@ E.G. if the traffic port is not matching the programmed port in IPv6 to IPv4 tra
 
 ### NPU counters
 
--**Normal counters**
+1.**Normal counters**
 Following counters will increment during the normal work of the MAP-T translation:
 
     	"show controllers np counters np0 loc 0/6/CPU0  | ex "           0""
@@ -507,26 +507,24 @@ Some counters may show cumulative rate as they cover both translations together.
     552  MDF_OPEN_NETWORK_SERVICE_MODULE_ENTER                    558238405      620439
     556  MDF_OPEN_NETWORK_SERVICE_TRGR_FWD_LKUP                   279119214      310220
 
-  
--**NP counters in case of a problem/drop**
+{:start="2"}  
+2.**NP counters in case of a problem/drop**
 
-1. In the Translation section above I made an example of incorrect port used in the packets not matching the IPv6 address (embeded PSID):
+-In the Translation section above I made an example of incorrect port used in the packets not matching the IPv6 address (embeded PSID):
 
 		560  MDF_OPEN_NETWORK_SERVICE_PSID_IPV6_FAIL                     931002       12354        
 Counter identifies that the port used on the packets does not match the PSID programmed in the IPv6 address (see "Border Router Address Translation" above for PSID programming details). E.G. the port on the packet is "12345" and PSID is programmed based on port "2321".
 
-{:start="2"}
-2. In case of a PBR programming issue the traffic will be punted to CPU hitting the Null0 route but not intercepted by PBR (missing SERVICE related counters above):
+-In case of a PBR programming issue the traffic will be punted to CPU hitting the Null0 route but not intercepted by PBR (missing SERVICE related counters above):
 	
 		 946  PUNT_IPV6_ADJ_NULL_RTE                                        3420           2
 		 947  PUNT_IPV6_ADJ_NULL_RTE_EXCD                                2680386        1405
 
-3. If Translation engine wont be able to define how to translate the prefix following counter will increment:  
+-If Translation engine wont be able to define how to translate the prefix following counter will increment:  
   
   		 541  MDF_OPEN_NETWORK_SERVICE_PICK_UNKNOWN_ACTION             874220815       34715
 
-
--One possible scenario for it:
+--One possible scenario for it:
 
 PBR intercept packets based on destination IP address. It also going to translate the source address. Thus if that is not matching the configured entry you may see these drops. if packet source is 2701:D01:3344:4517:0:A601:2045:17 and cpe-domain rule:
 
@@ -536,13 +534,12 @@ As configured IPv6 prefix length is /64 than cpe-domain address not matching the
 
   2701:d01:3344:4517:: = 2701:d01:3344:4517:**0**::/64  VS 2701:D01:3344:**0**::/64
   
--However this is an Umbrella counter which will show up for other reasons as well. In case of unidentified problem folloiwng TECHs will be required for analysis:
+--However this is an Umbrella counter which will show up for other reasons as well. In case of unidentified problem folloiwng TECHs will be required for analysis:
 
 		show tech services cgn
 		show tech pbr
 
-{:start="4"}
-4. Additionaly it is helpful to capture and examine the packet hitting the corresponding counter. In the LAB environment it can be collected using the "monitor np counter" tool:
+-Additionaly it is helpful to capture and examine the packet hitting the corresponding counter. In the LAB environment it can be collected using the "monitor np counter" tool:
 
 _**NOTE**: This tool will have to reset the NPU upon the traffic collection completion which can cause ~150msec of traffic loss on this NPU thus its recommended to use it only in the LAB environemnt or during the Maintenance Window._
   
