@@ -13,9 +13,9 @@ excerpt: >-
 ---
 ## Introduction
 
-ASR9k supports Border Relay MAP-T function (explained in RFC 7599) without the need of a Service Module Line Card. It is supported with 4th and 5th generation of Ethernet Line Cards. Please see the [Cisco documentation](https://www.cisco.com/c/en/us/td/docs/routers/asr9000/software/asr9k-r7-4/cgnat/configuration/guide/b-cgnat-cg-asr9k-74x/b-cgnat-cg-asr9k-71x_chapter_0100.html#concept_7CB80766F8944515A1A2F557810AFC28) for the Details and Restrictions to configure it. 
+ASR9k can act as a Border Relay MAP-T function (explained in RFC 7599) without the need of a Service Module Line Card. It is supported with 4th and 5th generation of Ethernet Line Cards. Please see the [Cisco documentation](https://www.cisco.com/c/en/us/td/docs/routers/asr9000/software/asr9k-r7-4/cgnat/configuration/guide/b-cgnat-cg-asr9k-74x/b-cgnat-cg-asr9k-71x_chapter_0100.html#concept_7CB80766F8944515A1A2F557810AFC28) for the Details and Restrictions to configure it. 
 Each MAP-T instance creates a Policy Based Routing rule which steers the traffic from ingress service-inline interface to the CGv6 application which removes the need for ISM/VSM service module. 
-This Tutorial will provide step by step configuration and Trobleshooting approach to enable this feature and verify it is working correctly.
+This Tutorial will provide the step by step configuration and Trobleshooting approach to enable this feature and verify it is working correctly.
 
 
 
@@ -36,9 +36,9 @@ We will use 3601:d01:3344::/48 subnet to translate the Internet Host address (ex
 
 ## Border Router Address Translation
 
-In IPv4→IPv6 translation, destination address and port are translated based on RFC 7599 and RFC 7597 and source address by RFC 6052.
+In IPv4→IPv6 translation, destination address and port are translated based on RFC 7599 and RFC 7597 and source address on RFC 6052.
 
-In IPv6→IPv4 translation, source address and port are translated based on RFC 7597 and RFC 7599 and destination address by RFC 6052. 
+In IPv6→IPv4 translation, source address and port are translated based on RFC 7597 and RFC 7599 and destination address on RFC 6052. 
 
 Lets examine this based on IPv4 to IPv6 translation (IPv6 to IPv4 will be similar):
 
@@ -70,7 +70,7 @@ This translation is more straightforward and defined by RFC 6052:
 
 Thus final prefix will look like: 3601:d01:3344:**808:8:800::**
 
-I'm using the traffic generator for this scenario:
+I'm using the traffic generator for this scenario and based on translations above my packets will look like:
 
 -**IPv4 to IPv6:**
 
