@@ -521,15 +521,15 @@ Counter identifies that the port used on the packets does not match the PSID pro
 		 947  PUNT_IPV6_ADJ_NULL_RTE_EXCD                                2680386        1405
 
 * If Translation engine wont be able to define how to translate the prefix following counter will increment:  
-``` 
-  		 541  MDF_OPEN_NETWORK_SERVICE_PICK_UNKNOWN_ACTION             874220815       34715
- ```
-    * One possible scenario for it:
+
+		541  MDF_OPEN_NETWORK_SERVICE_PICK_UNKNOWN_ACTION             874220815       34715
+
+	* One possible scenario for it:
 PBR intercept packets based on destination IP address. It also going to translate the source address. Thus if that is not matching the configured entry you may see these drops. if packet source is 2701:D01:3344:4517:0:A601:2045:17 and cpe-domain rule:
 	cpe-domain-name cpe1 ipv4-prefix 166.1.32.0 ipv6-prefix **2701:d01:3344::**
 As configured IPv6 prefix length is /64 than cpe-domain address not matching the packet source: 
 
-  	2701:d01:3344:4517:: = 2701:d01:3344:4517:**0**::/64  VS 2701:D01:3344:**0**::/64
+  	2701:d01:3344:4517:: = 2701:d01:3344:4517:**0**::/64  **vs** 2701:D01:3344:**0**::/64
   
     * However this is an Umbrella counter which will show up for other reasons as well. In case of unidentified problem following TECHs will be required for analysis:
 
