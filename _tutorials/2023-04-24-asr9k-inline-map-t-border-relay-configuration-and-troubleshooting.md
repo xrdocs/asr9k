@@ -104,7 +104,7 @@ This is the configuration template for Inline MAP-T:
          ext-domain-name ext-domain-name ipv6 prefix address/prefix ipv4-vrf vrf-name 
 
 **Note:** CPE V6 Prefix /64 and with V4 Prefix /24 are the best for quick testing as there are no port-sharing in that case and finding correct IP syntax is much easier (see details in the config section).
-{: .notice}
+{: .notice--info}
 
 Within this tutorial we will focus on the following configuration and explain it in more details:
 
