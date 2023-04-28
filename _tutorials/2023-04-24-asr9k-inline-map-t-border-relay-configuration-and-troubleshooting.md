@@ -28,7 +28,7 @@ This Tutorial will provide the step-by-step configuration and Troubleshooting ap
 
 In the current Example we will consider the following scenario:
 
-![MAP-T Scenarios with ASR9k acting as Inline Border Router](https://raw.githubusercontent.com/xrdocs/xrdocs-images/gh-pages/assets/tutorial-images/mapt_scenario.png)
+![MAP-T Scenarios with ASR9k acting as Inline Border Router](https://raw.githubusercontent.com/xrdocs/xrdocs-images/gh-pages/assets/tutorial-images/mapt_scenario.png){: .align-center}
 
 Host with IPv4 address 166.1.32.1 (port 2321) in the Private IPv4 domain needs to connect to Internet server with IPv4 address 8.8.8.8 (port 2123) through the pure IPv6 Backbone. From the connectivity perspective IP flow 166.1.32.1 <-> 8.8.8.8 will be translated twice prior (MAPT-CE) and after (MAPT-BR) IPv6 Backbone.
 
@@ -78,12 +78,12 @@ I'm using the traffic generator for this scenario and based on translations abov
 
 -**IPv4 to IPv6:**
 
-![IPv6 to IPv4](https://raw.githubusercontent.com/xrdocs/xrdocs-images/gh-pages/assets/tutorial-images/mapt_v6v2.png)
+![IPv6 to IPv4](https://raw.githubusercontent.com/xrdocs/xrdocs-images/gh-pages/assets/tutorial-images/mapt_v6v2.png){: .align-center}
 
 
 -**IPv6 to IPv4:**
 
-![IPv4 to IPv6](https://raw.githubusercontent.com/xrdocs/xrdocs-images/gh-pages/assets/tutorial-images/mapt_v4v2.png)
+![IPv4 to IPv6](https://raw.githubusercontent.com/xrdocs/xrdocs-images/gh-pages/assets/tutorial-images/mapt_v4v2.png){: .align-center}
 
 
 
