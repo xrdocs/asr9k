@@ -103,7 +103,7 @@ This is the configuration template for Inline MAP-T:
          cpe-domain-name cpe-domain-name ipv4 prefix address/prefix ipv6 prefix address/prefix
          ext-domain-name ext-domain-name ipv6 prefix address/prefix ipv4-vrf vrf-name 
 
-**Note:**{: .notice} CPE V6 Prefix /64 and with V4 Prefix /24 are the best for quick testing as there are no port-sharing in that case and finding correct IP syntax is much easier (see details in the config section).
+**Note:** CPE V6 Prefix /64 and with V4 Prefix /24 are the best for quick testing as there are no port-sharing in that case and finding correct IP syntax is much easier (see details in the config section).{: .notice}
 
 Within this tutorial we will focus on the following configuration and explain it in more details:
 
@@ -537,7 +537,7 @@ As configured IPv6 prefix length is /64 than cpe-domain address not matching the
 
 * Additionally it is helpful to capture and examine the packet hitting the corresponding counter. In the LAB environment it can be collected using the "monitor np counter" tool:
 
-**NOTE**:{: .notice} This tool will have to reset the NPU upon the traffic collection completion which can cause ~150msec of traffic loss on this NPU thus its recommended to use it only in the LAB environment or during the Maintenance Window.
+**NOTE**: This tool will have to reset the NPU upon the traffic collection completion which can cause ~150msec of traffic loss on this NPU thus its recommended to use it only in the LAB environment or during the Maintenance Window.{: .notice} 
   
 		"monitor np counter MDF_TX_WIRE.1 np0 loc 0/6/CPU0"
 
