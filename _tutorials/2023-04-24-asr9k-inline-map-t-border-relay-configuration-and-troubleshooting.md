@@ -539,7 +539,7 @@ As configured IPv6 prefix length is /64 than cpe-domain address not matching the
 * Additionally it is helpful to capture and examine the packet hitting the corresponding counter. In the LAB environment it can be collected using the "monitor np counter" tool:
 
 **NOTE**: This tool will have to reset the NPU upon the traffic collection completion which can cause ~150msec of traffic loss on this NPU thus its recommended to use it only in the LAB environment or during the Maintenance Window.
-{: .notice} 
+{: .notice--warning} 
   
 		"monitor np counter MDF_TX_WIRE.1 np0 loc 0/6/CPU0"
 
