@@ -595,7 +595,7 @@ Offset  Counter                                               FrameValue   Rate 
 
 <div class="highlighter-rouge">
 <pre class="highlight">
-e>
+<code>
 Offset  Counter                                               FrameValue   Rate (pps)
 -------------------------------------------------------------------------------------
 544  MDF_PIPE_LPBK                                            558238357      620439
@@ -625,7 +625,7 @@ Counter identifies that the port used on the packets does not match the PSID pro
 
 <div class="highlighter-rouge">
 <pre class="highlight">
-e>
+<code>
 Offset  Counter                                               FrameValue   Rate (pps)
 -------------------------------------------------------------------------------------
 946  PUNT_IPV6_ADJ_NULL_RTE                                        3420           2
