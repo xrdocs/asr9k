@@ -142,7 +142,7 @@ Lets verify this configuration in more details:
 <div class="highlighter-rouge">
 <pre class="highlight">
 <code>
-		service cgv6 CGV6-MAP-T
+	service cgv6 CGV6-MAP-T
 </code>
 </pre>
 </div>
@@ -153,8 +153,8 @@ the subject for applying the MAP-T rules. In our example 4th generation Tomahawk
 <div class="highlighter-rouge">
 <pre class="highlight">
 <code>
-		service-inline interface TenGigE0/6/0/0/0
-		service-inline interface TenGigE0/6/0/0/1
+	service-inline interface TenGigE0/6/0/0/0
+	service-inline interface TenGigE0/6/0/0/1
 </code>
 </pre>
 </div>
@@ -164,7 +164,7 @@ the subject for applying the MAP-T rules. In our example 4th generation Tomahawk
 <div class="highlighter-rouge">
 <pre class="highlight">
 <code>
-		service-type map-t-cisco MAPT-1
+	service-type map-t-cisco MAPT-1
 </code>
 </pre>
 </div>
@@ -176,7 +176,7 @@ the subject for applying the MAP-T rules. In our example 4th generation Tomahawk
 <div class="highlighter-rouge">
 <pre class="highlight">
 <code>
-		cpe-domain ipv6 vrf default
+	cpe-domain ipv6 vrf default
 </code>
 </pre>
 </div>
@@ -186,10 +186,10 @@ the subject for applying the MAP-T rules. In our example 4th generation Tomahawk
 <div class="highlighter-rouge">
 <pre class="highlight">
 <code>
-		cpe-domain ipv6 prefix length 64
-		cpe-domain ipv4 prefix length 24
-		sharing-ratio 256
-		contiguous-ports 8	
+	cpe-domain ipv6 prefix length 64
+	cpe-domain ipv4 prefix length 24
+	sharing-ratio 256
+	contiguous-ports 8	
 </code>
 </pre>
 </div>
@@ -202,7 +202,7 @@ the subject for applying the MAP-T rules. In our example 4th generation Tomahawk
 <div class="highlighter-rouge">
 <pre class="highlight">
 <code>
-		cpe-domain-name cpe1 ipv4-prefix 166.1.32.0 ipv6-prefix 2701:d01:3344::
+	cpe-domain-name cpe1 ipv4-prefix 166.1.32.0 ipv6-prefix 2701:d01:3344::
 </code>
 </pre>
 </div>
@@ -212,7 +212,7 @@ the subject for applying the MAP-T rules. In our example 4th generation Tomahawk
 <div class="highlighter-rouge">
 <pre class="highlight">
 <code>
-		ext-domain-name ext1 ipv6-prefix 3601:d01:3344::/48 ipv4-vrf default
+	ext-domain-name ext1 ipv6-prefix 3601:d01:3344::/48 ipv4-vrf default
 </code>
 </pre>
 </div>
@@ -223,29 +223,29 @@ the subject for applying the MAP-T rules. In our example 4th generation Tomahawk
 <div class="highlighter-rouge">
 <pre class="highlight">
 <code>
-		"show cef 8.8.8.8"
+	"show cef 8.8.8.8"
         
-		8.8.8.0/24, version 134, internal 0x1000001 0x0 (ptr 0x721fc418) [1], 0x0 (0x721bd668), 0xa20 (0x726cd688)
-		 Updated Apr 27 15:08:18.684
-		 remote adjacency to TenGigE0/6/0/0/1
-		 Prefix Len 24, traffic index 0, precedence n/a, priority 3
-		   <mark>via 192.168.1.2/32, TenGigE0/6/0/0/1, 4 dependencies, weight 0, class 0 [flags 0x0]</mark>
-		    path-idx 0 NHID 0x0 [0x72a6bb08 0x0]
-		    next hop 192.168.1.2/32
- 		   remote adjacency
-		     local label 24028      labels imposed {None}
+	8.8.8.0/24, version 134, internal 0x1000001 0x0 (ptr 0x721fc418) [1], 0x0 (0x721bd668), 0xa20 (0x726cd688)
+	 Updated Apr 27 15:08:18.684
+	 remote adjacency to TenGigE0/6/0/0/1
+	 Prefix Len 24, traffic index 0, precedence n/a, priority 3
+	   <mark>via 192.168.1.2/32, TenGigE0/6/0/0/1, 4 dependencies, weight 0, class 0 [flags 0x0]</mark>
+	    path-idx 0 NHID 0x0 [0x72a6bb08 0x0]
+	    next hop 192.168.1.2/32
+ 	   remote adjacency
+	     local label 24028      labels imposed {None}
 
 
-		"show cef ipv6 2701:d01:3344::"
+	"show cef ipv6 2701:d01:3344::"
 
-		2701:d01:3344::/64, version 10, internal 0x1000001 0x0 (ptr 0x724f27ac) [1], 0x0 (0x724bd9f0), 0x0 (0x0)
-		 Updated Apr 27 14:47:31.296
-		 remote adjacency to TenGigE0/6/0/0/0
-		 Prefix Len 64, traffic index 0, precedence n/a, priority 3
-		   <mark>via a::2/128, TenGigE0/6/0/0/0, 4 dependencies, weight 0, class 0 [flags 0x0]</mark>
-		    path-idx 0 NHID 0x0 [0x7344d0c8 0x0]
-		    next hop a::2/128
-		    remote adjacency
+	2701:d01:3344::/64, version 10, internal 0x1000001 0x0 (ptr 0x724f27ac) [1], 0x0 (0x724bd9f0), 0x0 (0x0)
+	 Updated Apr 27 14:47:31.296
+	 remote adjacency to TenGigE0/6/0/0/0
+	 Prefix Len 64, traffic index 0, precedence n/a, priority 3
+	   <mark>via a::2/128, TenGigE0/6/0/0/0, 4 dependencies, weight 0, class 0 [flags 0x0]</mark>
+	    path-idx 0 NHID 0x0 [0x7344d0c8 0x0]
+	    next hop a::2/128
+	    remote adjacency
 </code>
 </pre>
 </div>
@@ -260,20 +260,20 @@ the subject for applying the MAP-T rules. In our example 4th generation Tomahawk
 <div class="highlighter-rouge">
 <pre class="highlight">
 <code>
-		policy-map type pbr CGN_0
-			handle:0x38000002
- 			table description: L3 IPv4 and IPv6
- 			class handle:0x78000003  sequence 1
-   			  <mark>match destination-address ipv4 166.1.32.0 255.255.255.0</mark>
-  			 punt service-node type cgn index 1001 app-id 0 local-id 0x1389
-		   !
-			class handle:0x78000004  sequence 1
-			  <mark>match destination-address ipv6 3601:d01:3344::/48</mark>
- 			 punt service-node type cgn index 3001 app-id 0 local-id 0x1b59
-		   !
-		    class handle:0xf8000002  sequence 4294967295 (class-default)
- 		   !
-	    end-policy-map
+	policy-map type pbr CGN_0
+		handle:0x38000002
+ 		table description: L3 IPv4 and IPv6
+ 		class handle:0x78000003  sequence 1
+   		  <mark>match destination-address ipv4 166.1.32.0 255.255.255.0</mark>
+  		 punt service-node type cgn index 1001 app-id 0 local-id 0x1389
+	   !
+		class handle:0x78000004  sequence 1
+		  <mark>match destination-address ipv6 3601:d01:3344::/48</mark>
+ 		 punt service-node type cgn index 3001 app-id 0 local-id 0x1b59
+	   !
+	    class handle:0xf8000002  sequence 4294967295 (class-default)
+ 	   !
+   end-policy-map
 </code>
 </pre>
 </div>
@@ -283,92 +283,101 @@ We can see three classes created (1 for each domain rule plus default class for 
 
 2. Before we check the PBR programming we need to make sure that corresponding Null0 routes have been created for traffic Destination Addresses to be translated. That is done for PBR to be able to intercept this traffic to send further for translation. As we see from policy-map output above we need to have Null0 for prefixes 166.1.32.0/24 and 3601:d01:3344::/48. This routing entrees will be created automatically by the system:
 
-		"show route 166.1.32.0/24"
+<div class="highlighter-rouge">
+<pre class="highlight">
+<code>
+	"show route 166.1.32.0/24"
 
-		Routing entry for 166.1.32.0/24
-		  Known via "connected", distance 1, metric 0
-		  Installed Apr 27 13:49:38.809 for 00:18:05
-		  Routing Descriptor Blocks
-		    directly connected, via Null0
-		      Route metric is 0
-		  No advertising protos.
+	Routing entry for 166.1.32.0/24
+	  Known via "connected", distance 1, metric 0
+	  Installed Apr 27 13:49:38.809 for 00:18:05
+	  Routing Descriptor Blocks
+	    directly connected, via Null0
+	      Route metric is 0
+	  No advertising protos.
           
           
-		"show route ipv6 3601:d01:3344::/48"
+	"show route ipv6 3601:d01:3344::/48"
 
-		Routing entry for 3601:d01:3344::/48
-		  Known via "connected", distance 0, metric 0 (connected)
-		  Installed Apr 27 13:49:38.904 for 00:18:21
-		  Routing Descriptor Blocks
-		    directly connected, via Null0
-		      Route metric is 0
-		  No advertising protos.
-
+	Routing entry for 3601:d01:3344::/48
+	  Known via "connected", distance 0, metric 0 (connected)
+	  Installed Apr 27 13:49:38.904 for 00:18:21
+	  Routing Descriptor Blocks
+	    directly connected, via Null0
+	      Route metric is 0
+	  No advertising protos.
+</code>
+</pre>
+</div>
 
 3. Information from the policy-map is used further to program corresponding rules in the Hardware:
 
-
-		"show pbr-pal ipolicy CGN_0 detail location 0/6/CPU0"
+<div class="highlighter-rouge">
+<pre class="highlight">
+<code>
+	"show pbr-pal ipolicy CGN_0 detail location 0/6/CPU0"
     
-		 policy name        : CGN_0
-		 number of iclasses : 3
-		 number of VMRs     : 3
-		 ucode format       : 13
-		 vmr id for NP0     : 3
-		 interface count    : 2
-		 interface list     : Te0/6/0/0/0 Te0/6/0/0/1
+	 policy name        : CGN_0
+	 number of iclasses : 3
+	 number of VMRs     : 3
+	 ucode format       : 13
+	 vmr id for NP0     : 3
+	 interface count    : 2
+	 interface list     : Te0/6/0/0/0 Te0/6/0/0/1
         
 
 
-		"show pbr-pal ipolicy CGN_0 iclass all vmr location 0/6/CPU0"
+	"show pbr-pal ipolicy CGN_0 iclass all vmr location 0/6/CPU0"
 
-		Policy name: CGN_0
-		iclass handle            : 0x78000003
-		  ifh                    : x
-		  protocol               : x
-		  source ip addr         : x
-		  dest ip addr           : 166.1.32.0/255.255.255.0
-		  source port            : x
-		  dest port              : x
-		  DSCP                   : x
-		  ethertype              : x
-		  vlan id                : x
-		  vlan cos               : x
-		  source mac             : x
-		  dest  mac              : x
-		  packet length          : x
-		  result                 : 110000ac 8cc60001 65030003 e9030013 89000000 00000000 00000000 00000000
-		iclass handle            : 0x78000004
-		  ifh                    : x
-		  protocol               : x
-		  source ipv6 addr       : x
-		  dest ipv6 addr         : 3601:d01:3344::/48
-		  source port            : x
-		  dest port              : x
-		  DSCP                   : x
-		  ethertype              : x
-		  vlan id                : x
-		  vlan cos               : x
-		  source mac             : x
-		  dest  mac              : x
-		  packet length          : x
-		  result                 : 110000ae 8cc60001 6503000b b903001b 59000000 00000000 00000000 00000000
-		iclass handle            : 0xf8000002
-		  ifh                    : x
-		  protocol               : x
-		  source ip addr         : x
-		  dest ip addr           : x
-		  source port            : x
-		  dest port              : x
-		  DSCP                   : x
-		  ethertype              : x
-		  vlan id                : x
-		  vlan cos               : x
-		  source mac             : x
-		  dest  mac              : x
-		  packet length          : x
-		  result                 : 11000050 8dc60000 00000000 00000000 00000000 00000000 00000000 00000000
-
+	Policy name: CGN_0
+	iclass handle            : 0x78000003
+	  ifh                    : x
+	  protocol               : x
+	  source ip addr         : x
+	  dest ip addr           : 166.1.32.0/255.255.255.0
+	  source port            : x
+	  dest port              : x
+	  DSCP                   : x
+	  ethertype              : x
+	  vlan id                : x
+	  vlan cos               : x
+	  source mac             : x
+	  dest  mac              : x
+	  packet length          : x
+	  result                 : 110000ac 8cc60001 65030003 e9030013 89000000 00000000 00000000 00000000
+	iclass handle            : 0x78000004
+	  ifh                    : x
+	  protocol               : x
+	  source ipv6 addr       : x
+	  dest ipv6 addr         : 3601:d01:3344::/48
+	  source port            : x
+	  dest port              : x
+	  DSCP                   : x
+	  ethertype              : x
+	  vlan id                : x
+	  vlan cos               : x
+	  source mac             : x
+	  dest  mac              : x
+	  packet length          : x
+	  result                 : 110000ae 8cc60001 6503000b b903001b 59000000 00000000 00000000 00000000
+	iclass handle            : 0xf8000002
+	  ifh                    : x
+	  protocol               : x
+	  source ip addr         : x
+	  dest ip addr           : x
+	  source port            : x
+	  dest port              : x
+	  DSCP                   : x
+	  ethertype              : x
+	  vlan id                : x
+	  vlan cos               : x
+	  source mac             : x
+	  dest  mac              : x
+	  packet length          : x
+	  result                 : 11000050 8dc60000 00000000 00000000 00000000 00000000 00000000 00000000
+</code>
+</pre>
+</div>
 
 Make sure, that both IPv4 and IPv6 addresses are listed in corresponding VMRs. If not then verify if step (1) info above is correct and all interfaces are programmed for the Line Card (verify the "interface list" above). Removing and re-applying service instance configuration can be helpful as well once all errors are fixed.
 
