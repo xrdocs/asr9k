@@ -324,9 +324,13 @@ We can see three classes created (1 for each domain rule plus default class for 
 	 vmr id for NP0     : 3
 	 interface count    : 2
 	 <mark>interface list     : Te0/6/0/0/0 Te0/6/0/0/1</mark>
-        
+</code>
+</pre>
+</div>        
 
-
+<div class="highlighter-rouge">
+<pre class="highlight">
+<code>
 	"show pbr-pal ipolicy CGN_0 iclass all vmr location 0/6/CPU0"
 
 	Policy name: CGN_0
@@ -650,9 +654,9 @@ As configured IPv6 prefix length is /64 than cpe-domain address not matching the
 <div class="highlighter-rouge">
 <pre class="highlight">
 <code>
-  	2701:d01:3344:4517:: = 2701:d01:3344:4517:<mark>0</mark>::/64  
+ 2701:d01:3344:4517:: = 2701:d01:3344:<mark>4517:0</mark>::/64  
     **vs** 
-    2701:D01:3344:<mark>0</mark>::/64
+ 2701:D01:3344:<mark>0</mark>::/64
 </code>
 </pre>
 </div>
@@ -662,8 +666,8 @@ As configured IPv6 prefix length is /64 than cpe-domain address not matching the
 <div class="highlighter-rouge">
 <pre class="highlight">
 <code>
-	show tech services cgn
-	show tech pbr
+show tech services cgn
+show tech pbr
 </code>
 </pre>
 </div>
