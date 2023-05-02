@@ -48,7 +48,7 @@ In IPv6→IPv4 translation, source address and port are translated based on RFC 
 
 Lets examine this based on IPv4 to IPv6 translation (IPv6 to IPv4 will be similar):
 
-1. **Destination Address Translation** (166.1.32.1 → <code>2701:d01:3344::</code>):
+1. **Destination Address Translation** (<code>166.1.32.1 → 2701:d01:3344::</code>):
 
 We need to define key numbers for Port-Mapping Algorithm (rfc7597). Based on our scenario configuration (see Configuration Section) those will be:
 
@@ -68,13 +68,13 @@ We need to define key numbers for Port-Mapping Algorithm (rfc7597). Based on our
 
 
 {:start="2"}
-2. **Source Address Translation** (8.8.8.8 → <code>3601:d01:3344</code>):
+2. **Source Address Translation** (<code>8.8.8.8 → 3601:d01:3344</code>):
 This translation is more straightforward and defined by RFC 6052:
 
 
 		/48 IPv6 prefix | v4(16) | U | (16) | suffix |
 
-Thus final prefix will look like: <code>3601:d01:3344:**808:8:800::**</code>
+Thus final prefix will look like: <code>3601:d01:3344:<mark>808:8:800</mark>::</code>
 
 I'm using the traffic generator for this scenario and based on translations above my packets will look like:
 
@@ -391,13 +391,13 @@ Make sure, that both IPv4 and IPv6 addresses are listed in corresponding VMRs. I
 <div class="highlighter-rouge">
 <pre class="highlight">
 <code>
-	"show pbr-pal ipolicy CGN_0 iclass all stats loc 0/6/CPU0"
+"show pbr-pal ipolicy CGN_0 iclass all stats loc 0/6/CPU0"
 
-	Policy name: CGN_0
-	 iclass      packets/bytes                             drop packets/drop bytes
-	 78000006    1494879/149487900                           0/0
-	 78000007    18391078/1839107800                         0/0
-	 f8000005    0/0                                         0/0
+Policy name: CGN_0
+ iclass      packets/bytes                             drop packets/drop bytes
+ 78000006    1494879/149487900                           0/0
+ 78000007    18391078/1839107800                         0/0
+ f8000005    0/0                                         0/0
 </code>
 </pre>
 </div>
@@ -412,110 +412,110 @@ Once traffic hit the correct PBR class it is being sent for translation where sy
 <div class="highlighter-rouge">
 <pre class="highlight">
 <code>
-    "show cgv6 map-t-cisco MAPT-1 statistics"
-    	    	
-    Map-t-cisco IPv6 to IPv4 counters:
-    ======================================
-    <mark>Translated Udp Count: 76200085</mark>
-    Translated Tcp Count: 0
-    Translated Icmp Count: 0
-    PSID Drop Udp Count: 0
-    PSID Drop Tcp Count: 0
-    PSID Drop Icmp Count: 0
-    
-    Map-t-cisco IPv4 to IPv6 counters:
-    ======================================
-    <mark>Translated Udp Count: 5209786</mark>
-    Translated Tcp Count: 0
-    Translated Icmp Count: 0
-    PSID Drop Udp Count: 0
-    PSID Drop Tcp Count: 0
-    PSID Drop Icmp Count: 0
-    	
-    Map-t-cisco exception IPv6 to IPv4 counters:
-    ======================================
-    TCP Incoming Count: 0
-    TCP NonTranslatable Drop Count: 0
-    TCP Invalid NextHdr Drop Count: 0
-    TCP NoDb Drop Count: 0
-    TCP Translated Count: 0
-    TCP Psid Drop Count: 0
-    	
-    UDP Incoming Count: 0
-    UDP NonTranslatable Drop Count: 0
-    UDP Invalid Next Hdr Drop Count: 0
-    UDP No Db Drop Count: 0
-   	UDP Translated Count: 0
-    UDP Psid Drop Count: 0
-    	
-    ICMP Total Incoming Count: 0
-    ICMP No DB Drop Count: 0
-    ICMP Fragment drop count: 0
-   	ICMP Invalid NxtHdr Drop Count: 0
-    ICMP Nontanslatable Drop Count: 0
-    ICMP Nontanslatable Fwd Count: 0
-   	ICMP UnsupportedType Drop Count: 0
-    ICMP Err Translated Count: 0
-    ICMP Query Translated Count: 0
-    ICMP Psid Drop Count: 0
-    	
-    Subsequent Fragment Incoming Count: 0
-    Subsequent Fragment NonTranslateable Drop Count: 0
-    Invalid NextHdr Drop Count: 0
-    Subsequent Fragment No Db Drop Count: 0
-    Subsequent Fragment Translated Count: 0
-    
-    Extensions/Options Incoming Count: 0
-    Extensions/Options Drop Count: 0
-    Extensions/Options Forward Count: 0
-    
-    Extensions/Options No DB drop Count: 0
-    Unsupported Protocol Count: 0
-    
-    Map-t-cisco exception packets IPv4 to IPv6 counters:
-    ======================================
-    TCP Incoming Count: 0
-    TCP No Db Drop Count: 0
-    TCP Translated Count: 0
-    TCP Psid Drop Count: 0
-    
-    UDP Incoming Count: 0
-    UDP No Db Drop Count: 0
-    UDP Translated Count: 0
-   	UDP FragmentCrc Zero Drop Count: 0
-    UDP CrcZeroRecy Sent Count: 0
-    UDP CrcZeroRecy Drop Count: 0
-    UDP Psid Drop Count: 0
-    	
-    ICMP Total Incoming Count: 0
-    ICMP No Db Drop Count: 0
-    ICMP Fragment drop count: 0
-    ICMP UnsupportedType Drop Count: 0
-    ICMP Err Translated Count: 0
-    ICMP Query Translated Count: 0
-    ICMP Psid Drop Count: 0
-    	
-    Subsequent Fragment Incoming Count: 0
-    Subsequent Fragment No Db Drop  Count: 0
-    Subsequent Fragment Translated Count: 0
-    
-    Subsequent Fragment Drop Count: 0
-    Subsequent Fragment Throttled Count: 0
-    Subsequent Fragment Timeout Drop Count: 0
-    Subsequent Fragment TCP Input Count: 0
-    Subsequent Fragment UDP Input Count: 0
-    Subsequent Fragment ICMP Input Count: 0
-    
-    Options Incoming Count: 0
-    Options Drop Count: 0
-    Options Forward Count: 0
-    Options No DB drop Count: 0
-    Unsupported Protocol Count: 0
-    	
-    ICMP generated counters :
-    =======================
-    IPv4 ICMP Messages generated count: 0
-    IPv6 ICMP Messages generated count: 0
+"show cgv6 map-t-cisco MAPT-1 statistics"
+	    	
+Map-t-cisco IPv6 to IPv4 counters:
+======================================
+<mark>Translated Udp Count: 76200085</mark>
+Translated Tcp Count: 0
+Translated Icmp Count: 0
+PSID Drop Udp Count: 0
+PSID Drop Tcp Count: 0
+PSID Drop Icmp Count: 0
+
+Map-t-cisco IPv4 to IPv6 counters:
+======================================
+<mark>Translated Udp Count: 5209786</mark>
+Translated Tcp Count: 0
+Translated Icmp Count: 0
+PSID Drop Udp Count: 0
+PSID Drop Tcp Count: 0
+PSID Drop Icmp Count: 0
+	
+Map-t-cisco exception IPv6 to IPv4 counters:
+======================================
+TCP Incoming Count: 0
+TCP NonTranslatable Drop Count: 0
+TCP Invalid NextHdr Drop Count: 0
+TCP NoDb Drop Count: 0
+TCP Translated Count: 0
+TCP Psid Drop Count: 0
+	
+UDP Incoming Count: 0
+UDP NonTranslatable Drop Count: 0
+UDP Invalid Next Hdr Drop Count: 0
+UDP No Db Drop Count: 0
+	UDP Translated Count: 0
+UDP Psid Drop Count: 0
+	
+ICMP Total Incoming Count: 0
+ICMP No DB Drop Count: 0
+ICMP Fragment drop count: 0
+	ICMP Invalid NxtHdr Drop Count: 0
+ICMP Nontanslatable Drop Count: 0
+ICMP Nontanslatable Fwd Count: 0
+	ICMP UnsupportedType Drop Count: 0
+ICMP Err Translated Count: 0
+ICMP Query Translated Count: 0
+ICMP Psid Drop Count: 0
+	
+Subsequent Fragment Incoming Count: 0
+Subsequent Fragment NonTranslateable Drop Count: 0
+Invalid NextHdr Drop Count: 0
+Subsequent Fragment No Db Drop Count: 0
+Subsequent Fragment Translated Count: 0
+
+Extensions/Options Incoming Count: 0
+Extensions/Options Drop Count: 0
+Extensions/Options Forward Count: 0
+
+Extensions/Options No DB drop Count: 0
+Unsupported Protocol Count: 0
+
+Map-t-cisco exception packets IPv4 to IPv6 counters:
+======================================
+TCP Incoming Count: 0
+TCP No Db Drop Count: 0
+TCP Translated Count: 0
+TCP Psid Drop Count: 0
+
+UDP Incoming Count: 0
+UDP No Db Drop Count: 0
+UDP Translated Count: 0
+	UDP FragmentCrc Zero Drop Count: 0
+UDP CrcZeroRecy Sent Count: 0
+UDP CrcZeroRecy Drop Count: 0
+UDP Psid Drop Count: 0
+	
+ICMP Total Incoming Count: 0
+ICMP No Db Drop Count: 0
+ICMP Fragment drop count: 0
+ICMP UnsupportedType Drop Count: 0
+ICMP Err Translated Count: 0
+ICMP Query Translated Count: 0
+ICMP Psid Drop Count: 0
+	
+Subsequent Fragment Incoming Count: 0
+Subsequent Fragment No Db Drop  Count: 0
+Subsequent Fragment Translated Count: 0
+
+Subsequent Fragment Drop Count: 0
+Subsequent Fragment Throttled Count: 0
+Subsequent Fragment Timeout Drop Count: 0
+Subsequent Fragment TCP Input Count: 0
+Subsequent Fragment UDP Input Count: 0
+Subsequent Fragment ICMP Input Count: 0
+
+Options Incoming Count: 0
+Options Drop Count: 0
+Options Forward Count: 0
+Options No DB drop Count: 0
+Unsupported Protocol Count: 0
+	
+ICMP generated counters :
+=======================
+IPv4 ICMP Messages generated count: 0
+IPv6 ICMP Messages generated count: 0
 </code>
 </pre>
 </div>
@@ -526,22 +526,22 @@ E.G. if the traffic port is not matching the programmed port in IPv6 to IPv4 tra
 <div class="highlighter-rouge">
 <pre class="highlight">
 <code>
-	Map-t-cisco exception IPv6 to IPv4 counters:
-	======================================
+Map-t-cisco exception IPv6 to IPv4 counters:
+======================================
 
-	TCP Incoming Count: 0
-	TCP NonTranslatable Drop Count: 0
-	TCP Invalid NextHdr Drop Count: 0
-	TCP NoDb Drop Count: 0
-	TCP Translated Count: 0
-	TCP Psid Drop Count: 0
+TCP Incoming Count: 0
+TCP NonTranslatable Drop Count: 0
+TCP Invalid NextHdr Drop Count: 0
+TCP NoDb Drop Count: 0
+TCP Translated Count: 0
+TCP Psid Drop Count: 0
 
-	UDP Incoming Count: 0
-	UDP NonTranslatable Drop Count: 0
-	UDP Invalid Next Hdr Drop Count: 0
-	UDP No Db Drop Count: 0
-	UDP Translated Count: 0
-	<mark>UDP Psid Drop Count: 634576</mark>
+UDP Incoming Count: 0
+UDP NonTranslatable Drop Count: 0
+UDP Invalid Next Hdr Drop Count: 0
+UDP No Db Drop Count: 0
+UDP Translated Count: 0
+<mark>UDP Psid Drop Count: 634576</mark>
 </code>
 </pre>
 </div>
@@ -554,24 +554,24 @@ Following counters will increment during the normal work of the MAP-T translatio
 <div class="highlighter-rouge">
 <pre class="highlight">
 <code>
-    "show controllers np counters np0 loc 0/6/CPU0  | ex "           0""
-    	
-    Read 53 non-zero NP counters:
-    Offset  Counter                                               FrameValue   Rate (pps)
-    -------------------------------------------------------------------------------------
-      17  MDF_TX_WIRE                                              132257833      310077
-      21  MDF_TX_FABRIC                                            132257175      310077
-      33  PARSE_FAB_RECEIVE_CNT                                    132257832      310079
-      45  PARSE_ENET_RECEIVE_CNT                                   312065555      310081
-      53  PARSE_TOP_LOOP_RECEIVE_CNT                               558144612      620162
-      70  RSV_OPEN_NETWORK_SERVICE_TRIGGER_SVC                     279072350      310081
-      99  RSV_OPEN_NETWORK_SERVICE_PHASE                           279072439      310081
-     544  MDF_PIPE_LPBK                                            558238357      620439
-     552  MDF_OPEN_NETWORK_SERVICE_MODULE_ENTER                    558238405      620439
-     556  MDF_OPEN_NETWORK_SERVICE_TRGR_FWD_LKUP                   279119214      310220
-     678  VIRTUAL_IF_PROTO_IPV4_UCST_INPUT_CNT                     227572818      205272
-     679  VIRTUAL_IF_PROTO_IPV6_UCST_INPUT_CNT                      50264145       21080
-    2010  PARSE_OPEN_NETWORK_SERVICE_SVC_LKUP                      279123639      312507
+"show controllers np counters np0 loc 0/6/CPU0  | ex "           0""
+	
+Read 53 non-zero NP counters:
+Offset  Counter                                               FrameValue   Rate (pps)
+-------------------------------------------------------------------------------------
+  17  MDF_TX_WIRE                                              132257833      310077
+  21  MDF_TX_FABRIC                                            132257175      310077
+  33  PARSE_FAB_RECEIVE_CNT                                    132257832      310079
+  45  PARSE_ENET_RECEIVE_CNT                                   312065555      310081
+  53  PARSE_TOP_LOOP_RECEIVE_CNT                               558144612      620162
+  70  RSV_OPEN_NETWORK_SERVICE_TRIGGER_SVC                     279072350      310081
+  99  RSV_OPEN_NETWORK_SERVICE_PHASE                           279072439      310081
+ 544  MDF_PIPE_LPBK                                            558238357      620439
+ 552  MDF_OPEN_NETWORK_SERVICE_MODULE_ENTER                    558238405      620439
+ 556  MDF_OPEN_NETWORK_SERVICE_TRGR_FWD_LKUP                   279119214      310220
+ 678  VIRTUAL_IF_PROTO_IPV4_UCST_INPUT_CNT                     227572818      205272
+ 679  VIRTUAL_IF_PROTO_IPV6_UCST_INPUT_CNT                      50264145       21080
+2010  PARSE_OPEN_NETWORK_SERVICE_SVC_LKUP                      279123639      312507
 </code>
 </pre>
 </div>
@@ -583,10 +583,10 @@ E.G. I send 200k pps of IPv6 to IPv4 flow and 100k pps of IPv4 to IPv6f flow whi
 <div class="highlighter-rouge">
 <pre class="highlight">
 <code>
-    Offset  Counter                                               FrameValue   Rate (pps)
-    -------------------------------------------------------------------------------------
-    678  VIRTUAL_IF_PROTO_IPV4_UCST_INPUT_CNT                     227572818      205272
-    679  VIRTUAL_IF_PROTO_IPV6_UCST_INPUT_CNT                      50264145       21080
+Offset  Counter                                               FrameValue   Rate (pps)
+-------------------------------------------------------------------------------------
+678  VIRTUAL_IF_PROTO_IPV4_UCST_INPUT_CNT                     227572818      205272
+679  VIRTUAL_IF_PROTO_IPV6_UCST_INPUT_CNT                      50264145       21080
 </code>
 </pre>
 </div>
@@ -595,12 +595,12 @@ E.G. I send 200k pps of IPv6 to IPv4 flow and 100k pps of IPv4 to IPv6f flow whi
 
 <div class="highlighter-rouge">
 <pre class="highlight">
-<code>
-    Offset  Counter                                               FrameValue   Rate (pps)
-    -------------------------------------------------------------------------------------
-    544  MDF_PIPE_LPBK                                            558238357      620439
-    552  MDF_OPEN_NETWORK_SERVICE_MODULE_ENTER                    558238405      620439
-    556  MDF_OPEN_NETWORK_SERVICE_TRGR_FWD_LKUP                   279119214      310220
+e>
+Offset  Counter                                               FrameValue   Rate (pps)
+-------------------------------------------------------------------------------------
+544  MDF_PIPE_LPBK                                            558238357      620439
+552  MDF_OPEN_NETWORK_SERVICE_MODULE_ENTER                    558238405      620439
+556  MDF_OPEN_NETWORK_SERVICE_TRGR_FWD_LKUP                   279119214      310220
 </code>
 </pre>
 </div>
@@ -613,9 +613,9 @@ E.G. I send 200k pps of IPv6 to IPv4 flow and 100k pps of IPv4 to IPv6f flow whi
 <div class="highlighter-rouge">
 <pre class="highlight">
 <code>
-    Offset  Counter                                               FrameValue   Rate (pps)
-    -------------------------------------------------------------------------------------
-    560  MDF_OPEN_NETWORK_SERVICE_PSID_IPV6_FAIL                     931002       12354       </code>
+Offset  Counter                                               FrameValue   Rate (pps)
+-------------------------------------------------------------------------------------
+560  MDF_OPEN_NETWORK_SERVICE_PSID_IPV6_FAIL                     931002       12354       </code>
 </pre>
 </div> 
 
@@ -625,11 +625,11 @@ Counter identifies that the port used on the packets does not match the PSID pro
 
 <div class="highlighter-rouge">
 <pre class="highlight">
-<code>
-    Offset  Counter                                               FrameValue   Rate (pps)
-    -------------------------------------------------------------------------------------
-	946  PUNT_IPV6_ADJ_NULL_RTE                                        3420           2
-	947  PUNT_IPV6_ADJ_NULL_RTE_EXCD                                2680386        1405
+e>
+Offset  Counter                                               FrameValue   Rate (pps)
+-------------------------------------------------------------------------------------
+946  PUNT_IPV6_ADJ_NULL_RTE                                        3420           2
+947  PUNT_IPV6_ADJ_NULL_RTE_EXCD                                2680386        1405
 </code>
 </pre>
 </div>
@@ -639,9 +639,9 @@ Counter identifies that the port used on the packets does not match the PSID pro
 <div class="highlighter-rouge">
 <pre class="highlight">
 <code>
-    Offset  Counter                                               FrameValue   Rate (pps)
-    -------------------------------------------------------------------------------------
-	541  MDF_OPEN_NETWORK_SERVICE_PICK_UNKNOWN_ACTION             874220815       34715
+Offset  Counter                                               FrameValue   Rate (pps)
+-------------------------------------------------------------------------------------
+541  MDF_OPEN_NETWORK_SERVICE_PICK_UNKNOWN_ACTION             874220815       34715
 </code>
 </pre>
 </div>
@@ -680,31 +680,31 @@ show tech pbr
 <div class="highlighter-rouge">
 <pre class="highlight">
 <code>
-	"monitor np counter MDF_TX_WIRE.1 np0 loc 0/6/CPU0"
+"monitor np counter MDF_TX_WIRE.1 np0 loc 0/6/CPU0"
 
-	Usage of NP monitor is recommended for cisco internal use only.
-	Please use instead 'show controllers np capture' for troubleshooting packet drops in NP
-	and 'monitor np interface' for per (sub)interface counter monitoring
+Usage of NP monitor is recommended for cisco internal use only.
+Please use instead 'show controllers np capture' for troubleshooting packet drops in NP
+and 'monitor np interface' for per (sub)interface counter monitoring
 
-	Warning: Every packet captured will be dropped! If you use the 'count'
-	         option to capture multiple protocol packets, this could disrupt
-	         protocol sessions (eg, OSPF session flap). So if capturing protocol
-	         packets, capture only 1 at a time.
+Warning: Every packet captured will be dropped! If you use the 'count'
+         option to capture multiple protocol packets, this could disrupt
+         protocol sessions (eg, OSPF session flap). So if capturing protocol
+         packets, capture only 1 at a time.
 
-	Warning: A mandatory NP reset will be done after monitor to clean up.
-         This will cause ~150ms traffic outage. Links will stay Up.
-	 Proceed y/n [y] > y
-	 Monitor MDF_TX_WIRE.1 on NP0 ... (Ctrl-C to quit)
+Warning: A mandatory NP reset will be done after monitor to clean up.
+     This will cause ~150ms traffic outage. Links will stay Up.
+ Proceed y/n [y] > y
+ Monitor MDF_TX_WIRE.1 on NP0 ... (Ctrl-C to quit)
 
-	Tue Apr 25 20:43:20 2023 -- NP0 packet
+Tue Apr 25 20:43:20 2023 -- NP0 packet
 
-	 From Fabric: 88 byte packet
-	0000: ac bc d9 3e 22 22 ac bc d9 3e 71 30 86 dd 60 00   .........
-	0010: 00 00 00 22 2c 3f 36 01 0d 01 33 44 55 66 00 08   ...",?6...3DUf..
-	0020: 08 08 08 00 00 00 27 01 0d 01 33 44 45 17 00 00   ......'...3DE...
-	0030: a6 01 20 01 00 00 11 00 00 00 00 00 00 00 08 4b   .. ............K
-	0040: 09 11 00 1a 57 f0 00 01 02 03 04 05 06 07 08 09   ....Wp..........
-	0050: 0a 0b 0c 0d 0e 0f 10 11                           ........
+ From Fabric: 88 byte packet
+0000: ac bc d9 3e 22 22 ac bc d9 3e 71 30 86 dd 60 00   .........
+0010: 00 00 00 22 2c 3f 36 01 0d 01 33 44 55 66 00 08   ...",?6...3DUf..
+0020: 08 08 08 00 00 00 27 01 0d 01 33 44 45 17 00 00   ......'...3DE...
+0030: a6 01 20 01 00 00 11 00 00 00 00 00 00 00 08 4b   .. ............K
+0040: 09 11 00 1a 57 f0 00 01 02 03 04 05 06 07 08 09   ....Wp..........
+0050: 0a 0b 0c 0d 0e 0f 10 11                           ........
 </code>
 </pre>
 </div>
