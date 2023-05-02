@@ -36,7 +36,7 @@ Host with IPv4 address 166.1.32.1 (port 2321) in the Private IPv4 domain needs t
 
 We will explore the ASR9k role as MAP-T Inline (no Service Modules) Border Router. MAP-T CE functionality is not considered in this Tutorial (not supported by ASR9000).
 
-We will use 3601:d01:3344::/48 subnet to translate the Internet Host address (external domain) and 2701:d01:3344::/48 for Private host translation (CPE domain). Next section is going to explain the magic behind the translation.
+We will use <code>3601:d01:3344::/48</code> subnet to translate the Internet Host address (external domain) and <code>2701:d01:3344::/48</code> for Private host translation (CPE domain). Next section is going to explain the magic behind the translation.
 
 
 
@@ -48,7 +48,7 @@ In IPv6→IPv4 translation, source address and port are translated based on RFC 
 
 Lets examine this based on IPv4 to IPv6 translation (IPv6 to IPv4 will be similar):
 
-1. **Destination Address Translation** (166.1.32.1 → 2701:d01:3344::):
+1. **Destination Address Translation** (166.1.32.1 → <code>2701:d01:3344::</code>):
 
 We need to define key numbers for Port-Mapping Algorithm (rfc7597). Based on our scenario configuration (see Configuration Section) those will be:
 
@@ -68,13 +68,13 @@ We need to define key numbers for Port-Mapping Algorithm (rfc7597). Based on our
 
 
 {:start="2"}
-2. **Source Address Translation** (8.8.8.8 → 3601:d01:3344):
+2. **Source Address Translation** (8.8.8.8 → <code>3601:d01:3344</code>):
 This translation is more straightforward and defined by RFC 6052:
 
 
 		/48 IPv6 prefix | v4(16) | U | (16) | suffix |
 
-Thus final prefix will look like: 3601:d01:3344:**808:8:800::**
+Thus final prefix will look like: <code>3601:d01:3344:**808:8:800::**</code>
 
 I'm using the traffic generator for this scenario and based on translations above my packets will look like:
 
@@ -100,7 +100,7 @@ This is the configuration template for Inline MAP-T:
      service cgv6 instance-name
        service-inline interface type interface-path-id
        service-type map-t-cisco instance-name
-         <mark>cpe-domain ipv4 prefix length value</mark>
+         cpe-domain ipv4 prefix length value
          cpe-domain ipv6 vrf vrf-name
          cpe-domain ipv6 prefix length value
          sharing ratio number
@@ -116,6 +116,9 @@ This is the configuration template for Inline MAP-T:
 
 Within this tutorial we will focus on the following configuration and explain it in more details:
 
+<div class="highlighter-rouge">
+<pre class="highlight">
+<code>
     configure
      service cgv6 CGV6-MAP-T
        service-inline interface TenGigE0/6/0/0/0
@@ -128,60 +131,105 @@ Within this tutorial we will focus on the following configuration and explain it
          contiguous-ports 8
          cpe-domain-name cpe1 ipv4-prefix 166.1.32.0 ipv6-prefix 2701:d01:3344::
          ext-domain-name ext1 ipv6-prefix 3601:d01:3344::/48 ipv4-vrf default
-
+</code>
+</pre>
+</div>
 
 Lets verify this configuration in more details:
 
 1. Announce the cgv6 service and select the proper name:
 
+<div class="highlighter-rouge">
+<pre class="highlight">
+<code>
 		service cgv6 CGV6-MAP-T
+</code>
+</pre>
+</div>
 
 2. Traffic coming from the interfaces configured under the service will be
 the subject for applying the MAP-T rules. In our example 4th generation Tomahawk Line Card is used:
 
+<div class="highlighter-rouge">
+<pre class="highlight">
+<code>
 		service-inline interface TenGigE0/6/0/0/0
 		service-inline interface TenGigE0/6/0/0/1
+</code>
+</pre>
+</div>
 
 3. Next configure the CPE domain to specify corresponding parameters. Please mind the domain name as it will be used in troubleshooting commands:
 
+<div class="highlighter-rouge">
+<pre class="highlight">
+<code>
 		service-type map-t-cisco MAPT-1
+</code>
+</pre>
+</div>
 
 4. Specify the CPE domain parameters:
 
 - We can use either default or single non-default VRF for IPv6 traffic. After IPv4 to IPv6 translation, packet will be forwarded to that VRF:
 
-
+<div class="highlighter-rouge">
+<pre class="highlight">
+<code>
 		cpe-domain ipv6 vrf default
-   
+</code>
+</pre>
+</div>
+
 - Select the prefix length both for IPv4 and IPv6. This is needed to define if additional information required for sharing-ratio and contiguous-ports which are used in port/IP translation verification (based on RFC 7599 and 7597). If IPv6 prefix length is /64 or /128 and IPv4 length is /32 then sharing-ratio and contiguous-ports will not be considered in the translation and may not to be configured. Sharing-ratio and contiguous port will define k and m values explained above.
 
+<div class="highlighter-rouge">
+<pre class="highlight">
+<code>
 		cpe-domain ipv6 prefix length 64
 		cpe-domain ipv4 prefix length 24
 		sharing-ratio 256
 		contiguous-ports 8	
+</code>
+</pre>
+</div>
 
 {:start="5"}
 5. Finally we configure the translation rules:
 
 - IPv4 to IPv6 rules are defined by the cpe-domain config and after translation traffic will go out of the IPv6 VRF defined above. In particular example, traffic destined to 166.1.32.0/24 subnet will be translated to <code>2701:d01:3344::/48</code> subnet and send out VRF default (as configured in our example) based on the routing rule (see step 6 below):
 
+<div class="highlighter-rouge">
+<pre class="highlight">
+<code>
 		cpe-domain-name cpe1 ipv4-prefix 166.1.32.0 ipv6-prefix 2701:d01:3344::
+</code>
+</pre>
+</div>
 
 - IPv6 to IPv4 rules are defined based on ext-domain config. CGN will automatically derive corresponding IPv4 address from the Source and Destination addresses based on the translation algorithm. In the example below traffic towards 3601:d01:3344::/48 will find the portion of IP representing the IPv4 host and port and then route it accordingly based on the routing rule in corresponding VRF:
 
+<div class="highlighter-rouge">
+<pre class="highlight">
+<code>
 		ext-domain-name ext1 ipv6-prefix 3601:d01:3344::/48 ipv4-vrf default
+</code>
+</pre>
+</div>
 
 {:start="6"}
 6. Make sure you have Routing Entry and Adjacency for the translated addresses (otherwise traffic will be lost after translation):
 
-
+<div class="highlighter-rouge">
+<pre class="highlight">
+<code>
 		"show cef 8.8.8.8"
         
 		8.8.8.0/24, version 134, internal 0x1000001 0x0 (ptr 0x721fc418) [1], 0x0 (0x721bd668), 0xa20 (0x726cd688)
 		 Updated Apr 27 15:08:18.684
 		 remote adjacency to TenGigE0/6/0/0/1
 		 Prefix Len 24, traffic index 0, precedence n/a, priority 3
-		   via 192.168.1.2/32, TenGigE0/6/0/0/1, 4 dependencies, weight 0, class 0 [flags 0x0]
+		   <mark>via 192.168.1.2/32, TenGigE0/6/0/0/1, 4 dependencies, weight 0, class 0 [flags 0x0]</mark>
 		    path-idx 0 NHID 0x0 [0x72a6bb08 0x0]
 		    next hop 192.168.1.2/32
  		   remote adjacency
@@ -194,11 +242,13 @@ the subject for applying the MAP-T rules. In our example 4th generation Tomahawk
 		 Updated Apr 27 14:47:31.296
 		 remote adjacency to TenGigE0/6/0/0/0
 		 Prefix Len 64, traffic index 0, precedence n/a, priority 3
-		   via a::2/128, TenGigE0/6/0/0/0, 4 dependencies, weight 0, class 0 [flags 0x0]
+		   <mark>via a::2/128, TenGigE0/6/0/0/0, 4 dependencies, weight 0, class 0 [flags 0x0]</mark>
 		    path-idx 0 NHID 0x0 [0x7344d0c8 0x0]
 		    next hop a::2/128
 		    remote adjacency
-
+</code>
+</pre>
+</div>
 
 ## Troubleshooting
 
@@ -206,21 +256,28 @@ the subject for applying the MAP-T rules. In our example 4th generation Tomahawk
 
 1. Verifying MAP-T we first need to make sure that corresponding PBR policies have been applied correctly. First we will check the policy-map created for it automatically:
 	   "show policy-map transient type pbr"
-       
+
+<div class="highlighter-rouge">
+<pre class="highlight">
+<code>
 		policy-map type pbr CGN_0
 			handle:0x38000002
  			table description: L3 IPv4 and IPv6
  			class handle:0x78000003  sequence 1
-   			  match destination-address ipv4 166.1.32.0 255.255.255.0
+   			  <mark>match destination-address ipv4 166.1.32.0 255.255.255.0</mark>
   			 punt service-node type cgn index 1001 app-id 0 local-id 0x1389
 		   !
 			class handle:0x78000004  sequence 1
-			  match destination-address ipv6 3601:d01:3344::/48
+			  <mark>match destination-address ipv6 3601:d01:3344::/48</mark>
  			 punt service-node type cgn index 3001 app-id 0 local-id 0x1b59
 		   !
 		    class handle:0xf8000002  sequence 4294967295 (class-default)
  		   !
 	    end-policy-map
+</code>
+</pre>
+</div>
+
 We can see three classes created (1 for each domain rule plus default class for non-matching traffic): 0x78000003 for IPv4 to IPv6 translation, 0x78000004 for for IPv6 to IPv4 translation and default class 0xf8000002. Missing any of the classes or not seeing proper IP addresses associated with those would mean that configuration did no apply correctly. One recommendation would be to try removing configuration for the whole instance and applying it back. 
 
 
