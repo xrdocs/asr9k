@@ -4,13 +4,15 @@ date: '2023-04-24 13:32 -0400'
 title: ASR 9000 Inline MAP-T Border Relay Configuration and Troubleshooting
 tags:
   - iosxr
+  - ASR 9000
+  - CGNAT
 author: Nikolai Karpyshev
 excerpt: >-
-  ASR9k Supports inline MAP-T Border Relay functions explained in RFC 7599. This
-  tutorial covers basic configuration and advanced torubleshooting required for
-  implementing this feature in CLassic (32-bit) and Evolved (64-bit) XR SW
-  versions.
-position: hidden
+  ASR 9000 supports inline MAP-T Border Relay functions explained in RFC 7599.
+  This tutorial covers basic configuration and advanced torubleshooting required
+  for implementing this feature in Classic (32-bit) and Evolved (64-bit) IOS-XR
+  SW versions.
+position: top
 ---
 {% include toc icon="table" title="On this page" %}
 
