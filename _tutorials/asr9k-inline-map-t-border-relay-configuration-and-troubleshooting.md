@@ -473,7 +473,7 @@ Once traffic hit the correct PBR class it is being sent for translation where sy
     Unsupported Protocol Count: 0
     
     Map-t-cisco exception packets IPv4 to IPv6 counters:
-   	======================================
+    ======================================
     TCP Incoming Count: 0
     TCP No Db Drop Count: 0
     TCP Translated Count: 0
@@ -568,7 +568,7 @@ Following counters will increment during the normal work of the MAP-T translatio
       99  RSV_OPEN_NETWORK_SERVICE_PHASE                           279072439      310081
      544  MDF_PIPE_LPBK                                            558238357      620439
      552  MDF_OPEN_NETWORK_SERVICE_MODULE_ENTER                    558238405      620439
-   	 556  MDF_OPEN_NETWORK_SERVICE_TRGR_FWD_LKUP                   279119214      310220
+     556  MDF_OPEN_NETWORK_SERVICE_TRGR_FWD_LKUP                   279119214      310220
      678  VIRTUAL_IF_PROTO_IPV4_UCST_INPUT_CNT                     227572818      205272
      679  VIRTUAL_IF_PROTO_IPV6_UCST_INPUT_CNT                      50264145       21080
     2010  PARSE_OPEN_NETWORK_SERVICE_SVC_LKUP                      279123639      312507
@@ -615,7 +615,7 @@ E.G. I send 200k pps of IPv6 to IPv4 flow and 100k pps of IPv4 to IPv6f flow whi
 <code>
     Offset  Counter                                               FrameValue   Rate (pps)
     -------------------------------------------------------------------------------------
-	560  MDF_OPEN_NETWORK_SERVICE_PSID_IPV6_FAIL                     931002       12354       </code>
+    560  MDF_OPEN_NETWORK_SERVICE_PSID_IPV6_FAIL                     931002       12354       </code>
 </pre>
 </div> 
 
