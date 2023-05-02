@@ -579,8 +579,8 @@ E.G. I send 200k pps of IPv6 to IPv4 flow and 100k pps of IPv4 to IPv6f flow whi
 <div class="highlighter-rouge">
 <pre class="highlight">
 <code>
-    	Offset  Counter                                               FrameValue   Rate (pps)
-    	-------------------------------------------------------------------------------------
+    Offset  Counter                                               FrameValue   Rate (pps)
+    -------------------------------------------------------------------------------------
     678  VIRTUAL_IF_PROTO_IPV4_UCST_INPUT_CNT                     227572818      205272
     679  VIRTUAL_IF_PROTO_IPV6_UCST_INPUT_CNT                      50264145       21080
 </code>
@@ -592,6 +592,8 @@ E.G. I send 200k pps of IPv6 to IPv4 flow and 100k pps of IPv4 to IPv6f flow whi
 <div class="highlighter-rouge">
 <pre class="highlight">
 <code>
+    Offset  Counter                                               FrameValue   Rate (pps)
+    -------------------------------------------------------------------------------------
     544  MDF_PIPE_LPBK                                            558238357      620439
     552  MDF_OPEN_NETWORK_SERVICE_MODULE_ENTER                    558238405      620439
     556  MDF_OPEN_NETWORK_SERVICE_TRGR_FWD_LKUP                   279119214      310220
@@ -607,7 +609,9 @@ E.G. I send 200k pps of IPv6 to IPv4 flow and 100k pps of IPv4 to IPv6f flow whi
 <div class="highlighter-rouge">
 <pre class="highlight">
 <code>
-		560  MDF_OPEN_NETWORK_SERVICE_PSID_IPV6_FAIL                     931002       12354       </code>
+    Offset  Counter                                               FrameValue   Rate (pps)
+    -------------------------------------------------------------------------------------
+	560  MDF_OPEN_NETWORK_SERVICE_PSID_IPV6_FAIL                     931002       12354       </code>
 </pre>
 </div> 
 
@@ -618,8 +622,10 @@ Counter identifies that the port used on the packets does not match the PSID pro
 <div class="highlighter-rouge">
 <pre class="highlight">
 <code>
-		 946  PUNT_IPV6_ADJ_NULL_RTE                                        3420           2
-		 947  PUNT_IPV6_ADJ_NULL_RTE_EXCD                                2680386        1405
+    Offset  Counter                                               FrameValue   Rate (pps)
+    -------------------------------------------------------------------------------------
+	946  PUNT_IPV6_ADJ_NULL_RTE                                        3420           2
+	947  PUNT_IPV6_ADJ_NULL_RTE_EXCD                                2680386        1405
 </code>
 </pre>
 </div>
@@ -629,7 +635,9 @@ Counter identifies that the port used on the packets does not match the PSID pro
 <div class="highlighter-rouge">
 <pre class="highlight">
 <code>
-		541  MDF_OPEN_NETWORK_SERVICE_PICK_UNKNOWN_ACTION             874220815       34715
+    Offset  Counter                                               FrameValue   Rate (pps)
+    -------------------------------------------------------------------------------------
+	541  MDF_OPEN_NETWORK_SERVICE_PICK_UNKNOWN_ACTION             874220815       34715
 </code>
 </pre>
 </div>
@@ -642,9 +650,9 @@ As configured IPv6 prefix length is /64 than cpe-domain address not matching the
 <div class="highlighter-rouge">
 <pre class="highlight">
 <code>
-  	2701:d01:3344:4517:: = 2701:d01:3344:4517:**0**::/64  
+  	2701:d01:3344:4517:: = 2701:d01:3344:4517:<mark>0</mark>::/64  
     **vs** 
-    2701:D01:3344:**0**::/64
+    2701:D01:3344:<mark>0</mark>::/64
 </code>
 </pre>
 </div>
@@ -654,8 +662,8 @@ As configured IPv6 prefix length is /64 than cpe-domain address not matching the
 <div class="highlighter-rouge">
 <pre class="highlight">
 <code>
-		show tech services cgn
-		show tech pbr
+	show tech services cgn
+	show tech pbr
 </code>
 </pre>
 </div>
@@ -687,10 +695,10 @@ As configured IPv6 prefix length is /64 than cpe-domain address not matching the
 	Tue Apr 25 20:43:20 2023 -- NP0 packet
 
 	 From Fabric: 88 byte packet
-	0000: ac bc d9 3e 22 22 ac bc d9 3e 71 30 86 dd 60 00   ,<Y>"",<Y>q0.]`.
+	0000: ac bc d9 3e 22 22 ac bc d9 3e 71 30 86 dd 60 00   .........
 	0010: 00 00 00 22 2c 3f 36 01 0d 01 33 44 55 66 00 08   ...",?6...3DUf..
 	0020: 08 08 08 00 00 00 27 01 0d 01 33 44 45 17 00 00   ......'...3DE...
-	0030: a6 01 20 01 00 00 11 00 00 00 00 00 00 00 08 4b   &. ............K
+	0030: a6 01 20 01 00 00 11 00 00 00 00 00 00 00 08 4b   .. ............K
 	0040: 09 11 00 1a 57 f0 00 01 02 03 04 05 06 07 08 09   ....Wp..........
 	0050: 0a 0b 0c 0d 0e 0f 10 11                           ........
 </code>
