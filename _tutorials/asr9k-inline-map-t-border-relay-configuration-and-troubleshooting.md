@@ -286,26 +286,26 @@ We can see three classes created (1 for each domain rule plus default class for 
 <div class="highlighter-rouge">
 <pre class="highlight">
 <code>
-	"show route 166.1.32.0/24"
+"show route 166.1.32.0/24"
 
-	Routing entry for 166.1.32.0/24
-	  Known via "connected", distance 1, metric 0
-	  Installed Apr 27 13:49:38.809 for 00:18:05
-	  Routing Descriptor Blocks
-	    <mark>directly connected, via Null0</mark>
-	      Route metric is 0
-	  No advertising protos.
-          
-          
-	"show route ipv6 3601:d01:3344::/48"
+Routing entry for 166.1.32.0/24
+  Known via "connected", distance 1, metric 0
+  Installed Apr 27 13:49:38.809 for 00:18:05
+  Routing Descriptor Blocks
+    <mark>directly connected, via Null0</mark>
+      Route metric is 0
+  No advertising protos.
+      
+      
+"show route ipv6 3601:d01:3344::/48"
 
-	Routing entry for 3601:d01:3344::/48
-	  Known via "connected", distance 0, metric 0 (connected)
-	  Installed Apr 27 13:49:38.904 for 00:18:21
-	  Routing Descriptor Blocks
-	    <mark>directly connected, via Null0</mark>
-	      Route metric is 0
-	  No advertising protos.
+Routing entry for 3601:d01:3344::/48
+  Known via "connected", distance 0, metric 0 (connected)
+  Installed Apr 27 13:49:38.904 for 00:18:21
+  Routing Descriptor Blocks
+    <mark>directly connected, via Null0</mark>
+      Route metric is 0
+  No advertising protos.
 </code>
 </pre>
 </div>
@@ -315,15 +315,15 @@ We can see three classes created (1 for each domain rule plus default class for 
 <div class="highlighter-rouge">
 <pre class="highlight">
 <code>
-	"show pbr-pal ipolicy CGN_0 detail location 0/6/CPU0"
-    
-	 policy name        : CGN_0
-	 number of iclasses : 3
-	 number of VMRs     : 3
-	 ucode format       : 13
-	 vmr id for NP0     : 3
-	 interface count    : 2
-	 <mark>interface list     : Te0/6/0/0/0 Te0/6/0/0/1</mark>
+"show pbr-pal ipolicy CGN_0 detail location 0/6/CPU0"
+
+ policy name        : CGN_0
+ number of iclasses : 3
+ number of VMRs     : 3
+ ucode format       : 13
+ vmr id for NP0     : 3
+ interface count    : 2
+ <mark>interface list     : Te0/6/0/0/0 Te0/6/0/0/1</mark>
 </code>
 </pre>
 </div>        
@@ -331,54 +331,54 @@ We can see three classes created (1 for each domain rule plus default class for 
 <div class="highlighter-rouge">
 <pre class="highlight">
 <code>
-	"show pbr-pal ipolicy CGN_0 iclass all vmr location 0/6/CPU0"
+"show pbr-pal ipolicy CGN_0 iclass all vmr location 0/6/CPU0"
 
-	Policy name: CGN_0
-	iclass handle            : 0x78000003
-	  ifh                    : x
-	  protocol               : x
-	  source ip addr         : x
-	  dest ip addr           : 166.1.32.0/255.255.255.0
-	  source port            : x
-	  dest port              : x
-	  DSCP                   : x
-	  ethertype              : x
-	  vlan id                : x
-	  vlan cos               : x
-	  source mac             : x
-	  dest  mac              : x
-	  packet length          : x
-	  result                 : 110000ac 8cc60001 65030003 e9030013 89000000 00000000 00000000 00000000
-	iclass handle            : 0x78000004
-	  ifh                    : x
-	  protocol               : x
-	  source ipv6 addr       : x
-	  dest ipv6 addr         : 3601:d01:3344::/48
-	  source port            : x
-	  dest port              : x
-	  DSCP                   : x
-	  ethertype              : x
-	  vlan id                : x
-	  vlan cos               : x
-	  source mac             : x
-	  dest  mac              : x
-	  packet length          : x
-	  result                 : 110000ae 8cc60001 6503000b b903001b 59000000 00000000 00000000 00000000
-	iclass handle            : 0xf8000002
-	  ifh                    : x
-	  protocol               : x
-	  source ip addr         : x
-	  dest ip addr           : x
-	  source port            : x
-	  dest port              : x
-	  DSCP                   : x
-	  ethertype              : x
-	  vlan id                : x
-	  vlan cos               : x
-	  source mac             : x
-	  dest  mac              : x
-	  packet length          : x
-	  result                 : 11000050 8dc60000 00000000 00000000 00000000 00000000 00000000 00000000
+Policy name: CGN_0
+iclass handle            : 0x78000003
+  ifh                    : x
+  protocol               : x
+  source ip addr         : x
+  dest ip addr           : 166.1.32.0/255.255.255.0
+  source port            : x
+  dest port              : x
+  DSCP                   : x
+  ethertype              : x
+  vlan id                : x
+  vlan cos               : x
+  source mac             : x
+  dest  mac              : x
+  packet length          : x
+  result                 : 110000ac 8cc60001 65030003 e9030013 89000000 00000000 00000000 00000000
+iclass handle            : 0x78000004
+  ifh                    : x
+  protocol               : x
+  source ipv6 addr       : x
+  dest ipv6 addr         : 3601:d01:3344::/48
+  source port            : x
+  dest port              : x
+  DSCP                   : x
+  ethertype              : x
+  vlan id                : x
+  vlan cos               : x
+  source mac             : x
+  dest  mac              : x
+  packet length          : x
+  result                 : 110000ae 8cc60001 6503000b b903001b 59000000 00000000 00000000 00000000
+iclass handle            : 0xf8000002
+  ifh                    : x
+  protocol               : x
+  source ip addr         : x
+  dest ip addr           : x
+  source port            : x
+  dest port              : x
+  DSCP                   : x
+  ethertype              : x
+  vlan id                : x
+  vlan cos               : x
+  source mac             : x
+  dest  mac              : x
+  packet length          : x
+  result                 : 11000050 8dc60000 00000000 00000000 00000000 00000000 00000000 00000000
 </code>
 </pre>
 </div>
