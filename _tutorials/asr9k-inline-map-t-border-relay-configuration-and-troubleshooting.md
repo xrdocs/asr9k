@@ -655,7 +655,7 @@ As configured IPv6 prefix length is /64 than cpe-domain address not matching the
 <pre class="highlight">
 <code>
  2701:d01:3344:4517:: = 2701:d01:3344:<mark>4517:0</mark>::/64  
-    **vs** 
+    vs 
  2701:D01:3344:<mark>0</mark>::/64
 </code>
 </pre>
