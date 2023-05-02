@@ -506,6 +506,8 @@ Following counters will increment during the normal work of the MAP-T translatio
 * Other counters are specific to PBR and Translation operations so you can match those against the rate of traffic sent in each direction.
 E.G. I send 200k pps of IPv6 to IPv4 flow and 100k pps of IPv4 to IPv6f flow which match the corresponding counters rate:
 
+    	Offset  Counter                                               FrameValue   Rate (pps)
+    	-------------------------------------------------------------------------------------
     678  VIRTUAL_IF_PROTO_IPV4_UCST_INPUT_CNT                     227572818      205272
     679  VIRTUAL_IF_PROTO_IPV6_UCST_INPUT_CNT                      50264145       21080
          
@@ -581,4 +583,4 @@ I hope this tutorial will be helpful in building the Proof-of-Concept LAB or tro
 Let us know if there are any questions.
 
 ### Additional Resources:
-MAP-T Configuration guide for ASR9000: [https://www.cisco.com/c/en/us/td/docs/routers/asr9000/software/asr9k-r7-7/cgnat/configuration/guide/b-cgnat-cg-asr9k-77x/cgipv6-without-service-modules.html](https://www.cisco.com/c/en/us/td/docs/routers/asr9000/software/asr9k-r7-7/cgnat/configuration/guide/b-cgnat-cg-asr9k-77x/cgipv6-without-service-modules.html)
+[MAP-T Configuration guide for ASR9000](https://www.cisco.com/c/en/us/td/docs/routers/asr9000/software/asr9k-r7-7/cgnat/configuration/guide/b-cgnat-cg-asr9k-77x/cgipv6-without-service-modules.html)
