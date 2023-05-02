@@ -93,17 +93,23 @@ I'm using the traffic generator for this scenario and based on translations abov
 ## Configuration
 This is the configuration template for Inline MAP-T:
 
+<div class="highlighter-rouge">
+<pre class="highlight">
+<code>
     configure
      service cgv6 instance-name
        service-inline interface type interface-path-id
        service-type map-t-cisco instance-name
-         cpe-domain ipv4 prefix length value
+         <mark>cpe-domain ipv4 prefix length value</mark>
          cpe-domain ipv6 vrf vrf-name
          cpe-domain ipv6 prefix length value
-         sharing ratio <number>
-         contiguous-ports <number>
+         sharing ratio number
+         contiguous-ports number
          cpe-domain-name cpe-domain-name ipv4 prefix address/prefix ipv6 prefix address/prefix
-         ext-domain-name ext-domain-name ipv6 prefix address/prefix ipv4-vrf vrf-name 
+         ext-domain-name ext-domain-name ipv6 prefix address/prefix ipv4-vrf vrf-name
+</code>
+</pre>
+</div>
 
 **Note:** CPE V6 Prefix /64 and with V4 Prefix /24 are the best for quick testing as there are no port-sharing in that case and finding correct IP syntax is much easier (see details in the config section).
 {: .notice--info}
