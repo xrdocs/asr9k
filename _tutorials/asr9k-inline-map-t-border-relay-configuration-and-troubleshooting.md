@@ -223,29 +223,29 @@ the subject for applying the MAP-T rules. In our example 4th generation Tomahawk
 <div class="highlighter-rouge">
 <pre class="highlight">
 <code>
-	"show cef 8.8.8.8"
+"show cef 8.8.8.8"
         
-	8.8.8.0/24, version 134, internal 0x1000001 0x0 (ptr 0x721fc418) [1], 0x0 (0x721bd668), 0xa20 (0x726cd688)
-	 Updated Apr 27 15:08:18.684
-	 remote adjacency to TenGigE0/6/0/0/1
-	 Prefix Len 24, traffic index 0, precedence n/a, priority 3
-	   <mark>via 192.168.1.2/32, TenGigE0/6/0/0/1, 4 dependencies, weight 0, class 0 [flags 0x0]</mark>
-	    path-idx 0 NHID 0x0 [0x72a6bb08 0x0]
-	    next hop 192.168.1.2/32
- 	   remote adjacency
-	     local label 24028      labels imposed {None}
+8.8.8.0/24, version 134, internal 0x1000001 0x0 (ptr 0x721fc418) [1], 0x0 (0x721bd668), 0xa20 (0x726cd688)
+ Updated Apr 27 15:08:18.684
+ remote adjacency to TenGigE0/6/0/0/1
+ Prefix Len 24, traffic index 0, precedence n/a, priority 3
+   <mark>via 192.168.1.2/32, TenGigE0/6/0/0/1, 4 dependencies, weight 0, class 0 [flags 0x0]</mark>
+    path-idx 0 NHID 0x0 [0x72a6bb08 0x0]
+    next hop 192.168.1.2/32
+    remote adjacency
+    local label 24028      labels imposed {None}
 
 
-	"show cef ipv6 2701:d01:3344::"
+"show cef ipv6 2701:d01:3344::"
 
-	2701:d01:3344::/64, version 10, internal 0x1000001 0x0 (ptr 0x724f27ac) [1], 0x0 (0x724bd9f0), 0x0 (0x0)
-	 Updated Apr 27 14:47:31.296
-	 remote adjacency to TenGigE0/6/0/0/0
-	 Prefix Len 64, traffic index 0, precedence n/a, priority 3
-	   <mark>via a::2/128, TenGigE0/6/0/0/0, 4 dependencies, weight 0, class 0 [flags 0x0]</mark>
-	    path-idx 0 NHID 0x0 [0x7344d0c8 0x0]
-	    next hop a::2/128
-	    remote adjacency
+2701:d01:3344::/64, version 10, internal 0x1000001 0x0 (ptr 0x724f27ac) [1], 0x0 (0x724bd9f0), 0x0 (0x0)
+ Updated Apr 27 14:47:31.296
+ remote adjacency to TenGigE0/6/0/0/0
+ Prefix Len 64, traffic index 0, precedence n/a, priority 3
+   <mark>via a::2/128, TenGigE0/6/0/0/0, 4 dependencies, weight 0, class 0 [flags 0x0]</mark>
+    path-idx 0 NHID 0x0 [0x7344d0c8 0x0]
+    next hop a::2/128
+    remote adjacency
 </code>
 </pre>
 </div>
@@ -260,20 +260,20 @@ the subject for applying the MAP-T rules. In our example 4th generation Tomahawk
 <div class="highlighter-rouge">
 <pre class="highlight">
 <code>
-	policy-map type pbr CGN_0
-		handle:0x38000002
- 		table description: L3 IPv4 and IPv6
- 		class handle:0x78000003  sequence 1
-   		  <mark>match destination-address ipv4 166.1.32.0 255.255.255.0</mark>
-  		 punt service-node type cgn index 1001 app-id 0 local-id 0x1389
-	   !
-		class handle:0x78000004  sequence 1
-		  <mark>match destination-address ipv6 3601:d01:3344::/48</mark>
- 		 punt service-node type cgn index 3001 app-id 0 local-id 0x1b59
-	   !
-	    class handle:0xf8000002  sequence 4294967295 (class-default)
- 	   !
-   end-policy-map
+  policy-map type pbr CGN_0
+	handle:0x38000002
+ 	table description: L3 IPv4 and IPv6
+ 	class handle:0x78000003  sequence 1
+   	  <mark>match destination-address ipv4 166.1.32.0 255.255.255.0</mark>
+  	 punt service-node type cgn index 1001 app-id 0 local-id 0x1389
+	  !
+	class handle:0x78000004  sequence 1
+	  <mark>match destination-address ipv6 3601:d01:3344::/48</mark>
+ 	 punt service-node type cgn index 3001 app-id 0 local-id 0x1b59
+	  !
+	class handle:0xf8000002  sequence 4294967295 (class-default)
+ 	  !
+  end-policy-map
 </code>
 </pre>
 </div>
