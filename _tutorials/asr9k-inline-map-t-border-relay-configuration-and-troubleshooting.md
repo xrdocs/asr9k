@@ -163,7 +163,7 @@ the subject for applying the MAP-T rules. In our example 4th generation Tomahawk
 {:start="5"}
 5. Finally we configure the translation rules:
 
-- IPv4 to IPv6 rules are defined by the cpe-domain config and after translation traffic will go out of the IPv6 VRF defined above. In particular example, traffic destined to 166.1.32.0/24 subnet will be translated to 2701:d01:3344::/48 subnet and send out VRF default (as configured in our example) based on the routing rule (see step 6 below):
+- IPv4 to IPv6 rules are defined by the cpe-domain config and after translation traffic will go out of the IPv6 VRF defined above. In particular example, traffic destined to 166.1.32.0/24 subnet will be translated to <code>2701:d01:3344::/48</code> subnet and send out VRF default (as configured in our example) based on the routing rule (see step 6 below):
 
 		cpe-domain-name cpe1 ipv4-prefix 166.1.32.0 ipv6-prefix 2701:d01:3344::
 
